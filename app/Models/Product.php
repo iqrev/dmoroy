@@ -10,6 +10,13 @@ class Product extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'category_id',
+        'name',
+        'slug',
+        'description',
+        'price',
+        'stock',
         'images',
         'is_featured',
         'status',
@@ -25,6 +32,11 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function tags(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
     }
 
     public function getMediaUrlsAttribute(): array

@@ -94,6 +94,21 @@ class ProductResource extends Resource
                             ->label('Deskripsi Lengkap')
                             ->required()
                             ->columnSpanFull(),
+                        Forms\Components\Select::make('tags')
+                            ->label('Tag Produk')
+                            ->relationship('tags', 'name')
+                            ->multiple()
+                            ->searchable()
+                            ->preload()
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                                Forms\Components\TextInput::make('slug')
+                                    ->required()
+                                    ->unique('tags', 'slug'),
+                            ]),
                         \Awcodes\Curator\Components\Forms\CuratorPicker::make('images')
                             ->label('Galeri Foto Produk')
                             ->multiple()
