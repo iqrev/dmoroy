@@ -67,6 +67,10 @@ class ProductResource extends Resource
                             ])
                             ->required()
                             ->default('published'),
+                        Forms\Components\TextInput::make('workshop_location')
+                            ->label('Lokasi Workshop')
+                            ->placeholder('Contoh: Jambi, Indonesia')
+                            ->helperText('Kosongkan untuk menggunakan lokasi default (Jambi, Indonesia)'),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Harga & Stok')

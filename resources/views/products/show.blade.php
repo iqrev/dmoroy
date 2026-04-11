@@ -109,7 +109,7 @@
                         </div>
                         <div>
                             <p class="text-xs text-gray-400">Lokasi Workshop</p>
-                            <p class="text-sm font-bold">Jambi, Indonesia</p>
+                            <p class="text-sm font-bold">{{ $product->workshop_location ?: 'Jambi, Indonesia' }}</p>
                         </div>
                     </div>
 
