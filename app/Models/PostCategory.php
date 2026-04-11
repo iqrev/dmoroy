@@ -23,8 +23,8 @@ class PostCategory extends Model
         return $this->hasMany(PostCategory::class, 'parent_id')->orderBy('name');
     }
 
-    public function posts(): HasMany
+    public function posts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->hasMany(Post::class, 'category_id');
+        return $this->belongsToMany(Post::class, 'post_post_category');
     }
 }

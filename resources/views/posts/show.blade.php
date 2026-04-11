@@ -3,32 +3,40 @@
 @section('title', $post->title . ' - ' . \App\Models\Setting::get('site_name', 'Batik Jambi Berkah Group'))
 @section('meta_description', Str::limit(strip_tags($post->content), 160))
 
+@section('og_title', $post->title)
+@section('og_description', Str::limit(strip_tags($post->content), 160))
+@section('og_image', $post->image_url ?: asset('images/logo.png'))
+@section('og_type', 'article')
+
 @section('content')
 <article class="py-12 px-4">
     <div class="max-w-4xl mx-auto">
-        {{-- Breadcrumb --}}
-        <nav class="flex text-sm text-gray-400 mb-10" aria-label="Breadcrumb">
-            <ol class="flex items-center space-x-2">
-                <li><a href="/" class="hover:text-brand-red transition-colors">Beranda</a></li>
-                <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></li>
-                <li><a href="/posts" class="hover:text-brand-red transition-colors">Edukasi</a></li>
-                <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></li>
-                <li class="text-gray-900 font-medium truncate max-w-xs">{{ $post->title }}</li>
-            </ol>
-        </nav>
+        {{-- Breadcrumbs --}}
+        <x-breadcrumbs :items="[
+            ['label' => 'Artikel', 'url' => route('posts.index')],
+            ['label' => $post->title, 'url' => '#'],
+        ]" />
 
         {{-- Header --}}
         <header class="mb-10">
-            <p class="text-brand-red font-bold text-sm uppercase tracking-widest mb-4">
-                {{ $post->created_at->translatedFormat('d F Y') }}
-            </p>
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+                <span class="text-brand-red font-bold text-sm uppercase tracking-widest">
+                    {{ $post->created_at->translatedFormat('d F Y') }}
+                </span>
+                @foreach($post->categories as $cat)
+                    <a href="{{ route('posts.index', ['category' => $cat->slug]) }}" 
+                       class="bg-gray-100 text-gray-600 hover:bg-brand-red hover:text-white transition-colors text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full">
+                        {{ $cat->name }}
+                    </a>
+                @endforeach
+            </div>
             <h1 class="text-4xl md:text-5xl font-serif leading-tight mb-6">{{ $post->title }}</h1>
         </header>
 
         {{-- Cover Image --}}
         @if($post->image)
         <div class="aspect-video rounded-3xl overflow-hidden mb-12 shadow-md">
-            <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
+            <img src="{{ $post->image_url }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
         </div>
         @endif
 
@@ -65,7 +73,7 @@
             </div>
             <a href="/posts" class="inline-flex items-center gap-2 text-brand-red font-medium hover:gap-3 transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                Kembali ke Edukasi
+                Kembali ke Artikel
             </a>
         </div>
     </div>
@@ -80,7 +88,7 @@
             @foreach($relatedPosts as $related)
             <a href="{{ route('posts.show', $related->slug) }}" class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                 <div class="aspect-video overflow-hidden">
-                    <img src="{{ $related->image ? asset('storage/' . $related->image) : 'https://placehold.co/600x400/FDFCFB/C02424?text=' . urlencode($related->title) }}"
+                    <img src="{{ $related->image_url ?: 'https://placehold.co/600x400/FDFCFB/C02424?text=' . urlencode($related->title) }}"
                          alt="{{ $related->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                 </div>
                 <div class="p-6">

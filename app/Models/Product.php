@@ -32,4 +32,24 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function getMediaUrlsAttribute(): array
+    {
+        if (!$this->images || !is_array($this->images)) return [];
+        
+        $urls = [];
+        $mediaRecords = \Awcodes\Curator\Models\Media::whereIn('id', $this->images)->get()->keyBy('id');
+        
+        // Preserve order
+        foreach ($this->images as $id) {
+            if (isset($mediaRecords[$id])) {
+                $urls[] = $mediaRecords[$id]->url;
+            } else if (is_string($id) && !is_numeric($id)) {
+                // Fallback if string path somehow remains
+                $urls[] = str_starts_with($id, 'images/') ? asset($id) : asset('storage/' . $id);
+            }
+        }
+        
+        return $urls;
+    }
 }

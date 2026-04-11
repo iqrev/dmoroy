@@ -1,51 +1,59 @@
 @extends('layouts.app')
 
-@section('title', \App\Models\Setting::get('site_name', 'Batik Jambi Berkah Group') . ' - Pusat Batik Jambi Autentik')
+@section('title', \App\Models\Setting::get('site_name', 'Batik Jambi Berkah') . ' - Pusat Batik Jambi Autentik')
 @section('meta_description', \App\Models\Setting::get('tagline', 'Melestarikan warisan budaya melalui karya seni batik Jambi yang berkualitas dan bermakna.'))
 
 @section('content')
+@php
+    $heroVideoValue = \App\Models\Setting::get('hero_video_id', '6yK_qYnpxXk');
+    
+    // Extract YouTube ID if a full URL is provided
+    if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i', $heroVideoValue, $match)) {
+        $heroVideoId = $match[1];
+    } else {
+        $heroVideoId = $heroVideoValue;
+    }
+
+    $heroTitle = \App\Models\Setting::get('hero_title', 'Warisan Luhur Batik Jambi');
+    $heroSubtitle = \App\Models\Setting::get('hero_subtitle', 'Melestarikan keindahan motif tradisional Jambi yang sarat akan makna dan sejarah.');
+    $heroCtaText = \App\Models\Setting::get('hero_cta_text', 'Lihat Katalog');
+    $heroCtaLink = \App\Models\Setting::get('hero_cta_link', '/products');
+@endphp
+
 <!-- Hero Section -->
-<section class="relative w-full h-[75vh] md:h-[85vh] overflow-hidden bg-gray-900">
-    @forelse($sliders as $slider)
-        <div class="absolute inset-0 transition-opacity duration-1000 {{ $loop->first ? 'opacity-100' : 'opacity-0' }}">
-            <img src="{{ $slider->image && file_exists(public_path('storage/' . $slider->image)) ? asset('storage/' . $slider->image) : 'https://placehold.co/1920x1080/2D2D2D/FDFCFB?text=' . urlencode($slider->title) }}" 
-                 alt="{{ $slider->title }}" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-8 md:p-16">
-                <div class="max-w-4xl">
-                    <h1 class="text-4xl md:text-7xl text-white font-serif mb-6 leading-tight">
-                        @php
-                            $titleParts = explode(' ', $slider->title, 3);
-                            $mainTitle = implode(' ', array_slice($titleParts, 0, 2));
-                            $subTitle = $titleParts[2] ?? '';
-                        @endphp
-                        {!! $mainTitle !!} <br><span class="text-brand-gold italic">{{ $subTitle }}</span>
-                    </h1>
-                    <p class="text-white/80 text-lg md:text-xl mb-10 max-w-2xl leading-relaxed">{{ $slider->description }}</p>
-                    <div class="flex flex-wrap gap-4">
-                        @if($slider->link)
-                            <a href="{{ $slider->link }}" class="btn-primary px-8 py-4 text-lg">Jelajahi Sekarang</a>
-                        @endif
-                        <a href="/about" class="px-8 py-4 rounded-full font-medium text-white border border-white/30 backdrop-blur-md hover:bg-white/10 transition-all">Tentang Kami</a>
-                    </div>
-                </div>
-            </div>
+<section class="relative w-full py-40 overflow-hidden bg-black flex items-center justify-center text-center px-4">
+    <!-- YouTube Background -->
+    <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
+        <iframe 
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+            style="width: 177.77vh; min-width: 100%; height: 56.25vw; min-height: 100%;"
+            src="https://www.youtube.com/embed/{{ $heroVideoId }}?autoplay=1&mute=1&controls=0&loop=1&playlist={{ $heroVideoId }}&rel=0&showinfo=0&iv_load_policy=3&modestbranding=1&enablejsapi=1" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+        </iframe>
+    </div>
+    
+    <!-- Dark Overlay -->
+    <div class="absolute inset-0 bg-black/80"></div>
+
+    <!-- Centered Content -->
+    <div class="relative z-10 max-w-5xl mx-auto">
+        <h1 class="text-4xl md:text-7xl text-white font-serif mb-8 leading-tight animate-fade-in-up">
+            {!! $heroTitle !!}
+        </h1>
+        <p class="text-white/80 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-100">
+            {{ $heroSubtitle }}
+        </p>
+        <div class="flex flex-wrap justify-center gap-4 animate-fade-in-up delay-200">
+            <a href="{{ $heroCtaLink }}" class="btn-primary px-10 py-4 text-lg shadow-xl shadow-brand-red/20 transform hover:-translate-y-1 transition-all">
+                {{ $heroCtaText }}
+            </a>
+            <a href="/about" class="px-10 py-4 rounded-full font-medium text-white border border-white/30 backdrop-blur-md hover:bg-white/10 transition-all transform hover:-translate-y-1">
+                Tentang Kami
+            </a>
         </div>
-    @empty
-        <!-- Fallback if no sliders -->
-        <div class="absolute inset-0">
-            <img src="https://placehold.co/1920x1080/2D2D2D/FDFCFB?text=Batik+Jambi+Berkah" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-8 md:p-16">
-                <div class="max-w-3xl">
-                    <h1 class="text-4xl md:text-6xl text-white font-serif mb-4 leading-tight">Keindahan Warisan <br><span class="text-brand-gold italic">Batik Jambi</span></h1>
-                    <p class="text-white/80 text-lg mb-8 max-w-lg">Temukan koleksi eksklusif batik tulis dan cetak dengan motif tradisional yang kaya akan makna dan sejarah.</p>
-                    <div class="flex gap-4">
-                        <a href="/products" class="btn-primary">Lihat Koleksi</a>
-                        <a href="/about" class="px-6 py-3 rounded-full font-medium text-white border border-white/30 backdrop-blur-sm hover:bg-white/10 transition-colors">Tentang Kami</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforelse
+    </div>
 </section>
 
 <!-- Categories Section -->
@@ -62,7 +70,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             @forelse($categories as $category)
                 <a href="/products?category={{ $category->slug }}" class="card-batik relative group aspect-square">
-                    <img src="{{ $category->image ? asset('storage/' . $category->image) : 'https://placehold.co/400x400/FDFCFB/C02424?text=' . $category->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <img src="{{ $category->image_url ?: 'https://placehold.co/400x400/FDFCFB/C02424?text=' . $category->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute inset-0 bg-black/40 flex flex-col justify-end p-4">
                         <h3 class="text-white font-bold">{{ $category->name }}</h3>
                         <p class="text-white/70 text-xs">{{ $category->products_count }} Produk</p>
@@ -95,8 +103,8 @@
             @forelse($featuredProducts as $product)
                 <div class="group">
                     <a href="/products/{{ $product->slug }}" class="block card-batik aspect-[3/4] mb-4 relative">
-                        @php $img = $product->images[0] ?? null; @endphp
-                        <img src="{{ $img ? asset('storage/' . $img) : 'https://placehold.co/400x600/FDFCFB/C02424?text=' . $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        @php $img = !empty($product->media_urls) ? $product->media_urls[0] : null; @endphp
+                        <img src="{{ $img ?: 'https://placehold.co/400x600/FDFCFB/C02424?text=' . $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         @if($product->is_featured)
                             <span class="absolute top-4 right-4 bg-brand-gold text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-widest">Unggulan</span>
                         @endif
@@ -167,7 +175,7 @@
         @forelse($latestPosts as $post)
             <a href="/posts/{{ $post->slug }}" class="group">
                 <div class="aspect-video rounded-xl overflow-hidden mb-4">
-                    <img src="{{ $post->image ? asset('storage/' . $post->image) : 'https://placehold.co/600x400' }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <img src="{{ $post->image_url ?: 'https://placehold.co/600x400' }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                 </div>
                 <h3 class="font-bold text-xl mb-2">{{ $post->title }}</h3>
                 <p class="text-gray-500 text-sm line-clamp-2">{{ strip_tags($post->content) }}</p>

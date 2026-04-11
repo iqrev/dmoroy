@@ -53,8 +53,10 @@
                     @forelse($products as $product)
                         <div class="group">
                             <a href="{{ route('products.show', $product->slug) }}" class="block card-batik aspect-[3/4] mb-4 relative overflow-hidden">
-                                @php $img = $product->images[0] ?? null; @endphp
-                                <img src="{{ $img ? asset('storage/' . $img) : 'https://placehold.co/400x600/FDFCFB/C02424?text=' . $product->name }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                @php $img = !empty($product->media_urls) ? $product->media_urls[0] : null; @endphp
+                                <img src="{{ $img ?: 'https://placehold.co/400x600/FDFCFB/C02424?text=' . $product->name }}" 
+                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                     alt="{{ $product->name }}">
                                 @if($product->is_featured)
                                     <span class="absolute top-3 right-3 bg-brand-gold text-white text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wider">Top</span>
                                 @endif

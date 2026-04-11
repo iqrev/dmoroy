@@ -9,10 +9,20 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'slug', 'content', 'image', 'status', 'category_id'];
+    protected $fillable = ['title', 'slug', 'content', 'image', 'status'];
 
-    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsTo(PostCategory::class);
+        return $this->belongsToMany(PostCategory::class, 'post_post_category');
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        if (!$this->image) return null;
+        if (is_numeric($this->image)) {
+            $media = \Awcodes\Curator\Models\Media::find($this->image);
+            if ($media) return $media->url;
+        }
+        return asset('storage/' . $this->image);
     }
 }

@@ -25,10 +25,42 @@ class SettingResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('key')
-                    ->required(),
-                Forms\Components\Textarea::make('value')
-                    ->columnSpanFull(),
+                Forms\Components\Section::make('Detail Pengaturan')
+                    ->description('Silakan sesuaikan nilai pengaturan di bawah ini.')
+                    ->schema([
+                        Forms\Components\Placeholder::make('key_label')
+                            ->label('Jenis Pengaturan')
+                            ->content(fn ($record) => match ($record?->key) {
+                                'site_name' => 'Nama Website',
+                                'tagline' => 'Tagline / Slogan Website',
+                                'whatsapp' => 'Nomor WhatsApp (Contoh: 62812...)',
+                                'email' => 'Email Kontak',
+                                'address' => 'Alamat Lengkap',
+                                'instagram' => 'Link Instagram',
+                                'facebook' => 'Link Facebook',
+                                'hero_video_id' => 'Link YouTube Hero (Video Background)',
+                                'hero_title' => 'Judul Hero (Teks Besar)',
+                                'hero_subtitle' => 'Subjudul Hero (Teks Kecil)',
+                                'hero_cta_text' => 'Teks Tombol (CTA)',
+                                'hero_cta_link' => 'Link Tombol (CTA)',
+                                'about_hero_image' => 'Gambar Halaman About Us',
+                                default => $record?->key,
+                            }),
+                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('value')
+                            ->label('Pilih Gambar dari Media Library')
+                            ->visible(fn ($record) => in_array($record?->key, ['about_hero_image']))
+                            ->columnSpanFull(),
+                        Forms\Components\TextInput::make('value')
+                            ->label('Nilai Pengaturan')
+                            ->helperText(fn ($record) => match ($record?->key) {
+                                'hero_video_id' => 'Tempelkan link YouTube lengkap di sini.',
+                                'whatsapp' => 'Gunakan kode negara (62...) tanpa tanda + atau spasi.',
+                                default => null,
+                            })
+                            ->required(fn ($record) => !in_array($record?->key, ['about_hero_image']))
+                            ->visible(fn ($record) => !in_array($record?->key, ['about_hero_image']))
+                            ->columnSpanFull(),
+                    ])
             ]);
     }
 
@@ -37,7 +69,33 @@ class SettingResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('key')
+                    ->label('Pengaturan')
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'site_name' => 'Nama Website',
+                        'tagline' => 'Tagline Website',
+                        'whatsapp' => 'WhatsApp',
+                        'email' => 'Email',
+                        'address' => 'Alamat',
+                        'instagram' => 'Instagram',
+                        'facebook' => 'Facebook',
+                        'hero_video_id' => 'Video Hero (YouTube)',
+                        'hero_title' => 'Judul Hero',
+                        'hero_subtitle' => 'Subjudul Hero',
+                        'hero_cta_text' => 'Teks Tombol Hero',
+                        'hero_cta_link' => 'Link Tombol Hero',
+                        'about_hero_image' => 'Gambar Halaman About Us',
+                        default => ucwords(str_replace('_', ' ', $state)),
+                    })
                     ->searchable(),
+                Tables\Columns\ImageColumn::make('value_image')
+                    ->label('Isi / Nilai')
+                    ->getStateUsing(fn ($record) => in_array($record->key, ['about_hero_image']) ? \App\Models\Setting::getMediaUrl($record->key) : null)
+                    ->toggleable()
+                    ->height(40),
+                Tables\Columns\TextColumn::make('value')
+                    ->label('Isi (Teks)')
+                    ->limit(50)
+                    ->visible(fn ($record) => !in_array($record->key ?? '', ['about_hero_image'])),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -18,39 +18,68 @@ class PostResource extends Resource
     protected static ?string $model = Post::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $navigationGroup = 'Konten';
+    protected static ?string $navigationGroup = 'Berita & Edukasi';
     protected static ?int $navigationSort = 1;
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Artikel';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Artikel';
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'Artikel';
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->unique(ignoreRecord: true),
-                Forms\Components\RichEditor::make('content')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\FileUpload::make('image')
-                    ->image()
-                    ->directory('posts'),
-                Forms\Components\Select::make('category_id')
-                    ->label('Kategori')
-                    ->relationship('category', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Forms\Components\Select::make('status')
-                    ->options([
-                        'published' => 'Published',
-                        'draft' => 'Draft',
+                Forms\Components\Section::make('Informasi Utama')
+                    ->schema([
+                        Forms\Components\TextInput::make('title')
+                            ->label('Judul Artikel')
+                            ->required()
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                        Forms\Components\TextInput::make('slug')
+                            ->label('Slug (URL)')
+                            ->required()
+                            ->disabled()
+                            ->dehydrated()
+                            ->unique(ignoreRecord: true),
+                        Forms\Components\Select::make('categories')
+                            ->label('Kategori Artikel')
+                            ->relationship('categories', 'name')
+                            ->multiple()
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+                        Forms\Components\Select::make('status')
+                            ->label('Status Publikasi')
+                            ->options([
+                                'published' => 'Tayang',
+                                'draft' => 'Draft',
+                            ])
+                            ->required()
+                            ->default('published'),
+                    ])->columns(2),
+
+                Forms\Components\Section::make('Konten & Media')
+                    ->schema([
+                        Forms\Components\RichEditor::make('content')
+                            ->label('Isi Artikel')
+                            ->required()
+                            ->columnSpanFull(),
+                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('image')
+                            ->label('Gambar Utama')
+                            ->columnSpanFull(),
                     ])
-                    ->required()
-                    ->default('published'),
             ]);
     }
 
@@ -58,15 +87,20 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
+                \Awcodes\Curator\Components\Tables\CuratorColumn::make('image')
+                    ->size(40)
+                    ->label('Foto')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
-                    ->searchable(),
-                Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\TextColumn::make('category.name')
-                    ->numeric()
+                    ->label('Judul Artikel')
+                    ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('categories.name')
+                    ->label('Kategori')
+                    ->badge()
+                    ->color('gray'),
                 Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'published' => 'success',

@@ -17,9 +17,7 @@ class SliderResource extends Resource
 {
     protected static ?string $model = Slider::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-photo';
-    protected static ?string $navigationGroup = 'Konten';
-    protected static ?int $navigationSort = 2;
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -31,9 +29,7 @@ class SliderResource extends Resource
                 Forms\Components\TextInput::make('order')
                     ->numeric()
                     ->default(0),
-                Forms\Components\FileUpload::make('image')
-                    ->image()
-                    ->directory('sliders')
+                \Awcodes\Curator\Components\Forms\CuratorPicker::make('image')
                     ->required(),
                 Forms\Components\TextInput::make('link'),
             ]);
@@ -49,7 +45,8 @@ class SliderResource extends Resource
                     ->limit(50),
                 Tables\Columns\TextColumn::make('order')
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('image'),
+                \Awcodes\Curator\Components\Tables\CuratorColumn::make('image')
+                    ->size(40),
                 Tables\Columns\TextColumn::make('link')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')

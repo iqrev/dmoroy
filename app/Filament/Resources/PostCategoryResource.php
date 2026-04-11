@@ -18,9 +18,23 @@ class PostCategoryResource extends Resource
     protected static ?string $model = PostCategory::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
-    protected static ?string $navigationGroup = 'Konten';
-    protected static ?int $navigationSort = 4;
-    protected static ?string $navigationLabel = 'Kategori Blog';
+    protected static ?string $navigationGroup = 'Berita & Edukasi';
+    protected static ?int $navigationSort = 2;
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Kategori Artikel';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Kategori Artikel';
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'Kategori Artikel';
+    }
 
     public static function form(Form $form): Form
     {
@@ -32,6 +46,8 @@ class PostCategoryResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('slug')
                     ->required()
+                    ->disabled()
+                    ->dehydrated()
                     ->unique(PostCategory::class, 'slug', ignoreRecord: true),
                 Forms\Components\Select::make('parent_id')
                     ->label('Kategori Induk')
@@ -49,7 +65,13 @@ class PostCategoryResource extends Resource
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parent.name')
-                    ->numeric()
+                    ->label('Kategori Induk')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('posts_count')
+                    ->counts('posts')
+                    ->label('Jumlah Artikel')
+                    ->badge()
+                    ->color('success')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

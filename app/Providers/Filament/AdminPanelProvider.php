@@ -38,7 +38,14 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+            ])
+            ->plugins([
+                \Awcodes\Curator\CuratorPlugin::make()
+                    ->label('Media')
+                    ->pluralLabel('Media')
+                    ->navigationIcon('heroicon-o-photo')
+                    ->navigationGroup('Konten')
+                    ->navigationSort(5),
             ])
             ->middleware([
                 EncryptCookies::class,

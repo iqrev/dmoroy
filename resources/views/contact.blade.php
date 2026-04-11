@@ -19,50 +19,97 @@
 {{-- Contact Methods --}}
 <section class="py-16 px-4">
     <div class="max-w-7xl mx-auto">
-        <div class="grid md:grid-cols-3 gap-8 mb-20">
-            {{-- WhatsApp --}}
-            <a href="https://wa.me/6281234567890" target="_blank" 
-               class="group bg-white rounded-3xl p-8 shadow-sm border border-gray-100 hover:border-[#25D366]/30 hover:shadow-lg transition-all text-center">
-                <div class="w-20 h-20 rounded-full bg-[#25D366]/10 flex items-center justify-center mx-auto mb-6 group-hover:bg-[#25D366]/20 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="#25D366">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-xl mb-2">WhatsApp</h3>
-                <p class="text-gray-500 text-sm mb-4">Respons cepat, langsung ke tim kami</p>
-                <p class="text-[#25D366] font-bold">+{{ \App\Models\Setting::get('whatsapp', '62 812-3456-7890') }}</p>
-                <span class="inline-block mt-4 text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full">{{ \App\Models\Setting::get('office_hours', 'Senin - Sabtu, 08:00 - 17:00') }}</span>
-            </a>
+        <div class="grid lg:grid-cols-2 gap-16 mb-20 items-start">
+            {{-- Contact Form --}}
+            <div class="bg-white rounded-3xl p-10 shadow-xl shadow-brand-red/5 border border-gray-100 order-2 lg:order-1">
+                <h2 class="text-3xl font-serif mb-8 leading-tight">Kirim Pesan <span class="text-brand-red italic">Langsung</span></h2>
+                <form action="{{ route('contact.store') }}" method="POST" class="space-y-6">
+                    @csrf
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="name" class="text-sm font-bold text-gray-700 uppercase tracking-wider">Nama Lengkap</label>
+                            <input type="text" name="name" id="name" required placeholder="Contoh: Budi Santoso"
+                                   class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:border-brand-red focus:ring-4 focus:ring-brand-red/5 transition-all outline-none">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="email" class="text-sm font-bold text-gray-700 uppercase tracking-wider">Alamat Email</label>
+                            <input type="email" name="email" id="email" required placeholder="Contoh: budi@email.com"
+                                   class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:border-brand-red focus:ring-4 focus:ring-brand-red/5 transition-all outline-none">
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label for="subject" class="text-sm font-bold text-gray-700 uppercase tracking-wider">Subjek Pesan</label>
+                        <input type="text" name="subject" id="subject" required placeholder="Contoh: Tanya Harga Batik Tulis"
+                               class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:border-brand-red focus:ring-4 focus:ring-brand-red/5 transition-all outline-none">
+                    </div>
+                    <div class="space-y-2">
+                        <label for="message" class="text-sm font-bold text-gray-700 uppercase tracking-wider">Pesan Anda</label>
+                        <textarea name="message" id="message" rows="5" required placeholder="Tuliskan pesan atau pertanyaan Anda di sini..."
+                                  class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:border-brand-red focus:ring-4 focus:ring-brand-red/5 transition-all outline-none resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary w-full py-5 text-lg font-bold shadow-lg shadow-brand-red/20 transform hover:-translate-y-1 transition-all">
+                        Kirim Pesan Sekarang
+                    </button>
+                </form>
+            </div>
 
-            {{-- Email --}}
-            <a href="mailto:info@batikjambiberkah.com" 
-               class="group bg-white rounded-3xl p-8 shadow-sm border border-gray-100 hover:border-brand-red/30 hover:shadow-lg transition-all text-center">
-                <div class="w-20 h-20 rounded-full bg-brand-red/10 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-red/20 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C02424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect width="20" height="16" x="2" y="4" rx="2"/>
-                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                    </svg>
+            {{-- Contact Cards --}}
+            <div class="space-y-8 order-1 lg:order-2">
+                <div>
+                    <h2 class="text-3xl font-serif mb-4 leading-tight">Metode Lainnya</h2>
+                    <p class="text-gray-500 mb-8">Pilih cara yang paling nyaman bagi Anda untuk menghubungi kami.</p>
                 </div>
-                <h3 class="font-bold text-xl mb-2">Email</h3>
-                <p class="text-gray-500 text-sm mb-4">Untuk pertanyaan detail dan penawaran</p>
-                <p class="text-brand-red font-bold text-sm">{{ \App\Models\Setting::get('email', 'info@batikjambiberkah.com') }}</p>
-                <span class="inline-block mt-4 text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full">Dibalas dalam 1x24 jam</span>
-            </a>
+                
+                <div class="grid gap-6">
+                    {{-- WhatsApp --}}
+                    <a href="https://wa.me/{{ \App\Models\Setting::get('whatsapp', '6281234567890') }}" target="_blank" 
+                       class="group bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-[#25D366]/30 hover:shadow-lg transition-all flex items-center gap-6">
+                        <div class="w-16 h-16 rounded-full bg-[#25D366]/10 flex items-center justify-center shrink-0 group-hover:bg-[#25D366]/20 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#25D366">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg group-hover:text-brand-red transition-colors">WhatsApp</h3>
+                            <p class="text-gray-500 text-sm mb-1">Respons paling cepat</p>
+                            <p class="text-[#25D366] font-bold">+{{ \App\Models\Setting::get('whatsapp', '62 812-3456-7890') }}</p>
+                        </div>
+                    </a>
 
-            {{-- Location --}}
-            <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 text-center">
-                <div class="w-20 h-20 rounded-full bg-brand-gold/10 flex items-center justify-center mx-auto mb-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#DAA520" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                        <circle cx="12" cy="10" r="3"/>
-                    </svg>
+                    {{-- Email --}}
+                    <a href="mailto:{{ \App\Models\Setting::get('email', 'info@batikjambiberkah.com') }}" 
+                       class="group bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-brand-red/30 hover:shadow-lg transition-all flex items-center gap-6">
+                        <div class="w-16 h-16 rounded-full bg-brand-red/10 flex items-center justify-center shrink-0 group-hover:bg-brand-red/20 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C02424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="20" height="16" x="2" y="4" rx="2"/>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg group-hover:text-brand-red transition-colors">Alamat Email</h3>
+                            <p class="text-gray-500 text-sm mb-1">Untuk penawaran detail</p>
+                            <p class="text-brand-red font-bold">{{ \App\Models\Setting::get('email', 'info@batikjambiberkah.com') }}</p>
+                        </div>
+                    </a>
+
+                    {{-- Workshop --}}
+                    <div class="bg-brand-cream rounded-2xl p-6 border border-brand-gold/10 flex items-center gap-6">
+                        <div class="w-16 h-16 rounded-full bg-brand-gold/10 flex items-center justify-center shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#DAA520" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Workshop Kami</h3>
+                            <p class="text-gray-500 text-xs mb-1">Buka Senin - Sabtu</p>
+                            <p class="text-gray-700 text-sm leading-snug">{!! nl2br(e(\App\Models\Setting::get('address', 'Jambi, Indonesia'))) !!}</p>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="font-bold text-xl mb-2">Workshop Kami</h3>
-                <p class="text-gray-500 text-sm mb-4">Kunjungi langsung dan lihat prosesnya</p>
-                <p class="text-gray-700 font-medium text-sm">{!! nl2br(e(\App\Models\Setting::get('address', 'Jl. Batik Lama No. 88\nJambi, Indonesia 36122'))) !!}</p>
-                <span class="inline-block mt-4 text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full">Buka Senin - Sabtu</span>
             </div>
         </div>
+    </div>
 
         {{-- WhatsApp CTA Big --}}
         <div class="bg-brand-red rounded-3xl p-12 text-center text-white overflow-hidden relative">

@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', \App\Models\Setting::get('site_name', 'Batik Jambi Berkah Group'))</title>
     <meta name="description" content="@yield('meta_description', \App\Models\Setting::get('tagline', 'Melestarikan Warisan Budaya Melalui Karya Batik'))">
+    
+    <!-- SEO & Social Media Meta Tags -->
+    <link rel="canonical" href="{{ url()->current() }}">
+    <meta property="og:site_name" content="{{ \App\Models\Setting::get('site_name', 'Batik Jambi Berkah Group') }}">
+    <meta property="og:title" content="@yield('og_title', view()->yieldContent('title', \App\Models\Setting::get('site_name', 'Batik Jambi Berkah Group')))">
+    <meta property="og:description" content="@yield('og_description', view()->yieldContent('meta_description', \App\Models\Setting::get('tagline', 'Melestarikan Warisan Budaya Melalui Karya Batik')))">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:image" content="@yield('og_image', asset('images/logo.png'))">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('og_title', view()->yieldContent('title', \App\Models\Setting::get('site_name', 'Batik Jambi Berkah Group')))">
+    <meta name="twitter:description" content="@yield('og_description', view()->yieldContent('meta_description', \App\Models\Setting::get('tagline', 'Melestarikan Warisan Budaya Melalui Karya Batik')))">
+    <meta name="twitter:image" content="@yield('og_image', asset('images/logo.png'))">
+
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -52,44 +67,87 @@
 
                 <a href="/products" class="hover:text-brand-red transition-colors">Katalog</a>
 
-                <!-- Galeri & Edukasi Dropdown -->
-                <div class="dropdown">
-                    <a href="#" class="hover:text-brand-red transition-colors flex items-center gap-1">
-                        Galeri & Edukasi
+                <!-- Artikel Dropdown (Mega Menu) -->
+                <div class="dropdown group/mega">
+                    <a href="/posts" class="hover:text-brand-red transition-colors flex items-center gap-1">
+                        Artikel
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                     </a>
-                    <div class="dropdown-content">
-                        <a href="/posts" class="dropdown-item font-bold border-b border-gray-50 pb-2 mb-1">Knowledge / Blog</a>
-                        
-                        <div class="dropdown-submenu">
-                            <div class="dropdown-item flex items-center justify-between">
-                                Stand/Pameran
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    <div class="dropdown-content min-w-[500px] py-2 !-translate-x-1/3 mt-2 overflow-hidden shadow-2xl">
+                        <div class="flex">x
+                            {{-- Edukasi Column --}}
+                            @if($navGroups['edukasi'])
+                            <div class="bg-gray-50/50 p-5 border-r border-gray-100 flex-1">
+                                <h4 class="text-center text-[10px] font-bold uppercase tracking-[0.2em] text-brand-red/60 mb-4 pb-2 border-b border-brand-red/10">Edukasi & Wawasan</h4>
+                                <div class="space-y-1">
+                                    @foreach($navGroups['edukasi']->children as $cat)
+                                        <a href="/posts?category={{ $cat->slug }}" class="dropdown-item !px-3 !py-1.5 rounded-lg hover:bg-white hover:shadow-sm">
+                                            {{ $cat->name }}
+                                        </a>
+                                    @endforeach
+                                </div>
                             </div>
-                            <div class="dropdown-submenu-content">
-                                <a href="/posts?category=pameran-luar-negeri" class="dropdown-item">Luar Negeri</a>
-                                <a href="/posts?category=pameran-dalam-negeri" class="dropdown-item">Dalam Negeri</a>
-                            </div>
-                        </div>
+                            @endif
 
-                        <div class="dropdown-submenu">
-                            <div class="dropdown-item flex items-center justify-between">
-                                Fashion Show
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                            {{-- Galeri Column --}}
+                            @if($navGroups['galeri'])
+                            <div class="bg-white p-5 flex-1">
+                                <h4 class="text-center text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-4 pb-2 border-b border-gray-100">Galeri & Dokumentasi</h4>
+                                <div class="space-y-1">
+                                    @foreach($navGroups['galeri']->children as $cat)
+                                        @if($cat->children->count() > 0)
+                                            <div class="dropdown-submenu">
+                                                <div class="dropdown-item flex items-center justify-between !px-3 !py-1.5 rounded-lg hover:bg-gray-50">
+                                                    {{ $cat->name }}
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40"><path d="m9 18 6-6-6-6"/></svg>
+                                                </div>
+                                                <div class="dropdown-submenu-content !left-[100%] !-mt-2">
+                                                    <a href="/posts?category={{ $cat->slug }}" class="dropdown-item font-semibold text-brand-red text-xs border-b border-gray-50 mb-1">Semua {{ $cat->name }}</a>
+                                                    @foreach($cat->children as $child)
+                                                        <a href="/posts?category={{ $child->slug }}" class="dropdown-item">{{ $child->name }}</a>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        @else
+                                            <a href="/posts?category={{ $cat->slug }}" class="dropdown-item !px-3 !py-1.5 rounded-lg hover:bg-gray-50">
+                                                {{ $cat->name }}
+                                            </a>
+                                        @endif
+                                    @endforeach
+                                </div>
                             </div>
-                            <div class="dropdown-submenu-content">
-                                <a href="/posts?category=fashion-show-luar-negeri" class="dropdown-item">Luar Negeri</a>
-                                <a href="/posts?category=fashion-show-dalam-negeri" class="dropdown-item">Dalam Negeri</a>
-                            </div>
+                            @endif
+                        </div>
+                        <div class="bg-brand-red/[0.02] p-4 border-t border-gray-100">
+                            <a href="/posts" class="text-xs text-brand-red font-bold hover:gap-2 transition-all flex items-center justify-center gap-1 group/btn">
+                                <span>Lihat Semua Artikel & Wawasan</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover/btn:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                            </a>
                         </div>
                     </div>
                 </div>
 
+                <a href="{{ route('cart.index') }}" class="relative group p-2 text-gray-600 hover:text-brand-red transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    @if(count(session('cart', [])) > 0)
+                        <span class="absolute -top-1 -right-1 bg-brand-red text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full group-hover:scale-110 transition-transform">
+                            {{ count(session('cart', [])) }}
+                        </span>
+                    @endif
+                </a>
                 <a href="/contact" class="btn-primary py-2 text-sm">Hubungi Kami</a>
             </div>
 
             <!-- Mobile Search/Cart Placeholder -->
-            <div class="flex items-center gap-4 md:hidden">
+            <div class="flex items-center gap-2 md:hidden">
+                <a href="{{ route('cart.index') }}" class="relative p-2 text-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    @if(count(session('cart', [])) > 0)
+                        <span class="absolute top-0 right-0 bg-brand-red text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                            {{ count(session('cart', [])) }}
+                        </span>
+                    @endif
+                </a>
                 <button class="p-2 text-gray-600"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></button>
             </div>
         </nav>
@@ -97,6 +155,7 @@
 
     <!-- Main Content -->
     <main>
+        @include('components.toast')
         @yield('content')
     </main>
 
@@ -112,7 +171,18 @@
         </a>
         <a href="/posts" class="flex flex-col items-center gap-1 text-xs {{ Request::is('posts*') ? 'text-brand-red' : 'text-gray-400' }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M8 7h6"/><path d="M8 11h8"/></svg>
-            <span>Edukasi</span>
+            <span>Artikel</span>
+        </a>
+        <a href="{{ route('cart.index') }}" class="flex flex-col items-center gap-1 text-xs {{ Request::is('cart*') ? 'text-brand-red' : 'text-gray-400' }}">
+            <div class="relative">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                @if(count(session('cart', [])) > 0)
+                    <span class="absolute -top-1.5 -right-1.5 bg-brand-red text-white text-[8px] font-bold w-3.5 h-3.5 flex items-center justify-center rounded-full">
+                        {{ count(session('cart', [])) }}
+                    </span>
+                @endif
+            </div>
+            <span>Keranjang</span>
         </a>
         <a href="/contact" class="flex flex-col items-center gap-1 text-xs {{ Request::is('contact*') ? 'text-brand-red' : 'text-gray-400' }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -137,7 +207,7 @@
                 <ul class="space-y-2 text-gray-500 text-sm">
                     <li><a href="/" class="hover:text-brand-red">Beranda</a></li>
                     <li><a href="/products" class="hover:text-brand-red">Katalog Produk</a></li>
-                    <li><a href="/posts" class="hover:text-brand-red">Edukasi Batik</a></li>
+                    <li><a href="/posts" class="hover:text-brand-red">Artikel & Edukasi</a></li>
                     <li><a href="/about" class="hover:text-brand-red">Tentang Kami</a></li>
                 </ul>
             </div>
@@ -154,5 +224,7 @@
             &copy; {{ date('Y') }} {{ \App\Models\Setting::get('site_name', 'Batik Jambi Berkah Group') }}. All rights reserved.
         </div>
     </footer>
+
+    @stack('scripts')
 </body>
 </html>

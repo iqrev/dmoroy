@@ -19,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // File upload optimizations are now handled through Curator configuration
+
+        // Share post categories grouped for navigation
+        view()->composer('layouts.app', function ($view) {
+            $view->with('navGroups', [
+                'edukasi' => \App\Models\PostCategory::where('slug', 'knowledge')->with('children.children')->first(),
+                'galeri' => \App\Models\PostCategory::where('slug', 'dokumentasi-event')->with('children.children')->first()
+            ]);
+        });
     }
 }

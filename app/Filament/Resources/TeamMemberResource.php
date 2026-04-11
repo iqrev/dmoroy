@@ -18,22 +18,42 @@ class TeamMemberResource extends Resource
     protected static ?string $model = TeamMember::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $navigationGroup = 'Profil';
+    protected static ?string $navigationGroup = 'Profil Toko';
     protected static ?int $navigationSort = 1;
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Tim Kami';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Tim Kami';
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'Anggota Tim';
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\TextInput::make('position')
-                    ->required(),
-                Forms\Components\FileUpload::make('photo')
-                    ->image()
-                    ->directory('team'),
-                Forms\Components\Textarea::make('bio')
-                    ->columnSpanFull(),
+                Forms\Components\Section::make('Informasi Anggota Tim')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nama Lengkap')
+                            ->required(),
+                        Forms\Components\TextInput::make('position')
+                            ->label('Jabatan / Peran')
+                            ->required(),
+                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('photo')
+                            ->label('Foto Profil'),
+                        Forms\Components\Textarea::make('bio')
+                            ->label('Biografi Singkat')
+                            ->columnSpanFull(),
+                    ])->columns(2)
             ]);
     }
 
@@ -41,11 +61,16 @@ class TeamMemberResource extends Resource
     {
         return $table
             ->columns([
+                \Awcodes\Curator\Components\Tables\CuratorColumn::make('photo')
+                    ->size(40)
+                    ->label('Foto')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Lengkap')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('position')
+                    ->label('Jabatan')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('photo'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

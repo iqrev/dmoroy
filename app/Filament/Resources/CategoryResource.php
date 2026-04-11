@@ -21,23 +21,44 @@ class CategoryResource extends Resource
     protected static ?string $navigationGroup = 'Katalog';
     protected static ?int $navigationSort = 2;
 
+    public static function getNavigationLabel(): string
+    {
+        return 'Kategori Produk';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Kategori Produk';
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'Kategori';
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->unique(ignoreRecord: true),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\FileUpload::make('image')
-                    ->image()
-                    ->directory('categories')
-                    ->visibility('public'),
+                Forms\Components\Section::make('Detail Kategori')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nama Kategori')
+                            ->required()
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                        Forms\Components\TextInput::make('slug')
+                            ->label('Slug (URL)')
+                            ->required()
+                            ->disabled()
+                            ->dehydrated()
+                            ->unique(ignoreRecord: true),
+                        Forms\Components\Textarea::make('description')
+                            ->label('Deskripsi')
+                            ->columnSpanFull(),
+                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('image')
+                            ->label('Gambar Ikon'),
+                    ])->columns(2)
             ]);
     }
 
@@ -49,7 +70,8 @@ class CategoryResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image'),
+                \Awcodes\Curator\Components\Tables\CuratorColumn::make('image')
+                    ->size(40),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

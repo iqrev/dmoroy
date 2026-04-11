@@ -21,48 +21,83 @@ class ProductResource extends Resource
     protected static ?string $navigationGroup = 'Katalog';
     protected static ?int $navigationSort = 1;
 
+    public static function getNavigationLabel(): string
+    {
+        return 'Produk';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Produk';
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'Produk';
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('category_id')
-                    ->relationship('category', 'name')
-                    ->required()
-                    ->searchable()
-                    ->preload(),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->unique(ignoreRecord: true),
-                Forms\Components\RichEditor::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('price')
-                    ->required()
-                    ->numeric()
-                    ->default(0)
-                    ->prefix('Rp'),
-                Forms\Components\TextInput::make('stock')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\FileUpload::make('images')
-                    ->multiple()
-                    ->image()
-                    ->directory('products')
-                    ->columnSpanFull(),
-                Forms\Components\Toggle::make('is_featured')
-                    ->required(),
-                Forms\Components\Select::make('status')
-                    ->options([
-                        'published' => 'Published',
-                        'draft' => 'Draft',
+                Forms\Components\Section::make('Informasi Utama')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nama Produk')
+                            ->required()
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                        Forms\Components\TextInput::make('slug')
+                            ->label('Slug (URL)')
+                            ->required()
+                            ->disabled()
+                            ->dehydrated()
+                            ->unique(ignoreRecord: true),
+                        Forms\Components\Select::make('category_id')
+                            ->label('Kategori Produk')
+                            ->relationship('category', 'name')
+                            ->required()
+                            ->searchable()
+                            ->preload(),
+                        Forms\Components\Select::make('status')
+                            ->label('Status Publikasi')
+                            ->options([
+                                'published' => 'Tayang',
+                                'draft' => 'Draft',
+                            ])
+                            ->required()
+                            ->default('published'),
+                    ])->columns(2),
+
+                Forms\Components\Section::make('Harga & Stok')
+                    ->schema([
+                        Forms\Components\TextInput::make('price')
+                            ->label('Harga Satuan')
+                            ->required()
+                            ->numeric()
+                            ->default(0)
+                            ->prefix('Rp'),
+                        Forms\Components\TextInput::make('stock')
+                            ->label('Jumlah Stok')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                    ])->columns(2),
+
+                Forms\Components\Section::make('Konten & Media')
+                    ->schema([
+                        Forms\Components\RichEditor::make('description')
+                            ->label('Deskripsi Lengkap')
+                            ->required()
+                            ->columnSpanFull(),
+                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('images')
+                            ->label('Galeri Foto Produk')
+                            ->multiple()
+                            ->columnSpanFull(),
+                        Forms\Components\Toggle::make('is_featured')
+                            ->label('Tandai sebagai Produk Unggulan')
+                            ->required(),
                     ])
-                    ->required()
-                    ->default('published'),
             ]);
     }
 
@@ -70,29 +105,50 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('category.name')
-                    ->sortable(),
+                \Awcodes\Curator\Components\Tables\CuratorColumn::make('images')
+                    ->label('Foto')
+                    ->limit(1)
+                    ->size(40)
+                    ->circular(),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->label('Nama Produk')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Kategori')
+                    ->badge()
+                    ->color('gray')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('price')
+                    ->label('Harga')
                     ->money('IDR')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('stock')
+                    ->label('Stok')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_featured')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_featured')
+                    ->label('Unggulan'),
+                Tables\Columns\TextColumn::make('views_count')
+                    ->label('Jumlah Dilihat')
+                    ->numeric()
+                    ->sortable()
+                    ->badge()
+                    ->color('info'),
                 Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'published' => 'success',
                         'draft' => 'warning',
                     }),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat Pada')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Diperbarui Pada')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

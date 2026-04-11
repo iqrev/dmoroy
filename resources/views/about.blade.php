@@ -39,7 +39,8 @@
         </div>
         <div class="relative">
             <div class="aspect-square rounded-3xl overflow-hidden shadow-2xl">
-                <img src="{{ asset('images/hero.png') }}" alt="Proses pembuatan batik Jambi" class="w-full h-full object-cover">
+                @php $aboutHeroImg = \App\Models\Setting::getMediaUrl('about_hero_image', 'images/hero.png'); @endphp
+                <img src="{{ $aboutHeroImg }}" alt="Proses pembuatan batik Jambi" class="w-full h-full object-cover">
             </div>
             <div class="absolute -bottom-8 -left-8 bg-brand-gold p-8 rounded-3xl text-white shadow-xl -rotate-3">
                 <p class="text-4xl font-serif font-bold">25+</p>
@@ -76,12 +77,20 @@
         </div>
         <div class="grid md:grid-cols-3 gap-8">
             @foreach([
-                ['🎨', 'Autentisitas', 'Setiap motif kami bersumber dari khazanah budaya asli Jambi, dijaga kemurniannya dari generasi ke generasi.'],
-                ['✋', 'Kualitas Handmade', 'Proses batik tulis kami dikerjakan secara manual oleh tangan-tangan terampil pengrajin berpengalaman.'],
-                ['🌿', 'Keberlanjutan', 'Kami menggunakan pewarna alami dan bahan ramah lingkungan untuk menjaga ekosistem alam Jambi.'],
+                ['palette', 'Autentisitas', 'Setiap motif kami bersumber dari khazanah budaya asli Jambi, dijaga kemurniannya dari generasi ke generasi.'],
+                ['hand', 'Kualitas Handmade', 'Proses batik tulis kami dikerjakan secara manual oleh tangan-tangan terampil pengrajin berpengalaman.'],
+                ['leaf', 'Keberlanjutan', 'Kami menggunakan pewarna alami dan bahan ramah lingkungan untuk menjaga ekosistem alam Jambi.'],
             ] as $value)
             <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                <div class="text-5xl mb-6">{{ $value[0] }}</div>
+                <div class="text-brand-gold mb-6">
+                    @if($value[0] == 'palette')
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.46 2 12 2z"/></svg>
+                    @elseif($value[0] == 'hand')
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+                    @elseif($value[0] == 'leaf')
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+                    @endif
+                </div>
                 <h3 class="text-xl font-bold mb-4">{{ $value[1] }}</h3>
                 <p class="text-gray-600 leading-relaxed">{{ $value[2] }}</p>
             </div>
@@ -102,7 +111,7 @@
             @foreach($teamMembers as $member)
             <div class="text-center group">
                 <div class="w-32 h-32 rounded-full mx-auto mb-4 overflow-hidden border-4 border-white shadow-lg group-hover:border-brand-gold transition-colors">
-                    <img src="{{ $member->photo ? asset('storage/' . $member->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($member->name) . '&background=C02424&color=fff&size=200' }}" 
+                    <img src="{{ $member->photo_url ?: 'https://ui-avatars.com/api/?name=' . urlencode($member->name) . '&background=C02424&color=fff&size=200' }}" 
                          alt="{{ $member->name }}" class="w-full h-full object-cover">
                 </div>
                 <h3 class="font-bold text-lg">{{ $member->name }}</h3>
