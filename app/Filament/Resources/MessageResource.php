@@ -6,7 +6,7 @@ use App\Filament\Resources\MessageResource\Pages;
 use App\Filament\Resources\MessageResource\RelationManagers;
 use App\Models\Message;
 use Filament\Forms;
-use Filament\Schemas\Schema;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -21,9 +21,9 @@ class MessageResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
     protected static ?int $navigationSort = 4;
 
-    public static function form(Schema $schema): Schema
+    public static function form(Form $form): Form
     {
-        return $schema
+        return $form
             ->components([
                 Forms\Components\Section::make('Detail Pesan')
                     ->schema([

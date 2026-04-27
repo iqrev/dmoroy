@@ -6,7 +6,7 @@ use App\Filament\Resources\PostCategoryResource\Pages;
 use App\Filament\Resources\PostCategoryResource\RelationManagers;
 use App\Models\PostCategory;
 use Filament\Forms;
-use Filament\Schemas\Schema;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -36,9 +36,9 @@ class PostCategoryResource extends Resource
         return 'Kategori Artikel';
     }
 
-    public static function form(Schema $schema): Schema
+    public static function form(Form $form): Form
     {
-        return $schema
+        return $form
             ->components([
                 Forms\Components\TextInput::make('name')
                     ->reactive()

@@ -6,7 +6,7 @@ use App\Filament\Resources\TeamMemberResource\Pages;
 use App\Filament\Resources\TeamMemberResource\RelationManagers;
 use App\Models\TeamMember;
 use Filament\Forms;
-use Filament\Schemas\Schema;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -36,9 +36,9 @@ class TeamMemberResource extends Resource
         return 'Anggota Tim';
     }
 
-    public static function form(Schema $schema): Schema
+    public static function form(Form $form): Form
     {
-        return $schema
+        return $form
             ->components([
                 Forms\Components\Section::make('Informasi Anggota Tim')
                     ->schema([
