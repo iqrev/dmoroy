@@ -92,4 +92,14 @@ DB::table('users')->updateOrInsert(
 );
 echo "Admin admin@websitejambi.com synced!\n";
 
-echo "\nCOMPLETED! Admin and Social links are ready.\n";
+if (isset($_GET['seed'])) {
+    echo "\n7. RUNNING DB SEED...\n";
+    Artisan::call('db:seed', ['--force' => true]);
+    echo Artisan::output();
+    echo "Database Seeded successfully!\n";
+} else {
+    echo "\n7. DB SEED SKIPPED.\n";
+    echo "<a href='?seed=1' style='background:red; color:white; padding:5px; text-decoration:none;'>CLICK HERE TO RUN DB:SEED (WARNING: WILL RESET DATA)</a>\n";
+}
+
+echo "\nCOMPLETED! Website state synchronized.\n";
