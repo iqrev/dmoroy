@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
 define('LARAVEL_START', microtime(true));
 
@@ -53,14 +54,28 @@ if (is_link($publicStoragePath)) {
 
 if (symlink($targetStoragePath, $publicStoragePath)) {
     echo "SUCCESS: Absolute Storage link created!\n";
-    echo "Target: $targetStoragePath\n";
-    echo "Link: $publicStoragePath\n";
 } else {
-    echo "FAILED: Could not create symlink. Try manual creation in File Manager.\n";
+    echo "FAILED: Could not create symlink.\n";
 }
 
 echo "\n4. CHECKING MEDIA FILES...\n";
 $mediaCount = is_dir($targetStoragePath) ? count(scandir($targetStoragePath)) - 2 : 0;
 echo "Found $mediaCount files in $targetStoragePath\n";
 
-echo "\nCOMPLETED! Website should show images now.\n";
+echo "\n5. IMAGE INTEGRITY CHECK (Sliders Example)...\n";
+try {
+    $sliders = DB::table('sliders')->take(3)->get();
+    foreach ($sliders as $slider) {
+        $path = $slider->image;
+        $fullPath = $targetStoragePath . '/' . $path;
+        $exists = file_exists($fullPath) ? "EXISTS" : "MISSING";
+        echo "Slider ID: {$slider->id} | DB Path: {$path} | Status: {$exists}\n";
+        if ($exists == "MISSING") {
+            echo "   Looking for: $fullPath\n";
+        }
+    }
+} catch (\Exception $e) {
+    echo "Error checking sliders: " . $e->getMessage() . "\n";
+}
+
+echo "\nCOMPLETED! Integrity check finished.\n";
