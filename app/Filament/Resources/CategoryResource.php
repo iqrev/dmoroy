@@ -54,11 +54,14 @@ class CategoryResource extends Resource
                             ->disabled()
                             ->dehydrated()
                             ->unique(ignoreRecord: true),
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Gambar Ikon')
+                            ->image()
+                            ->directory('categories')
+                            ->columnSpanFull(),
                         Forms\Components\Textarea::make('description')
                             ->label('Deskripsi')
                             ->columnSpanFull(),
-                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('image')
-                            ->label('Gambar Ikon'),
                     ])->columns(2)
             ]);
     }
@@ -71,7 +74,7 @@ class CategoryResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
-                \Awcodes\Curator\Components\Tables\CuratorColumn::make('image')
+                Tables\Columns\ImageColumn::make('image')
                     ->size(40),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

@@ -50,8 +50,11 @@ class TeamMemberResource extends Resource
                         Forms\Components\TextInput::make('position')
                             ->label('Jabatan / Peran')
                             ->required(),
-                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('photo')
-                            ->label('Foto Profil'),
+                        Forms\Components\FileUpload::make('photo')
+                            ->label('Foto Profil')
+                            ->image()
+                            ->directory('team-members')
+                            ->required(),
                         Forms\Components\Textarea::make('bio')
                             ->label('Biografi Singkat')
                             ->columnSpanFull(),
@@ -63,7 +66,7 @@ class TeamMemberResource extends Resource
     {
         return $table
             ->columns([
-                \Awcodes\Curator\Components\Tables\CuratorColumn::make('photo')
+                Tables\Columns\ImageColumn::make('photo')
                     ->size(40)
                     ->label('Foto')
                     ->circular(),
