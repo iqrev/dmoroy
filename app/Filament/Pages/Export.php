@@ -17,11 +17,11 @@ class Export extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-o-arrow-down-tray';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-arrow-down-tray';
 
-    protected static string $view = 'filament.pages.export';
+    protected string $view = 'filament.pages.export';
 
-    protected static ?string $navigationGroup = 'Pengaturan';
+    protected static string | \UnitEnum | null $navigationGroup = 'Pengaturan';
 
     protected static ?string $title = 'Export Data';
 

@@ -8,12 +8,12 @@ use Illuminate\Support\Str;
 
 class Changelog extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
-    protected static ?string $navigationGroup = 'Pengaturan';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static string | \UnitEnum | null $navigationGroup = 'Pengaturan';
     protected static ?int $navigationSort = 10;
     protected static ?string $title = 'Changelog';
 
-    protected static string $view = 'filament.pages.changelog';
+    protected string $view = 'filament.pages.changelog';
 
     public $content = '';
 

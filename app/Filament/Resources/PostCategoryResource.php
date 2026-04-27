@@ -6,7 +6,7 @@ use App\Filament\Resources\PostCategoryResource\Pages;
 use App\Filament\Resources\PostCategoryResource\RelationManagers;
 use App\Models\PostCategory;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -17,8 +17,8 @@ class PostCategoryResource extends Resource
 {
     protected static ?string $model = PostCategory::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-tag';
-    protected static ?string $navigationGroup = 'Berita & Edukasi';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-tag';
+    protected static string | \UnitEnum | null $navigationGroup = 'Berita & Edukasi';
     protected static ?int $navigationSort = 2;
 
     public static function getNavigationLabel(): string
@@ -36,10 +36,10 @@ class PostCategoryResource extends Resource
         return 'Kategori Artikel';
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Forms\Components\TextInput::make('name')
                     ->reactive()
                     ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state)))

@@ -6,7 +6,7 @@ use App\Filament\Resources\TeamMemberResource\Pages;
 use App\Filament\Resources\TeamMemberResource\RelationManagers;
 use App\Models\TeamMember;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -17,8 +17,8 @@ class TeamMemberResource extends Resource
 {
     protected static ?string $model = TeamMember::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $navigationGroup = 'Profil Toko';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-users';
+    protected static string | \UnitEnum | null $navigationGroup = 'Profil Toko';
     protected static ?int $navigationSort = 1;
 
     public static function getNavigationLabel(): string
@@ -36,10 +36,10 @@ class TeamMemberResource extends Resource
         return 'Anggota Tim';
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Forms\Components\Section::make('Informasi Anggota Tim')
                     ->schema([
                         Forms\Components\TextInput::make('name')
