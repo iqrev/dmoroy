@@ -13,7 +13,8 @@ class StatsOverview extends BaseWidget
         $totalPosts = \App\Models\Post::count();
         $totalViews = \App\Models\Product::sum('views_count');
 
-        // Kalkulasi Storage
+        // Kalkulasi Storage (Max 15GB)
+        $maxStorageBytes = 15 * 1024 * 1024 * 1024;
         $path = storage_path('app/public');
         $sizeInBytes = 0;
         if (is_dir($path)) {
@@ -24,7 +25,13 @@ class StatsOverview extends BaseWidget
                 }
             }
         }
-        $sizeInMb = number_format($sizeInBytes / 1048576, 2) . ' MB';
+        
+        $sizeInMb = round($sizeInBytes / 1048576, 2);
+        $percentUsed = round(($sizeInBytes / $maxStorageBytes) * 100, 1);
+        
+        // Data grafik (faked to show usage level)
+        $chartData = [0, $percentUsed / 2, $percentUsed, $percentUsed, $percentUsed * 1.1, $percentUsed];
+        $color = $percentUsed > 80 ? 'danger' : ($percentUsed > 50 ? 'warning' : 'success');
 
         return [
             Stat::make('Total Produk', $totalProducts)
@@ -39,10 +46,11 @@ class StatsOverview extends BaseWidget
                 ->description('Total klik detail produk')
                 ->descriptionIcon('heroicon-m-eye')
                 ->color('warning'),
-            Stat::make('Penggunaan Storage', $sizeInMb)
-                ->description('Ruang penyimpanan terpakai (' . storage_path('app/public') . ')')
+            Stat::make('Kapasitas Hosting', $sizeInMb . ' MB / 15 GB')
+                ->description($percentUsed . '% telah digunakan')
                 ->descriptionIcon('heroicon-m-server')
-                ->color('gray'),
+                ->chart($chartData)
+                ->color($color),
         ];
     }
 }
