@@ -1,5 +1,5 @@
 <x-filament-panels::page>
-    <x-filament-panels::form wire:submit="export">
+    <x-filament-schemas::form wire:submit="export">
         {{ $this->form }}
 
         <div class="flex flex-wrap items-center gap-4 py-4">
@@ -7,5 +7,5 @@
                 Unduh CSV
             </x-filament::button>
         </div>
-    </x-filament-panels::form>
+    </x-filament-schemas::form>
 </x-filament-panels::page>
