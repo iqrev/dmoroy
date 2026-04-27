@@ -34,7 +34,7 @@ class Export extends Page implements HasForms
         $this->form->fill();
     }
 
-    public function form(Form $form): Form
+    public function form($form)
     {
         return $form
             ->schema([
