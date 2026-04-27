@@ -21,26 +21,31 @@ $kernel->bootstrap();
 echo "<pre>";
 echo "Using PHP Version: " . phpversion() . "\n";
 
-echo "Clearing all caches manually...\n";
+echo "PERFORMING TOTAL CACHE PURGE...\n";
+
+echo "Manually deleting cache files...\n";
 @unlink($basePath.'/bootstrap/cache/config.php');
 @unlink($basePath.'/bootstrap/cache/routes-v7.php');
 @unlink($basePath.'/bootstrap/cache/services.php');
 @unlink($basePath.'/bootstrap/cache/packages.php');
 
-echo "Clearing views...\n";
+echo "Clearing View Cache...\n";
 Artisan::call('view:clear');
 echo Artisan::output();
 
-echo "Clearing config...\n";
+echo "Clearing Route Cache...\n";
+Artisan::call('route:clear');
+echo Artisan::output();
+
+echo "Clearing Config Cache...\n";
 Artisan::call('config:clear');
 echo Artisan::output();
 
-echo "Optimizing framework (Fresh discovery)...\n";
-Artisan::call('optimize');
+echo "Clearing Compiled Classes...\n";
+Artisan::call('clear-compiled');
 echo Artisan::output();
 
-echo "Linking storage...\n";
-Artisan::call('storage:link');
-echo Artisan::output();
+echo "\nTOTAL PURGE COMPLETE! Please refresh your website main page.\n";
+echo "Note: I am NOT re-optimizing to avoid broken cache files.\n";
 
 echo "\nDone!";
