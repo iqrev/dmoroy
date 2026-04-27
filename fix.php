@@ -62,24 +62,22 @@ echo "\n4. CHECKING MEDIA FILES...\n";
 $mediaCount = is_dir($targetStoragePath) ? count(scandir($targetStoragePath)) - 2 : 0;
 echo "Found $mediaCount files in $targetStoragePath\n";
 
-echo "\n5. IMAGE INTEGRITY CHECK (Sliders Example)...\n";
-try {
-    $sliders = DB::table('sliders')->take(3)->get();
-    foreach ($sliders as $slider) {
-        $path = $slider->image;
-        $fullPath = $targetStoragePath . '/' . $path;
-        $exists = !empty($path) && file_exists($fullPath) ? "EXISTS" : "MISSING";
-        echo "Slider ID: {$slider->id} | DB Path: {$path} | Status: {$exists}\n";
-    }
-} catch (\Exception $e) { echo "Error sliders: " . $e->getMessage() . "\n"; }
+echo "\n5. SOCIAL MEDIA INTEGRATION...\n";
+$socialLinks = [
+    'instagram' => 'https://www.instagram.com/batikjambiberkah/',
+    'facebook' => 'https://www.facebook.com/batikjambiberkah',
+    'youtube' => 'https://www.youtube.com/@batikjambiberkah',
+    'tiktok' => 'https://www.tiktok.com/@batikjambiberkah',
+    'shopee' => 'https://shopee.co.id/batikjberkah',
+    'tokopedia' => 'https://www.tokopedia.com/batikjambiberkah',
+];
 
-echo "\n6. WORDPRESS DATA CHECK (Posts Example)...\n";
-try {
-    $posts = DB::table('posts')->take(5)->get();
-    foreach ($posts as $post) {
-        echo "Post ID: {$post->id} | Title: {$post->title}\n";
-        echo "   - Featured Image Path in DB: " . ($post->featured_image ?? 'NULL') . "\n";
-    }
-} catch (\Exception $e) { echo "Error posts: " . $e->getMessage() . "\n"; }
+foreach ($socialLinks as $key => $value) {
+    DB::table('settings')->updateOrInsert(
+        ['key' => $key],
+        ['value' => $value, 'created_at' => now(), 'updated_at' => now()]
+    );
+    echo "Set $key -> $value\n";
+}
 
-echo "\nCOMPLETED! Investigation finished.\n";
+echo "\nCOMPLETED! Social media links are now in DB.\n";
