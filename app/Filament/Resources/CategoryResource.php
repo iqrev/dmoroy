@@ -7,6 +7,7 @@ use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components as Schemas;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -40,7 +41,7 @@ class CategoryResource extends Resource
     {
         return $schema
             ->components([
-                Forms\Components\Section::make('Detail Kategori')
+                Schemas\Section::make('Detail Kategori')
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label('Nama Kategori')

@@ -7,6 +7,7 @@ use App\Filament\Resources\PostResource\RelationManagers;
 use App\Models\Post;
 use Filament\Forms;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components as Schemas;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -41,7 +42,7 @@ class PostResource extends Resource
     {
         return $schema
             ->components([
-                Forms\Components\Section::make('Informasi Utama')
+                Schemas\Section::make('Informasi Utama')
                     ->schema([
                         Forms\Components\TextInput::make('title')
                             ->label('Judul Artikel')
@@ -71,7 +72,7 @@ class PostResource extends Resource
                             ->default('published'),
                     ])->columns(2),
 
-                Forms\Components\Section::make('Konten & Media')
+                Schemas\Section::make('Konten & Media')
                     ->schema([
                         Forms\Components\RichEditor::make('content')
                             ->label('Isi Artikel')

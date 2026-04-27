@@ -7,6 +7,7 @@ use App\Filament\Resources\MessageResource\RelationManagers;
 use App\Models\Message;
 use Filament\Forms;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components as Schemas;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -26,7 +27,7 @@ class MessageResource extends Resource
     {
         return $schema
             ->components([
-                Forms\Components\Section::make('Detail Pesan')
+                Schemas\Section::make('Detail Pesan')
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()

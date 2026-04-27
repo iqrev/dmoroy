@@ -7,6 +7,7 @@ use App\Filament\Resources\TeamMemberResource\RelationManagers;
 use App\Models\TeamMember;
 use Filament\Forms;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components as Schemas;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -41,7 +42,7 @@ class TeamMemberResource extends Resource
     {
         return $schema
             ->components([
-                Forms\Components\Section::make('Informasi Anggota Tim')
+                Schemas\Section::make('Informasi Anggota Tim')
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label('Nama Lengkap')

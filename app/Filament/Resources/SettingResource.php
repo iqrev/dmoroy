@@ -7,6 +7,7 @@ use App\Filament\Resources\SettingResource\RelationManagers;
 use App\Models\Setting;
 use Filament\Forms;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components as Schemas;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -26,7 +27,7 @@ class SettingResource extends Resource
     {
         return $schema
             ->components([
-                Forms\Components\Section::make('Detail Pengaturan')
+                Schemas\Section::make('Detail Pengaturan')
                     ->description('Silakan sesuaikan nilai pengaturan di bawah ini.')
                     ->schema([
                         Forms\Components\Placeholder::make('key_label')

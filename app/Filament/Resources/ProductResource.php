@@ -7,6 +7,7 @@ use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components as Schemas;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -41,7 +42,7 @@ class ProductResource extends Resource
     {
         return $schema
             ->components([
-                Forms\Components\Section::make('Informasi Utama')
+                Schemas\Section::make('Informasi Utama')
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label('Nama Produk')
@@ -74,7 +75,7 @@ class ProductResource extends Resource
                             ->helperText('Kosongkan untuk menggunakan lokasi default (Jambi, Indonesia)'),
                     ])->columns(2),
 
-                Forms\Components\Section::make('Harga & Stok')
+                Schemas\Section::make('Harga & Stok')
                     ->schema([
                         Forms\Components\TextInput::make('price')
                             ->label('Harga Satuan')
@@ -89,7 +90,7 @@ class ProductResource extends Resource
                             ->default(0),
                     ])->columns(2),
 
-                Forms\Components\Section::make('Konten & Media')
+                Schemas\Section::make('Konten & Media')
                     ->schema([
                         Forms\Components\RichEditor::make('description')
                             ->label('Deskripsi Lengkap')
