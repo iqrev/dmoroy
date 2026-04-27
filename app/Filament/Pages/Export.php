@@ -38,18 +38,14 @@ class Export extends Page implements HasForms
     {
         return $form
             ->schema([
-                Section::make('Pilih Data yang Akan Diekspor')
-                    ->description('Silakan pilih jenis data yang ingin Anda unduh dalam format CSV.')
-                    ->schema([
-                        Select::make('type')
-                            ->label('Tipe Data')
-                            ->options([
-                                'products' => 'Produk',
-                                'posts' => 'Artikel / Berita',
-                            ])
-                            ->required()
-                            ->native(false),
+                Select::make('type')
+                    ->label('Tipe Data')
+                    ->options([
+                        'products' => 'Produk',
+                        'posts' => 'Artikel / Berita',
                     ])
+                    ->required()
+                    ->native(false),
             ])
             ->statePath('data');
     }
