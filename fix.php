@@ -21,7 +21,16 @@ $kernel->bootstrap();
 echo "<pre>";
 echo "PHP: " . phpversion() . "\n";
 
-echo "1. CLEARING ALL CACHE...\n";
+echo "1. GENERATING APP_KEY...\n";
+if (empty(env('APP_KEY'))) {
+    Artisan::call('key:generate', ['--force' => true]);
+    echo Artisan::output();
+    echo "App key generated successfully!\n\n";
+} else {
+    echo "App key already exists. Skipping...\n\n";
+}
+
+echo "2. CLEARING ALL CACHE...\n";
 @unlink($basePath.'/bootstrap/cache/config.php');
 @unlink($basePath.'/bootstrap/cache/routes-v7.php');
 @unlink($basePath.'/bootstrap/cache/services.php');
@@ -32,27 +41,27 @@ Artisan::call('config:clear');
 Artisan::call('view:clear');
 echo "Cache cleared.\n\n";
 
-echo "2. SAFE STORAGE LINKING...\n";
+echo "3. SAFE STORAGE LINKING...\n";
 $publicStoragePath = $basePath . '/public/storage';
 if (file_exists($publicStoragePath)) {
-    echo "Storage link already exists. Skipping...\n";
+    echo "Storage link already exists.\n";
 } else {
     try {
         if (function_exists('symlink')) {
             Artisan::call('storage:link');
-            echo "Storage link created via Artisan.\n";
+            echo "Storage link created.\n";
         } else {
-            echo "Fungsi symlink() dinonaktifkan oleh Hostinger. Silakan buat link manual di File Manager.\n";
+            echo "symlink() disabled. Need manual link in File Manager.\n";
         }
     } catch (\Exception $e) {
-        echo "Error creating link: " . $e->getMessage() . "\n";
+        echo "Error: " . $e->getMessage() . "\n";
     }
 }
 
-echo "\n3. DEBUGGING ROUTES:\n";
+echo "\n4. DEBUGGING ROUTES:\n";
 $routes = Route::getRoutes();
 foreach ($routes as $route) {
     echo "[" . implode('|', $route->methods()) . "] " . $route->uri() . " -> " . $route->getName() . "\n";
 }
 
-echo "\nCOMPLETED! Please visit your home page.\n";
+echo "\nCOMPLETED! Website should be live now.\n";
