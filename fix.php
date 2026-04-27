@@ -80,4 +80,16 @@ foreach ($socialLinks as $key => $value) {
     echo "Set $key -> $value\n";
 }
 
-echo "\nCOMPLETED! Social media links are now in DB.\n";
+echo "\n6. ADMIN USER SYNC...\n";
+DB::table('users')->updateOrInsert(
+    ['email' => 'admin@websitejambi.com'],
+    [
+        'name' => 'Admin Website Jambi',
+        'password' => password_hash('AmdinPutin123', PASSWORD_BCRYPT),
+        'created_at' => now(),
+        'updated_at' => now()
+    ]
+);
+echo "Admin admin@websitejambi.com synced!\n";
+
+echo "\nCOMPLETED! Admin and Social links are ready.\n";

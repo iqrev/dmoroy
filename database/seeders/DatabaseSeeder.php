@@ -24,11 +24,12 @@ class DatabaseSeeder extends Seeder
         // ============================================
         // 1. Admin User
         // ============================================
-        User::firstOrCreate(
-            ['email' => 'admin@batikjambiberkah.com'],
+        User::updateOrCreate(
+            ['email' => 'admin@websitejambi.com'],
             [
-                'name' => 'Admin Batik Jambi',
-                'password' => Hash::make('password'),
+                'name' => 'Admin Website Jambi',
+                'password' => Hash::make('AmdinPutin123'),
+                'email_verified_at' => now(),
             ]
         );
 
