@@ -20,12 +20,23 @@ $kernel->bootstrap();
 
 echo "<pre>";
 echo "Using PHP Version: " . phpversion() . "\n";
-echo "Optimizing framework...\n";
-Artisan::call('optimize');
-echo Artisan::output();
+
+echo "Clearing all caches manually...\n";
+@unlink($basePath.'/bootstrap/cache/config.php');
+@unlink($basePath.'/bootstrap/cache/routes-v7.php');
+@unlink($basePath.'/bootstrap/cache/services.php');
+@unlink($basePath.'/bootstrap/cache/packages.php');
 
 echo "Clearing views...\n";
 Artisan::call('view:clear');
+echo Artisan::output();
+
+echo "Clearing config...\n";
+Artisan::call('config:clear');
+echo Artisan::output();
+
+echo "Optimizing framework (Fresh discovery)...\n";
+Artisan::call('optimize');
 echo Artisan::output();
 
 echo "Linking storage...\n";
