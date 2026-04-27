@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
+
         // ============================================
         // 1. Admin User
         // ============================================
@@ -227,6 +229,8 @@ class DatabaseSeeder extends Seeder
         foreach ($team as $m) {
             TeamMember::create($m);
         }
+
+        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
         $this->command->info('✅ Database Batik Jambi Berkah seeded with dummy data successfully!');
     }

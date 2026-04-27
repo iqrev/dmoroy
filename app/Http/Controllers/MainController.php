@@ -78,9 +78,8 @@ class MainController extends Controller
             ->when($tagIds->isNotEmpty(), function ($q) use ($tagIds) {
                 return $q->withCount(['tags' => function ($q) use ($tagIds) {
                     $q->whereIn('tags.id', $tagIds);
-                }]);
+                }])->orderByDesc('tags_count');
             })
-            ->orderByDesc('tags_count')
             ->orderByRaw('CASE WHEN category_id = ? THEN 1 ELSE 0 END DESC', [$product->category_id])
             ->latest()
             ->take(4)
