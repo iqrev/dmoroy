@@ -75,6 +75,7 @@ class MainController extends Controller
                 }
                 $query->orWhere('category_id', $product->category_id);
             })
+            ->select('products.*')
             ->when($tagIds->isNotEmpty(), function ($q) use ($tagIds) {
                 return $q->withCount(['tags' => function ($q) use ($tagIds) {
                     $q->whereIn('tags.id', $tagIds);
