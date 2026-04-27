@@ -17,8 +17,8 @@ class TeamMemberResource extends Resource
 {
     protected static ?string $model = TeamMember::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-users';
-    protected static string | \UnitEnum | null $navigationGroup = 'Profil Toko';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationGroup = 'Profil Toko';
     protected static ?int $navigationSort = 1;
 
     public static function getNavigationLabel(): string
