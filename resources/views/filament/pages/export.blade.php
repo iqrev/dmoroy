@@ -2,8 +2,10 @@
     <x-filament-panels::form wire:submit="export">
         {{ $this->form }}
 
-        <x-filament-panels::form.actions
-            :actions="$this->getFormActions()"
-        />
+        <div class="flex flex-wrap items-center gap-4 py-4">
+            <x-filament::button type="submit" size="sm">
+                Unduh CSV
+            </x-filament::button>
+        </div>
     </x-filament-panels::form>
 </x-filament-panels::page>
