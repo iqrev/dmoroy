@@ -25,43 +25,42 @@ echo "1. GENERATING APP_KEY...\n";
 if (empty(env('APP_KEY'))) {
     Artisan::call('key:generate', ['--force' => true]);
     echo Artisan::output();
-    echo "App key generated successfully!\n\n";
 } else {
-    echo "App key already exists. Skipping...\n\n";
+    echo "App key exists.\n";
 }
 
-echo "2. CLEARING ALL CACHE...\n";
+echo "\n2. CLEARING ALL CACHE...\n";
 @unlink($basePath.'/bootstrap/cache/config.php');
 @unlink($basePath.'/bootstrap/cache/routes-v7.php');
 @unlink($basePath.'/bootstrap/cache/services.php');
 @unlink($basePath.'/bootstrap/cache/packages.php');
-
 Artisan::call('route:clear');
 Artisan::call('config:clear');
 Artisan::call('view:clear');
-echo "Cache cleared.\n\n";
+echo "Cache cleared.\n";
 
-echo "3. SAFE STORAGE LINKING...\n";
+echo "\n3. FORCE FIX STORAGE LINK (ABSOLUTE)...\n";
 $publicStoragePath = $basePath . '/public/storage';
-if (file_exists($publicStoragePath)) {
-    echo "Storage link already exists.\n";
+$targetStoragePath = $basePath . '/storage/app/public';
+
+if (is_link($publicStoragePath)) {
+    echo "Removing old symlink...\n";
+    @unlink($publicStoragePath);
+} elseif (is_dir($publicStoragePath)) {
+    echo "Found storage folder in public. Attempting to rename...\n";
+    @rename($publicStoragePath, $publicStoragePath . '_backup_' . time());
+}
+
+if (symlink($targetStoragePath, $publicStoragePath)) {
+    echo "SUCCESS: Absolute Storage link created!\n";
+    echo "Target: $targetStoragePath\n";
+    echo "Link: $publicStoragePath\n";
 } else {
-    try {
-        if (function_exists('symlink')) {
-            Artisan::call('storage:link');
-            echo "Storage link created.\n";
-        } else {
-            echo "symlink() disabled. Need manual link in File Manager.\n";
-        }
-    } catch (\Exception $e) {
-        echo "Error: " . $e->getMessage() . "\n";
-    }
+    echo "FAILED: Could not create symlink. Try manual creation in File Manager.\n";
 }
 
-echo "\n4. DEBUGGING ROUTES:\n";
-$routes = Route::getRoutes();
-foreach ($routes as $route) {
-    echo "[" . implode('|', $route->methods()) . "] " . $route->uri() . " -> " . $route->getName() . "\n";
-}
+echo "\n4. CHECKING MEDIA FILES...\n";
+$mediaCount = is_dir($targetStoragePath) ? count(scandir($targetStoragePath)) - 2 : 0;
+echo "Found $mediaCount files in $targetStoragePath\n";
 
-echo "\nCOMPLETED! Website should be live now.\n";
+echo "\nCOMPLETED! Website should show images now.\n";
