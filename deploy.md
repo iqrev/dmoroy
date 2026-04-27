@@ -7,7 +7,7 @@ Pastikan server Anda memenuhi kriteria berikut:
 - **PHP 8.2+** (Direkomendasikan 8.3 atau 8.4)
 - **Composer**
 - **Node.js & NPM**
-- **SQLite** (atau sesuai database yang Anda pilih, misal MySQL/PostgreSQL)
+- **MySQL** (atau MariaDB)
 - Ekstensi PHP yang diperlukan: `bcmath`, `ctype`, `curl`, `dom`, `fileinfo`, `gd`, `intl`, `json`, `mbstring`, `openssl`, `pcre`, `pdo`, `tokenizer`, `xml`.
 
 ---
@@ -39,12 +39,15 @@ php artisan key:generate --show
 - `APP_ENV=production`
 - `APP_DEBUG=false`
 - `APP_URL=https://domainanda.com`
-- `DB_CONNECTION=sqlite` (Sesuaikan jika menggunakan database lain)
+- `DB_CONNECTION=mysql`
+- `DB_HOST=127.0.0.1`
+- `DB_DATABASE=nama_database_anda`
+- `DB_USERNAME=username_mysql`
+- `DB_PASSWORD=password_mysql`
 
 ### D. Persiapan Database
-Jika menggunakan SQLite, pastikan file database ada:
 ```bash
-touch database/database.sqlite
+# Pastikan database sudah dibuat di MySQL
 php artisan migrate --force
 ```
 

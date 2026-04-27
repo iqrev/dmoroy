@@ -6,7 +6,8 @@ Dokumentasi ini berisi panduan penggunaan fitur-fitur yang tersedia di website B
 1. [Fitur Admin Panel](#fitur-admin-panel)
 2. [Manajemen Media (Curator)](#manajemen-media-curator)
 3. [Fitur Frontend (Website Utama)](#fitur-frontend-website-utama)
-4. [Panduan Operasional Umum](#panduan-operasional-umum)
+4. [Pengaturan SEO & Meta](#pengaturan-seo--meta)
+5. [Panduan Operasional Umum](#panduan-operasional-umum)
 
 ---
 
@@ -15,7 +16,10 @@ Panel Admin dikelola menggunakan **Filament PHP v3**. Anda dapat mengaksesnya me
 
 ### 1. Manajemen Produk (`Katalog`)
 - **Produk**: Mengelola katalog batik (Nama, Harga, Stok, Deskripsi).
+    - **Status Publikasi**: Gunakan status `Draft` jika produk belum siap ditampilkan, atau `Tayang` untuk mempublikasikannya.
+    - **Views Count**: Anda dapat memantau seberapa banyak produk telah dilihat oleh pengunjung langsung dari tabel produk.
 - **Kategori Produk**: Mengelompokkan produk berdasarkan jenis batik (Contoh: Pewarna Alam, Batik Tulis).
+- **Tag Produk**: Gunakan tag untuk mempermudah pencarian produk berdasarkan kata kunci spesifik (Contoh: #tulis, #pewarnaalam).
 - **Produk Unggulan**: Menampilkan produk pilihan di halaman depan dengan mengaktifkan toggle "Unggulan".
 
 ### 2. Manajemen Artikel (`Blog`)
@@ -67,6 +71,14 @@ Halaman yang dapat diakses oleh publik:
 6. **Hubungi Kami (Contact)**:
     - Lokasi bisnis (Map).
     - Formulir pengiriman pesan.
+
+---
+
+## Pengaturan SEO & Meta
+Website ini sudah dilengkapi dengan fitur optimasi mesin pencari secara otomatis:
+- **Meta Tags**: Judul dan deskripsi halaman diatur secara dinamis untuk memudahkan Google dan Search Engine lainnya mengindeks website.
+* **JSON-LD Structure**: Data terstruktur otomatis disisipkan di setiap produk dan artikel untuk memunculkan rich snippet di hasil pencarian.
+* **Open Graph**: Saat link website dibagikan ke media sosial (WhatsApp, Facebook, Twitter), pratinjau gambar dan deskripsi akan muncul secara profesional.
 
 ---
 
