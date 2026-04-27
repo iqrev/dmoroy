@@ -1,102 +1,90 @@
-# Panduan Deployment - Batik Jambi Berkah '87
+# Panduan Deployment - Hostinger Shared Hosting (MySQL)
 
-Dokumentasi ini menjelaskan langkah-langkah untuk melakukan deployment aplikasi Batik Jambi Berkah ke server produksi (VPS / Shared Hosting).
+Dokumentasi ini menjelaskan langkah-langkah untuk melakukan deployment aplikasi **Batik Jambi Berkah '87** ke Shared Hosting Hostinger menggunakan database MySQL.
 
-## 1. Persyaratan Sistem
-Pastikan server Anda memenuhi kriteria berikut:
-- **PHP 8.2+** (Direkomendasikan 8.3 atau 8.4)
-- **Composer**
-- **Node.js & NPM**
-- **MySQL** (atau MariaDB)
-- Ekstensi PHP yang diperlukan: `bcmath`, `ctype`, `curl`, `dom`, `fileinfo`, `gd`, `intl`, `json`, `mbstring`, `openssl`, `pcre`, `pdo`, `tokenizer`, `xml`.
+## 1. Persyaratan Sistem di Hostinger
+Pastikan konfigurasi PHP di hPanel setidaknya memenuhi:
+- **PHP Version**: 8.2 atau 8.3 (Dapat diatur di Menu *Advanced -> PHP Configuration*).
+- **PHP Extensions**: Aktifkan `intl`, `bcmath`, `gd`, `imagick`, `opcache`, `zip`.
+- **Database**: 1 Database MySQL kosong.
 
 ---
 
-## 2. Langkah-langkah Instalasi
+## 2. Langkah-Langkah Deployment
 
-### A. Clone Repository
-```bash
-git clone https://github.com/iqrev/batikJambiBerkah.git
-cd batikJambiBerkah
+### A. Persiapan Folder (public_html)
+Aplikasi Laravel memiliki folder `public` sebagai entry point. Di Hostinger, Anda perlu menyesuaikan ini:
+1. Upload semua file project ke root directory (satu level di atas `public_html`).
+2. ATAU upload isi folder `public` aplikasi ke dalam folder `public_html` Hostinger.
+3. ATAU jika menggunakan SSH, arahkan domain ke folder `public` project.
+
+### B. Konfigurasi Environment (.env)
+Edit file `.env` di File Manager Hostinger dan sesuaikan bagian database:
+```env
+APP_NAME="Batik Jambi Berkah"
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://nama-domain-anda.com
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=u123456789_nama_db
+DB_USERNAME=u123456789_user_db
+DB_PASSWORD=password_database_anda
 ```
 
-### B. Install Dependensi
+### C. Instalasi melalui SSH (Direkomendasikan)
+Gunakan Terminal SSH Hostinger untuk menjalankan perintah berikut:
 ```bash
-# Install PHP dependencies
+# 1. Install Dependensi (jika belum ada folder vendor)
 composer install --optimize-autoloader --no-dev
 
-# Install Node.js dependencies
-npm install
-```
-
-### C. Konfigurasi Environment
-Salin file `.env.example` ke `.env` dan sesuaikan nilainya:
-```bash
-cp .env.example .env
-php artisan key:generate --show
-```
-**Penting:** Ubah variabel berikut di `.env`:
-- `APP_ENV=production`
-- `APP_DEBUG=false`
-- `APP_URL=https://domainanda.com`
-- `DB_CONNECTION=mysql`
-- `DB_HOST=127.0.0.1`
-- `DB_DATABASE=nama_database_anda`
-- `DB_USERNAME=username_mysql`
-- `DB_PASSWORD=password_mysql`
-
-### D. Persiapan Database
-```bash
-# Pastikan database sudah dibuat di MySQL
+# 2. Jalankan Migrasi Database
 php artisan migrate --force
-```
 
-### E. Compile Assets & Optimization
-```bash
-# Build frontend assets (Vite)
-npm run build
-
-# Optimize Laravel
-php artisan optimize
-php artisan view:cache
-php artisan config:cache
-php artisan route:cache
-```
-
-### F. File Storage & Permissions
-```bash
-# Buat symbolic link untuk media
+# 3. Generate Link Storage
+# Jika folder public_html/storage sudah ada, hapus dulu
 php artisan storage:link
 
-# Atur izin folder (Linux server)
-chmod -R 775 storage bootstrap/cache
-chown -R www-data:www-data .
+# 4. Optimasi Laravel
+php artisan optimize
+php artisan view:cache
 ```
+
+### D. Compile Assets (Local)
+Karena Hostinger Shared Hosting biasanya tidak mendukung `npm run build` secara maksimal:
+1. Jalankan `npm run build` di komputer lokal Anda.
+2. Pastikan file di `public/build/` ikut terupload ke folder public_html server.
 
 ---
 
-## 3. Konfigurasi Lanjutan
+## 3. Masalah Umum & Solusi
 
-### A. Penjadwalan Tugas (Cron Job)
-Tambahkan entri berikut ke crontab server Anda agar fitur Laravel Scheduler berjalan:
+### 1. Error 404 pada Gambar
+Jika gambar tidak tampil, pastikan symbolic link storage benar:
 ```bash
-* * * * * cd /path/ke/aplikasi && php artisan schedule:run >> /dev/null 2>&1
+# Hapus symlink lama
+rm public/storage
+# Buat ulang dengan path absolut (sesuaikan dengan path Hostinger Anda)
+ln -s /home/u123456789/domains/domainanda.com/storage/app/public /home/u123456789/domains/domainanda.com/public_html/storage
 ```
 
-### B. Queue Worker (Penting untuk Performa)
-Gunakan Supervisor untuk menjalankan queue worker agar proses latar belakang tetap berjalan:
+### 2. File .env tidak terbaca
+Pastikan file `.env` ada di root folder aplikasi, bukan di dalam `public_html`.
+
+### 3. Error Permission
+Pastikan folder `storage` dan `bootstrap/cache` memiliki izin tulis (biasanya 755 atau 775).
+
+---
+
+## 4. Maintenance & Pembaruan
+Setiap ada perubahan kode (git pull), jalankan perintah optimasi:
 ```bash
-php artisan queue:work --stop-when-empty
+git pull origin main
+php artisan migrate --force
+php artisan optimize
 ```
 
-### C. SSL / HTTPS
-Pastikan SSL (Let's Encrypt atau Cloudflare) aktif untuk keamanan transaksi dan form kontak.
-
 ---
-
-## 4. Tips Tambahan
-- **Filament User**: Pastikan Anda sudah membuat user admin pertama kali dengan perintah `php artisan make:filament-user`.
-- **Media Optimization**: Gunakan alat server side untuk optimasi gambar jika diperlukan, meskipun aplikasi sudah menggunakan format WebP.
-
----
-*Dibuat oleh AI Assistant - Batik Jambi Berkah '87 Project Documentation*
+*Dibuat untuk Project Batik Jambi Berkah '87 - Hostinger Deployment Guide*
