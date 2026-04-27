@@ -68,14 +68,18 @@ try {
     foreach ($sliders as $slider) {
         $path = $slider->image;
         $fullPath = $targetStoragePath . '/' . $path;
-        $exists = file_exists($fullPath) ? "EXISTS" : "MISSING";
+        $exists = !empty($path) && file_exists($fullPath) ? "EXISTS" : "MISSING";
         echo "Slider ID: {$slider->id} | DB Path: {$path} | Status: {$exists}\n";
-        if ($exists == "MISSING") {
-            echo "   Looking for: $fullPath\n";
-        }
     }
-} catch (\Exception $e) {
-    echo "Error checking sliders: " . $e->getMessage() . "\n";
-}
+} catch (\Exception $e) { echo "Error sliders: " . $e->getMessage() . "\n"; }
 
-echo "\nCOMPLETED! Integrity check finished.\n";
+echo "\n6. WORDPRESS DATA CHECK (Posts Example)...\n";
+try {
+    $posts = DB::table('posts')->take(5)->get();
+    foreach ($posts as $post) {
+        echo "Post ID: {$post->id} | Title: {$post->title}\n";
+        echo "   - Featured Image Path in DB: " . ($post->featured_image ?? 'NULL') . "\n";
+    }
+} catch (\Exception $e) { echo "Error posts: " . $e->getMessage() . "\n"; }
+
+echo "\nCOMPLETED! Investigation finished.\n";
