@@ -8,7 +8,7 @@
     <div class="rounded-t-xl h-full overflow-hidden bg-gray-100 dark:bg-gray-950/50">
         @if (str($record->type)->contains('image'))
             <img
-                src="{{ $record->getSignedUrl(['w' => 640, 'h' => 640, 'fit' => 'crop', 'fm' => 'webp']) }}"
+                src="{{ $record->medium_url }}"
                 alt="{{ $record->alt }}"
                 @class([
                     'h-full',

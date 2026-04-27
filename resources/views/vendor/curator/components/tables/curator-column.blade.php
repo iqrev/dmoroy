@@ -66,12 +66,7 @@
                     }
                 @endphp
                 <img
-                    src="{{ $item->getSignedUrl([
-                        'w' => $img_width,
-                        'h' => $img_height,
-                        'fit' => 'crop',
-                        'fm' => 'webp'
-                    ]) }}"
+                    src="{{ $item->thumbnail_url }}"
                     alt="{{ $item->alt }}"
                     style="
                         {!! $height !== null ? "height: {$height};" : null !!}
