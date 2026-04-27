@@ -5,13 +5,12 @@ use Illuminate\Support\Facades\Route;
 
 define('LARAVEL_START', microtime(true));
 
-// Try to find autoloader in current or parent directory
 if (file_exists(__DIR__.'/vendor/autoload.php')) {
     $basePath = __DIR__;
 } elseif (file_exists(__DIR__.'/../vendor/autoload.php')) {
     $basePath = __DIR__.'/..';
 } else {
-    die("Could not find vendor/autoload.php. Please make sure fix.php is in the project root or public_html folder.");
+    die("Could not find vendor/autoload.php.");
 }
 
 require $basePath.'/vendor/autoload.php';
@@ -20,9 +19,9 @@ $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
 echo "<pre>";
-echo "Using PHP Version: " . phpversion() . "\n";
+echo "PHP: " . phpversion() . "\n";
 
-echo "PERFORMING TOTAL CACHE PURGE...\n";
+echo "1. CLEARING ALL CACHE...\n";
 @unlink($basePath.'/bootstrap/cache/config.php');
 @unlink($basePath.'/bootstrap/cache/routes-v7.php');
 @unlink($basePath.'/bootstrap/cache/services.php');
@@ -31,14 +30,29 @@ echo "PERFORMING TOTAL CACHE PURGE...\n";
 Artisan::call('route:clear');
 Artisan::call('config:clear');
 Artisan::call('view:clear');
+echo "Cache cleared.\n\n";
 
-echo "DEBUGGING ROUTES:\n";
+echo "2. SAFE STORAGE LINKING...\n";
+$publicStoragePath = $basePath . '/public/storage';
+if (file_exists($publicStoragePath)) {
+    echo "Storage link already exists. Skipping...\n";
+} else {
+    try {
+        if (function_exists('symlink')) {
+            Artisan::call('storage:link');
+            echo "Storage link created via Artisan.\n";
+        } else {
+            echo "Fungsi symlink() dinonaktifkan oleh Hostinger. Silakan buat link manual di File Manager.\n";
+        }
+    } catch (\Exception $e) {
+        echo "Error creating link: " . $e->getMessage() . "\n";
+    }
+}
+
+echo "\n3. DEBUGGING ROUTES:\n";
 $routes = Route::getRoutes();
 foreach ($routes as $route) {
     echo "[" . implode('|', $route->methods()) . "] " . $route->uri() . " -> " . $route->getName() . "\n";
 }
 
-echo "\nTOTAL PURGE COMPLETE! Please refresh your website main page.\n";
-echo "Note: I am NOT re-optimizing to avoid broken cache files.\n";
-
-echo "\nDone!";
+echo "\nCOMPLETED! Please visit your home page.\n";
