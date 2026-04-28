@@ -12,7 +12,11 @@ Dokumentasi ini berisi panduan penggunaan fitur-fitur yang tersedia di website B
 ---
 
 ## Fitur Admin Panel
-Panel Admin dikelola menggunakan **Filament PHP v3**. Anda dapat mengaksesnya melalui `/admin`.
+Panel Admin dikelola menggunakan **Filament PHP v5**. Anda dapat mengaksesnya melalui `/admin`.
+
+### Dashboard Utama
+- **Grafik Penyimpanan**: Fitur khusus untuk memantau kapasitas hosting (contoh: batas 15GB), memberikan informasi visual (hijau/kuning/merah) terkait status kuota pengguna tanpa perlu login ke cPanel.
+
 
 ### 1. Manajemen Produk (`Katalog`)
 - **Produk**: Mengelola katalog batik (Nama, Harga, Stok, Deskripsi).
@@ -37,14 +41,19 @@ Panel Admin dikelola menggunakan **Filament PHP v3**. Anda dapat mengaksesnya me
 
 ---
 
-## Manajemen Media (Curator)
-Website ini menggunakan sistem manajemen media ala WordPress.
+## Manajemen Media & File Upload
+Website ini menggunakan pendekatan kombinasi untuk efisiensi galeri.
 
-### Keunggulan:
-- **Reuse Media**: Gambar yang sudah diunggah sekali dapat digunakan berkali-kali di Produk atau Artikel tanpa perlu unggah ulang.
-- **Infinite Scroll**: Galeri media akan otomatis memuat gambar lama saat Anda men-scroll ke bawah di jendela picker.
-- **Square Preview**: Tampilan pratinjau media di Admin seragam (Rasio 1:1) agar terlihat rapi dan tidak memakan ruang.
-- **Optimasi WebP**: Sistem otomatis mengarahkan penggunaan format WebP untuk performa website yang lebih cepat.
+### 1. Media Library (Curator v5)
+Digunakan khusus untuk **Produk**, **Artikel/Blog**, dsb.
+- **Reuse Media**: Gambar yang sudah diunggah sekali dapat digunakan berkali-kali tanpa perlu diunggah ulang.
+- **Optimasi Otomatis**: Pratinjau media dan render admin dioptimalkan agar responsif dengan thumbnail URL khusus.
+
+### 2. Standar File Upload
+Sistem bawaan untuk upload satu arah yang simpel dan cepat. Digunakan khusus pada:
+- **Kategori Produk** (Gambar Ikon)
+- **Anggota Tim** (Foto Profil)
+- *Catatan:* Karena fitur ini tidak terhubung dengan Media Library secara visual, pastikan file yang diunggah langsung adalah revisi final.
 
 ---
 
