@@ -2,6 +2,11 @@
 
 Semua perubahan penting pada proyek ini akan didokumentasikan di sini.
 
+## [1.2.1] - 2026-05-13
+### Fixed
+- Memperbaiki *Internal Server Error* (syntax error) pada halaman detail produk di production yang disebabkan oleh Blade mem-parsing key `"@context"` pada JSON-LD Schema.
+
+
 ## [1.2.0] - 2026-04-10
 ### Added
 - Sistem Keranjang Belanja (Shopping Cart) berbasis session.
