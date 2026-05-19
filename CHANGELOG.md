@@ -6,8 +6,10 @@ Semua perubahan penting pada proyek ini akan didokumentasikan di sini.
 ### Added
 - **Sistem Role Management**: Menambahkan tingkat keamanan baru (`super_admin` dan `admin`) pada tabel pengguna.
 - **Menu Karyawan / Admin**: Hanya *Super Admin* yang dapat melihat menu ini untuk mengelola akun staf lain (*User Policy*).
+- **Kebal Maintenance (Bypass)**: Super Admin yang sedang login kini tetap bisa menelusuri halaman depan (beranda) meskipun mode pemeliharaan sedang menyala.
+- **Rute Cerdas Gambar (Fallback Router)**: Membangun jalur khusus via PHP (`/storage/{path}`) untuk memotong batasan *symlink* server Hostinger sehingga gambar 100% selalu muncul di *production*.
 - **Widget Produk Terbaru**: Menambahkan tabel ringkasan 5 produk terakhir yang ditambahkan langsung ke layar utama dasbor admin.
-- **Kompresi & Editor Gambar**: Menambahkan fitur *Image Editor* dan kompresi rasio maksimal (1280px) untuk unggahan gambar artikel (*PostResource*).
+- **Kompresi & Editor Gambar**: Menambahkan fitur *Image Editor* dan kompresi rasio maksimal (1280px) untuk unggahan gambar artikel dan **galeri produk**.
 
 ### Changed
 - **Pembaruan Desain UI/UX Admin**: Warna dasar Panel Admin (Filament) diubah menjadi *Crimson Red* (#8b0000) dengan tipografi *Plus Jakarta Sans*.
@@ -15,8 +17,10 @@ Semua perubahan penting pada proyek ini akan didokumentasikan di sini.
 - **Redesain Kotak Maintenance**: Memperbarui *interface* widget pemeliharaan agar sejajar (inline) dengan batasan warna penanda (*border*) yang lebih rapi.
 
 ### Fixed
+- **Konflik Antar-Admin**: Memasang keamanan di dalam *User Policy* untuk memblokir Super Admin agar tidak bisa menghapus/mengubah kata sandi sesama Super Admin lain.
 - Memperbaiki kotak isian Editor Teks (Tiptap / ProseMirror) pada Artikel yang sebelumnya menyisakan area tidak bisa diklik di bagian bawah kotak.
-- Memperbaiki kegagalan (*bug*) render tombol *upload* gambar utama (*CuratorPicker*) pada halaman Artikel, dan menggantinya dengan fitur FileUpload bawaan Filament.
+- Memperbaiki kegagalan render tombol unggah gambar di **Halaman Artikel** dan **Halaman Produk** dengan menggunakan *Native FileUpload* Filament alih-alih ekstensi Curator.
+- Memperbaiki kontras seluruh tombol berwarna *Crimson Red* agar warna teks terkunci mutlak menjadi putih saat disorot (*hover*).
 
 ## [1.2.2] - 2026-05-18
 ### Added
