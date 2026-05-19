@@ -11,9 +11,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->preventRequestsDuringMaintenance(except: [
-            '/admin*',
-            '/livewire*',
+        // Cabut penjaga maintenance bawaan yang terlalu ketat (karena memblokir sebelum session login dicek)
+        $middleware->remove(\Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance::class);
+        
+        // Pasang penjaga maintenance khusus ke dalam grup web (setelah session login terbaca)
+        $middleware->web(append: [
+            \App\Http\Middleware\SuperAdminBypassMaintenance::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
