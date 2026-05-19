@@ -2,6 +2,35 @@
 
 Semua perubahan penting pada proyek ini akan didokumentasikan di sini.
 
+## [1.3.0] - 2026-05-19
+### Added
+- **Sistem Role Management**: Menambahkan tingkat keamanan baru (`super_admin` dan `admin`) pada tabel pengguna.
+- **Menu Karyawan / Admin**: Hanya *Super Admin* yang dapat melihat menu ini untuk mengelola akun staf lain (*User Policy*).
+- **Widget Produk Terbaru**: Menambahkan tabel ringkasan 5 produk terakhir yang ditambahkan langsung ke layar utama dasbor admin.
+- **Kompresi & Editor Gambar**: Menambahkan fitur *Image Editor* dan kompresi rasio maksimal (1280px) untuk unggahan gambar artikel (*PostResource*).
+
+### Changed
+- **Pembaruan Desain UI/UX Admin**: Warna dasar Panel Admin (Filament) diubah menjadi *Crimson Red* (#8b0000) dengan tipografi *Plus Jakarta Sans*.
+- **Penyederhanaan Ruang Kerja**: *Sidebar* admin kini dapat dilipat (*collapsible*), dan widget sapaan (*Welcome Account Widget*) dihilangkan untuk area yang lebih lega.
+- **Redesain Kotak Maintenance**: Memperbarui *interface* widget pemeliharaan agar sejajar (inline) dengan batasan warna penanda (*border*) yang lebih rapi.
+
+### Fixed
+- Memperbaiki kotak isian Editor Teks (Tiptap / ProseMirror) pada Artikel yang sebelumnya menyisakan area tidak bisa diklik di bagian bawah kotak.
+- Memperbaiki kegagalan (*bug*) render tombol *upload* gambar utama (*CuratorPicker*) pada halaman Artikel, dan menggantinya dengan fitur FileUpload bawaan Filament.
+
+## [1.2.2] - 2026-05-18
+### Added
+- Widget *Maintenance Mode* di halaman Dashboard Admin (mematikan/menyalakan website dengan satu klik).
+- Pengecualian akses halaman Admin saat website dalam mode *maintenance*.
+
+### Changed
+- Mengubah tampilan form pembuatan Artikel menjadi *full-width* vertikal agar ruang ketik maksimal.
+- Editor teks "Isi Artikel" secara default dibuat lebih tinggi/luas (`min-height: 30rem`).
+
+### Fixed
+- Error *Undefined array key `size_for_humans`* pada Curator Picker yang menyebabkan halaman Edit Produk *crash*.
+- Kolom *slug* artikel diubah dari *disabled* menjadi *readOnly* agar dapat terisi otomatis saat judul diketik.
+
 ## [1.2.1] - 2026-05-13
 ### Fixed
 - Memperbaiki *Internal Server Error* (syntax error) pada halaman detail produk di production yang disebabkan oleh Blade mem-parsing key `"@context"` pada JSON-LD Schema.

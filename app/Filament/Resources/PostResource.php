@@ -48,11 +48,11 @@ class PostResource extends Resource
                             ->label('Judul Artikel')
                             ->required()
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                            ->afterStateUpdated(fn ($set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
                         Forms\Components\TextInput::make('slug')
                             ->label('Slug (URL)')
                             ->required()
-                            ->disabled()
+                            ->readOnly()
                             ->dehydrated()
                             ->unique(ignoreRecord: true),
                         Forms\Components\Select::make('categories')
@@ -72,17 +72,24 @@ class PostResource extends Resource
                             ->default('published'),
                     ])->columns(2),
 
-                Schemas\Section::make('Konten & Media')
+                Schemas\Section::make('Gambar Utama')
                     ->schema([
-                        Forms\Components\RichEditor::make('content')
-                            ->label('Isi Artikel')
-                            ->required()
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Unggah Gambar Utama')
+                            ->image()
+                            ->imageEditor()
+                            ->imageResizeMode('cover')
+                            ->imageResizeTargetWidth('1280')
+                            ->imageResizeTargetHeight('1280')
+                            ->directory('posts')
                             ->columnSpanFull(),
-                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('image')
-                            ->label('Gambar Utama')
-                            ->columnSpanFull(),
-                    ])
-            ]);
+                    ]),
+
+                Forms\Components\RichEditor::make('content')
+                    ->label(fn () => new \Illuminate\Support\HtmlString('Isi Artikel (Tulis konten di bawah ini) <style>.fi-fo-rich-editor .tiptap, .fi-fo-rich-editor .ProseMirror { min-height: 30rem !important; }</style>'))
+                    ->required()
+                    ->columnSpanFull(),
+            ])->columns(1);
     }
 
     public static function table(Table $table): Table

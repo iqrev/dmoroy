@@ -64,10 +64,10 @@
                                 @endif
                             </div>
                             <div class="curator-picker-list-details min-w-0 overflow-hidden py-2">
-                                <p>{{ $item['pretty_name'] }}</p>
+                                <p>{{ $item['pretty_name'] ?? '' }}</p>
                             </div>
                             <div class="curator-picker-list-details flex-shrink-0 ml-auto py-2">
-                                <p>{{ $item['size_for_humans'] }}</p>
+                                <p>{{ $item['size_for_humans'] ?? '' }}</p>
                             </div>
                             <div class="curator-picker-list-actions flex-shrink-0">
                                 <div class="relative flex items-center">
@@ -151,8 +151,8 @@
 
                         @if (! str($item['type'])->contains('video'))
                             <div class="absolute inset-x-0 bottom-0 flex items-center justify-between px-2 pt-10 pb-1 text-xs text-white bg-gradient-to-t from-black/80 to-transparent gap-3">
-                                <p class="truncate">{{ $item['pretty_name'] }}</p>
-                                <p class="flex-shrink-0">{{ $item['size_for_humans'] }}</p>
+                                <p class="truncate">{{ $item['pretty_name'] ?? '' }}</p>
+                                <p class="flex-shrink-0">{{ $item['size_for_humans'] ?? '' }}</p>
                             </div>
                         @endif
                         </div>

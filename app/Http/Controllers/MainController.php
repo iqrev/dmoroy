@@ -15,7 +15,8 @@ class MainController extends Controller
     public function index()
     {
         $sliders = Slider::latest()->get();
-        $categories = Category::withCount('products')->get();
+        $categories = Category::withCount('products')->get()
+            ->sortBy(fn ($category) => strtolower($category->name) === 'lainnya');
         $featuredProducts = Product::where('is_featured', true)->where('status', 'published')->latest()->take(6)->get();
         $latestPosts = Post::where('status', 'published')->latest()->take(3)->get();
 
@@ -47,7 +48,8 @@ class MainController extends Controller
         }
 
         $products = $query->latest()->paginate(12);
-        $categories = Category::all();
+        $categories = Category::all()
+            ->sortBy(fn ($category) => strtolower($category->name) === 'lainnya');
 
         return view('products.index', compact('products', 'categories'));
     }

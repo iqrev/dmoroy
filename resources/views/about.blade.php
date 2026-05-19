@@ -100,7 +100,7 @@
 </section>
 
 {{-- Team Members --}}
-@if($teamMembers->count() > 0)
+<!-- @if($teamMembers->count() > 0)
 <section class="py-20 px-4 bg-batik-subtle">
     <div class="max-w-7xl mx-auto">
         <div class="text-center mb-16">
@@ -124,7 +124,7 @@
         </div>
     </div>
 </section>
-@endif
+@endif -->
 
 {{-- CTA --}}
 <section class="py-20 px-4 bg-brand-red text-white text-center">
