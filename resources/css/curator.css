@@ -15,3 +15,19 @@
 .fi-modal-window:has(.curator-panel) .fi-modal-window-content {
     @apply h-full rounded-3xl overflow-hidden;
 }
+
+/* Ensure the gallery background is always bright slate-50 */
+.curator-panel-gallery {
+    background-color: #f8fafc !important;
+}
+
+/* Guarantee breadcrumbs text has high contrast */
+.curator-panel-gallery ul.text-slate-600 {
+    color: #475569 !important;
+}
+
+/* Active/current breadcrumb folder */
+.curator-panel-gallery ul.text-slate-600 span.text-slate-800 {
+    color: #1e293b !important;
+    background-color: rgba(226, 232, 240, 0.6) !important;
+}

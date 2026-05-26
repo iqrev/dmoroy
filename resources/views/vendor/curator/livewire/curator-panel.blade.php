@@ -151,28 +151,34 @@
         </div>
 
         <!-- Gallery -->
-        <div class="curator-panel-gallery flex-1 h-full overflow-auto p-4 bg-white dark:bg-gray-900">
+        <div class="curator-panel-gallery flex-1 h-full overflow-auto p-4 bg-slate-50 dark:bg-slate-50">
             <ul @class([
-                'text-sm flex items-center',
+                'text-sm flex items-center flex-wrap gap-1.5 text-slate-600 font-medium',
                 'mb-4' => filled($breadcrumbs),
             ])>
                 @if ($breadcrumbs)
                     @foreach($breadcrumbs as $breadcrumb)
-                        <li wire:key="breadcrumb-{{ $breadcrumb['path'] }}">
-                            <div>
-                                @if ($loop->last)
-                                    <span class="opacity-50">{{ $breadcrumb['label'] }}</span>
-                                @else
-                                    <button
-                                        type="button"
-                                        wire:click.prevent="handleDirectoryChange('{{ $breadcrumb['path'] }}')"
-                                        class="hover:text-primary-500 focus:text-primary-500"
-                                    >
-                                        {{ $breadcrumb['label'] }}
-                                    </button>
-                                    <span>/&nbsp;</span>
-                                @endif
-                            </div>
+                        <li wire:key="breadcrumb-{{ $breadcrumb['path'] }}" class="flex items-center gap-1.5">
+                            @if ($loop->first)
+                                <x-filament::icon
+                                    alias="curator::icons.disk"
+                                    icon="heroicon-m-circle-stack"
+                                    class="w-4 h-4 text-slate-400"
+                                />
+                            @endif
+                            
+                            @if ($loop->last)
+                                <span class="text-slate-800 font-bold px-1.5 py-0.5 rounded bg-slate-200/60">{{ $breadcrumb['label'] }}</span>
+                            @else
+                                <button
+                                    type="button"
+                                    wire:click.prevent="handleDirectoryChange('{{ $breadcrumb['path'] }}')"
+                                    class="text-primary-600 hover:text-primary-800 hover:underline transition font-semibold"
+                                >
+                                    {{ $breadcrumb['label'] }}
+                                </button>
+                                <span class="text-slate-400">/</span>
+                            @endif
                         </li>
                     @endforeach
                 @endif
@@ -186,15 +192,15 @@
                             <button
                                 type="button"
                                 wire:click="handleDirectoryChange('{{ $dir['path'] }}')"
-                                class="block w-full h-full overflow-hidden bg-gray-200 rounded-md dark:bg-gray-900 hover:text-primary-600 hover:bg-primary-500/20 hover:ring-2 hover:ring-primary-500 dark:hover:text-white dark:hover:bg-primary-500/20 focus:text-primary-600 focus:bg-primary-500/20 focus:ring-2 focus:ring-primary-500"
+                                class="block w-full h-full overflow-hidden bg-white border border-slate-200 rounded-xl hover:text-primary-600 hover:bg-primary-50/50 hover:border-primary-300 hover:ring-2 hover:ring-primary-500/20 focus:text-primary-600 focus:bg-primary-50/50 focus:ring-2 focus:ring-primary-500/20 transition-all duration-200 shadow-sm"
                             >
-                                <div class="grid place-content-center place-items-center w-full h-full text-xs relative">
+                                <div class="grid place-content-center place-items-center w-full h-full text-xs relative text-slate-700">
                                     <x-filament::icon
                                         alias="curator::icons.folder"
-                                        icon="heroicon-o-folder"
-                                        class="w-12 h-12 opacity-20"
+                                        icon="heroicon-s-folder"
+                                        class="w-14 h-14 text-amber-500 mb-1"
                                     />
-                                    <span>{{ $dir['label'] }}</span>
+                                    <span class="font-semibold text-slate-800">{{ $dir['label'] }}</span>
                                 </div>
                             </button>
                         </li>
@@ -269,7 +275,7 @@
                     </li>
                 @empty
                     @empty($subDirectories)
-                        <li class="col-span-3 sm:col-span-4 md:col-span-6 lg:col-span-8">
+                        <li class="col-span-3 sm:col-span-4 md:col-span-6 lg:col-span-8 text-center py-12 text-slate-500 font-medium">
                             {{ trans('curator::views.panel.empty') }}
                         </li>
                     @endempty
