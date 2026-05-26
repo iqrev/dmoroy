@@ -74,8 +74,14 @@ class PostResource extends Resource
 
                 Schemas\Section::make('Gambar Utama')
                     ->schema([
-                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('image')
-                            ->label('Pilih atau Unggah Gambar Utama')
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Unggah Gambar Utama')
+                            ->image()
+                            ->imageEditor()
+                            ->imageResizeMode('cover')
+                            ->imageResizeTargetWidth('1280')
+                            ->imageResizeTargetHeight('1280')
+                            ->directory('posts')
                             ->columnSpanFull(),
                     ]),
 
