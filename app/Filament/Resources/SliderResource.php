@@ -31,7 +31,11 @@ class SliderResource extends Resource
                     ->numeric()
                     ->default(0),
                 \Awcodes\Curator\Components\Forms\CuratorPicker::make('image')
-                    ->required(),
+                    ->relationship('mediaImage', 'id')
+                    ->label('Pilih atau Unggah Gambar Slide')
+                    ->directory('sliders')
+                    ->required()
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('link'),
             ]);
     }

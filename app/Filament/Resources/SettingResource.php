@@ -50,6 +50,7 @@ class SettingResource extends Resource
                             }),
                         \Awcodes\Curator\Components\Forms\CuratorPicker::make('value')
                             ->label('Pilih Gambar dari Media Library')
+                            ->directory('settings')
                             ->visible(fn ($record) => in_array($record?->key, ['about_hero_image']))
                             ->columnSpanFull(),
                         Forms\Components\TextInput::make('value')
