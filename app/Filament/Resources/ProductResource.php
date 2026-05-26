@@ -111,17 +111,10 @@ class ProductResource extends Resource
                                     ->required()
                                     ->unique('tags', 'slug'),
                             ]),
-                        Forms\Components\FileUpload::make('images')
+                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('images')
                             ->label('Galeri Foto Produk')
-                            ->image()
-                            ->imageEditor()
                             ->multiple()
-                            ->reorderable()
-                            ->appendFiles()
-                            ->imageResizeMode('cover')
-                            ->imageResizeTargetWidth('1280')
-                            ->imageResizeTargetHeight('1280')
-                            ->directory('products')
+                            ->listDisplay(false)
                             ->columnSpanFull(),
                         Forms\Components\Toggle::make('is_featured')
                             ->label('Tandai sebagai Produk Unggulan')
