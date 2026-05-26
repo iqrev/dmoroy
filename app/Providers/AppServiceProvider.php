@@ -28,5 +28,11 @@ class AppServiceProvider extends ServiceProvider
                 'galeri' => \App\Models\PostCategory::where('slug', 'dokumentasi-event')->with('children.children')->first()
             ]);
         });
+
+        // Load custom styling for Filament Curator using Vite
+        \Filament\Support\Facades\FilamentView::registerRenderHook(
+            \Filament\View\PanelsRenderHook::HEAD_END,
+            fn (): string => \Illuminate\Support\Facades\Blade::render("@vite('resources/css/curator.css')")
+        );
     }
 }

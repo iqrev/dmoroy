@@ -50,9 +50,6 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationGroup('Konten')
                     ->navigationSort(5),
             ])
-            ->assets([
-                \Filament\Support\Assets\Css::make('curator-css', public_path('css/awcodes/curator/curator.css')),
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
