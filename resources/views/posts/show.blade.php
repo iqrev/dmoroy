@@ -25,7 +25,7 @@
                 </span>
                 @foreach($post->categories as $cat)
                     <a href="{{ route('posts.index', ['category' => $cat->slug]) }}" 
-                       class="bg-gray-100 text-gray-600 hover:bg-brand-red hover:text-white transition-colors text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full">
+                       class="bg-gray-100 text-gray-600 hover:bg-brand-red hover:!text-white transition-colors text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full">
                         {{ $cat->name }}
                     </a>
                 @endforeach

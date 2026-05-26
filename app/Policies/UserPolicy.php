@@ -36,7 +36,15 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->isSuperAdmin();
+        if (!$user->isSuperAdmin()) return false;
+        
+        // Bisa mengedit diri sendiri
+        if ($user->id === $model->id) return true;
+        
+        // Tidak bisa mengedit Super Admin lain (karena setara)
+        if ($model->isSuperAdmin()) return false;
+
+        return true;
     }
 
     /**
@@ -44,7 +52,12 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return $user->isSuperAdmin();
+        if (!$user->isSuperAdmin()) return false;
+
+        // Tidak bisa menghapus diri sendiri maupun Super Admin lain
+        if ($model->isSuperAdmin()) return false;
+
+        return true;
     }
 
     /**

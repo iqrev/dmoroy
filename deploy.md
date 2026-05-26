@@ -1,90 +1,97 @@
-# Panduan Deployment - Hostinger Shared Hosting (MySQL)
+# Panduan Deploy dari Awal (Hostinger Shared Hosting)
 
-Dokumentasi ini menjelaskan langkah-langkah untuk melakukan deployment aplikasi **Batik Jambi Berkah '87** ke Shared Hosting Hostinger menggunakan database MySQL.
-
-## 1. Persyaratan Sistem di Hostinger
-Pastikan konfigurasi PHP di hPanel setidaknya memenuhi:
-- **PHP Version**: 8.2 atau 8.3 (Dapat diatur di Menu *Advanced -> PHP Configuration*).
-- **PHP Extensions**: Aktifkan `intl`, `bcmath`, `gd`, `imagick`, `opcache`, `zip`.
-- **Database**: 1 Database MySQL kosong.
+Panduan ini dibuat khusus untuk struktur **Document Root = Project Root** di mana semua file diletakkan langsung di dalam folder `public_html`.
 
 ---
 
-## 2. Langkah-Langkah Deployment
+## 1. Persiapan Sebelum Hapus & Deploy
+Pastikan semua kode di komputer lokal Anda, termasuk gambar-gambar (`storage/app/public/products` dan `storage/app/public/media`), sudah ter-commit dan di-push ke GitHub.
 
-### A. Persiapan Folder (public_html)
-Aplikasi Laravel memiliki folder `public` sebagai entry point. Di Hostinger, Anda perlu menyesuaikan ini:
-1. Upload semua file project ke root directory (satu level di atas `public_html`).
-2. ATAU upload isi folder `public` aplikasi ke dalam folder `public_html` Hostinger.
-3. ATAU jika menggunakan SSH, arahkan domain ke folder `public` project.
+*(Opsional)* Anda bisa meng-copy file `.env` di Hostinger terlebih dahulu ke tempat aman jika Anda tidak mau repot mengetik ulang kredensial database.
 
-### B. Konfigurasi Environment (.env)
-Edit file `.env` di File Manager Hostinger dan sesuaikan bagian database:
-```env
-APP_NAME="Batik Jambi Berkah"
-APP_ENV=production
-APP_DEBUG=false
-APP_URL=https://nama-domain-anda.com
+---
 
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=u123456789_nama_db
-DB_USERNAME=u123456789_user_db
-DB_PASSWORD=password_database_anda
-```
-
-### C. Instalasi melalui SSH (Direkomendasikan)
-Gunakan Terminal SSH Hostinger untuk menjalankan perintah berikut:
+## 2. Hapus Website Lama
+Di terminal SSH Hostinger, jalankan perintah ini (hati-hati, ini akan menghapus semua file):
 ```bash
-# 1. Install Dependensi (jika belum ada folder vendor)
-composer install --optimize-autoloader --no-dev
-
-# 2. Jalankan Migrasi Database
-php artisan migrate --force
-
-# 3. Generate Link Storage
-# Jika folder public_html/storage sudah ada, hapus dulu
-php artisan storage:link
-
-# 4. Optimasi Laravel
-php artisan optimize
-php artisan view:cache
+cd /home/u823179607/domains/batikjambiberkahgroup.com
+rm -rf public_html
 ```
-
-### D. Compile Assets (Local)
-Karena Hostinger Shared Hosting biasanya tidak mendukung `npm run build` secara maksimal:
-1. Jalankan `npm run build` di komputer lokal Anda.
-2. Pastikan file di `public/build/` ikut terupload ke folder public_html server.
 
 ---
 
-## 3. Masalah Umum & Solusi
-
-### 1. Error 404 pada Gambar
-Jika gambar tidak tampil, pastikan symbolic link storage benar:
+## 3. Clone Repository Baru
+Clone ulang repositori dari GitHub, langsung menggunakan nama folder `public_html`:
 ```bash
-# Hapus symlink lama
-rm public/storage
-# Buat ulang dengan path absolut (sesuaikan dengan path Hostinger Anda)
-ln -s /home/u123456789/domains/domainanda.com/storage/app/public /home/u123456789/domains/domainanda.com/public_html/storage
+git clone https://github.com/iqrev/batikJambiBerkah.git public_html
+cd public_html
 ```
-
-### 2. File .env tidak terbaca
-Pastikan file `.env` ada di root folder aplikasi, bukan di dalam `public_html`.
-
-### 3. Error Permission
-Pastikan folder `storage` dan `bootstrap/cache` memiliki izin tulis (biasanya 755 atau 775).
 
 ---
 
-## 4. Maintenance & Pembaruan
-Setiap ada perubahan kode (git pull), jalankan perintah optimasi:
+## 4. Setup File `.env`
+Buat file `.env` baru:
 ```bash
-git pull origin main
-php artisan migrate --force
-php artisan optimize
+cp .env.example .env
+```
+Edit file `.env` (bisa menggunakan `nano .env` di SSH, atau lewat File Manager hPanel). 
+Pastikan:
+- `APP_ENV=production`
+- `APP_DEBUG=false`
+- Kredensial Database MySQL (Host, DB Name, User, Password) sudah benar sesuai di Hostinger.
+
+---
+
+## 5. Install Composer & Key Generate
+**PENTING:** Karena Hostinger secara *default* menggunakan PHP versi lama, Anda **HARUS** menggunakan path absolut PHP versi terbaru (8.3 atau 8.4) untuk menjalankan artisan dan composer.
+
+Jalankan perintah-perintah ini secara berurutan:
+```bash
+# 1. Install Composer dependencies menggunakan PHP 8.3/8.4 (sesuaikan path)
+/opt/alt/php83/usr/bin/php /usr/bin/composer install --optimize-autoloader --no-dev
+
+# 2. Generate Application Key
+/opt/alt/php83/usr/bin/php artisan key:generate
+
+# 3. Jalankan Migrasi Database
+/opt/alt/php83/usr/bin/php artisan migrate --force
+```
+*(Catatan: Jika `/opt/alt/php83/...` tidak ditemukan, coba `/opt/alt/php84/usr/bin/php`)*
+
+---
+
+## 6. Persiapan Folder Storage & Gambar
+1. Upload folder `storage/app/public` dari komputer lokal Anda ke Hostinger (bisa di-zip dulu, upload lewat hPanel, lalu ekstrak ke `public_html/storage/app/public`).
+2. Berikan izin tulis untuk folder storage dan cache:
+```bash
+chmod -R 775 storage bootstrap/cache
+```
+3. Hapus symlink lama (jika terbawa dari git) karena kita menggunakan Route Fallback:
+```bash
+rm -f public/storage
 ```
 
 ---
-*Dibuat untuk Project Batik Jambi Berkah '87 - Hostinger Deployment Guide*
+
+## 7. Setup .htaccess (Routing)
+File `.htaccess` utama di `public_html` sangat penting untuk mengarahkan traffic ke folder `public/`.
+Edit atau buat file `public_html/.htaccess`, lalu isikan kode ini (Gunakan File Manager Hostinger):
+
+```apache
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+```
+*(Artinya: semua request diarahkan ke `public/` di mana index.php Laravel berada)*
+
+---
+
+## 8. Optimasi Akhir
+```bash
+/opt/alt/php83/usr/bin/php artisan config:cache
+/opt/alt/php83/usr/bin/php artisan route:cache
+/opt/alt/php83/usr/bin/php artisan view:cache
+```
+
+Selesai! Website seharusnya sudah menyala kembali dengan sempurna, dan gambar akan otomatis dirender lewat Route Fallback Laravel.

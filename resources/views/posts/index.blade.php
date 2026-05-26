@@ -35,7 +35,7 @@
                             <span class="inline-block bg-brand-red/10 text-brand-red text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full w-fit">Artikel Pilihan</span>
                             @foreach($featured->categories as $cat)
                                 <a href="{{ route('posts.index', ['category' => $cat->slug]) }}" 
-                                   class="inline-block bg-gray-100 text-gray-600 hover:bg-brand-red hover:text-white transition-colors text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full w-fit">
+                                   class="inline-block bg-gray-100 text-gray-600 hover:bg-brand-red hover:!text-white transition-colors text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full w-fit">
                                     {{ $cat->name }}
                                 </a>
                             @endforeach

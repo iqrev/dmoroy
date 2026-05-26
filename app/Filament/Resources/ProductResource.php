@@ -48,7 +48,7 @@ class ProductResource extends Resource
                             ->label('Nama Produk')
                             ->required()
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                            ->afterStateUpdated(fn ($set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
                         Forms\Components\TextInput::make('slug')
                             ->label('Slug (URL)')
                             ->required()
@@ -106,14 +106,22 @@ class ProductResource extends Resource
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                                    ->afterStateUpdated(fn ($set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
                                 Forms\Components\TextInput::make('slug')
                                     ->required()
                                     ->unique('tags', 'slug'),
                             ]),
-                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('images')
+                        Forms\Components\FileUpload::make('images')
                             ->label('Galeri Foto Produk')
+                            ->image()
+                            ->imageEditor()
                             ->multiple()
+                            ->reorderable()
+                            ->appendFiles()
+                            ->imageResizeMode('cover')
+                            ->imageResizeTargetWidth('1280')
+                            ->imageResizeTargetHeight('1280')
+                            ->directory('products')
                             ->columnSpanFull(),
                         Forms\Components\Toggle::make('is_featured')
                             ->label('Tandai sebagai Produk Unggulan')
