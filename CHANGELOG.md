@@ -2,6 +2,10 @@
 
 Semua perubahan penting pada proyek ini akan didokumentasikan di sini.
 
+## [1.3.1] - 2026-05-26
+### Added
+- **WordPress XML Importer**: Menambahkan perintah Artisan (`import:wordpress`) untuk memudahkan migrasi data produk, kategori, dan media dari ekspor XML WordPress lama ke database Laravel.
+
 ## [1.3.0] - 2026-05-19
 ### Added
 - **Sistem Role Management**: Menambahkan tingkat keamanan baru (`super_admin` dan `admin`) pada tabel pengguna.

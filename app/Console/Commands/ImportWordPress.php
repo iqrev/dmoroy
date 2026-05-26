@@ -2,242 +2,378 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Post;
-use App\Models\PostCategory;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 
 class ImportWordPress extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'import:wordpress {file} {--fresh : Truncate products and posts before importing}';
+    protected $signature = 'import:wordpress {file} {--fresh : Truncate existing data before import} {--skip-images : Skip downloading images}';
+    protected $description = 'Import WordPress WXR XML export into the Laravel database (categories, products, media)';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Import products and posts from a WordPress WXR XML file with hierarchy support';
+    private array $wpAttachments = []; // wp_post_id => attachment data
+    private array $categoryMap = [];  // slug => laravel category id
 
-    /**
-     * Execute the console command.
-     */
-    public function handle()
+    public function handle(): int
     {
-        $filePath = $this->argument('file');
+        $file = $this->argument('file');
 
-        if (!file_exists($filePath)) {
-            $this->error("File not found: {$filePath}");
+        if (!file_exists($file)) {
+            $this->error("File not found: {$file}");
             return 1;
         }
 
-        if ($this->option('fresh')) {
-            $this->warn("Truncating existing data (Products and Posts)...");
-            
-            DB::statement('PRAGMA foreign_keys = OFF;');
-            Product::query()->delete();
-            Category::query()->delete();
-            Post::query()->delete();
-            PostCategory::query()->delete();
-            DB::table('post_post_category')->delete();
-            DB::statement('PRAGMA foreign_keys = ON;');
-            
-            $this->info("Database cleaned!");
+        $this->info("📦 Parsing WordPress XML: {$file}");
+        $this->newLine();
+
+        // Parse XML
+        $xml = simplexml_load_file($file, 'SimpleXMLElement', LIBXML_NOCDATA);
+        if (!$xml) {
+            $this->error('Failed to parse XML file.');
+            return 1;
         }
 
-        $this->info("Parsing XML file: {$filePath}");
-        $xml = simplexml_load_file($filePath, "SimpleXMLElement", LIBXML_NOCDATA);
+        $channel = $xml->channel;
         $namespaces = $xml->getNamespaces(true);
+        $wpNs = $namespaces['wp'] ?? 'http://wordpress.org/export/1.2/';
+        $contentNs = $namespaces['content'] ?? 'http://purl.org/rss/1.0/modules/content/';
+        $excerptNs = $namespaces['excerpt'] ?? 'http://wordpress.org/export/1.2/excerpt/';
+        $dcNs = $namespaces['dc'] ?? 'http://purl.org/dc/elements/1.1/';
 
-        // Pre-collect attachments
-        $this->info("Mapping attachments...");
+        // Truncate if --fresh
+        if ($this->option('fresh')) {
+            $this->warn('🗑️  Truncating existing data...');
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            DB::table('products')->truncate();
+            DB::table('categories')->truncate();
+            DB::table('curator')->truncate();
+            DB::table('tags')->truncate();
+            DB::table('product_tag')->truncate();
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        }
+
+        // Classify items
+        $products = [];
         $attachments = [];
-        foreach ($xml->channel->item as $item) {
-            $wp = $item->children($namespaces['wp']);
-            if ((string)$wp->post_type === 'attachment') {
-                $attachments[(string)$wp->post_id] = (string)$wp->attachment_url;
+
+        foreach ($channel->item as $item) {
+            $wp = $item->children($wpNs);
+            $postType = (string) $wp->post_type;
+
+            if ($postType === 'attachment') {
+                $attachments[] = $item;
+            } elseif ($postType === 'product') {
+                $products[] = $item;
             }
         }
 
-        // Pre-parse Categories if present in wp:category tags
-        $categoryMapping = []; // slug -> parent_slug
-        foreach ($xml->channel->xpath('//wp:category') as $cat) {
-            $slug = (string)$cat->children($namespaces['wp'])->category_nicename;
-            $parentSlug = (string)$cat->children($namespaces['wp'])->category_parent;
-            $name = (string)$cat->children($namespaces['wp'])->cat_name;
-            
-            $dbCat = PostCategory::updateOrCreate(
-                ['slug' => $slug],
-                ['name' => $name]
-            );
-            
-            if ($parentSlug) {
-                $categoryMapping[$slug] = $parentSlug;
+        $this->info("Found: " . count($products) . " products, " . count($attachments) . " attachments");
+        $this->newLine();
+
+        // Step 1: Index all attachments by wp_post_id
+        $this->info('📎 Indexing attachments...');
+        foreach ($attachments as $item) {
+            $wp = $item->children($wpNs);
+            $wpId = (int) $wp->post_id;
+            $url = (string) $wp->attachment_url;
+
+            // Get file metadata
+            $meta = $this->extractMeta($item, $wpNs);
+            $attachedFile = $meta['_wp_attached_file'] ?? '';
+
+            $this->wpAttachments[$wpId] = [
+                'url' => $url,
+                'file' => $attachedFile,
+                'title' => (string) $item->title,
+                'parent' => (int) $wp->post_parent,
+            ];
+        }
+        $this->info("  Indexed " . count($this->wpAttachments) . " attachments");
+
+        // Step 2: Extract and create categories
+        $this->info('📂 Importing categories...');
+        $categoryNames = [];
+        foreach ($products as $item) {
+            foreach ($item->category as $cat) {
+                $domain = (string) $cat['domain'];
+                if ($domain === 'product_cat') {
+                    $slug = (string) $cat['nicename'];
+                    $name = (string) $cat;
+
+                    // Skip sub-types like batik-cap, batik-tulis (these are tags)
+                    if (in_array($slug, ['batik-cap', 'batik-tulis', 'simple', 'variable', 'ready-to-wear'])) {
+                        continue;
+                    }
+
+                    $categoryNames[$slug] = $name;
+                }
             }
         }
 
-        // Set parents for categories
-        foreach ($categoryMapping as $slug => $parentSlug) {
-            $cat = PostCategory::where('slug', $slug)->first();
-            $parent = PostCategory::where('slug', $parentSlug)->first();
-            if ($cat && $parent) {
-                $cat->update(['parent_id' => $parent->id]);
-            }
-        }
-
-        $this->info("Processing items...");
-        $productCount = 0;
-        $postCount = 0;
-
-        foreach ($xml->channel->item as $item) {
-            $wp = $item->children($namespaces['wp']);
-            $type = (string)$wp->post_type;
-            
-            if ($type !== 'product' && $type !== 'post') {
-                continue;
-            }
-
-            if (!in_array((string)$wp->status, ['publish', 'private'])) {
-                continue;
-            }
-
-            $name = (string)$item->title;
-            $slug = (string)$wp->post_name ?: Str::slug($name);
-            $content = $item->children($namespaces['content'])->encoded;
-            $excerpt = $item->children($namespaces['excerpt'])->encoded;
-            $description = $content ?: $excerpt;
-
-            // Extract Metadata
-            $thumbnailId = null;
-            $galleryIds = [];
-            $price = 0;
-            $stock = 0;
-
-            foreach ($wp->postmeta as $meta) {
-                $key = (string)$meta->meta_key;
-                $value = (string)$meta->meta_value;
-                if ($key === '_thumbnail_id') $thumbnailId = $value;
-                if ($key === '_product_image_gallery') $galleryIds = array_filter(explode(',', $value));
-                if ($key === '_price' || $key === '_regular_price') $price = (float)$value;
-                if ($key === '_stock') $stock = (int)$value;
-            }
-
-            if ($type === 'product') {
-                $this->importProduct($item, $name, $slug, $description, $price, $stock, $thumbnailId, $galleryIds, $attachments, $namespaces);
-                $productCount++;
+        foreach ($categoryNames as $slug => $name) {
+            $existing = DB::table('categories')->where('slug', $slug)->first();
+            if (!$existing) {
+                $id = DB::table('categories')->insertGetId([
+                    'name' => $name,
+                    'slug' => $slug,
+                    'description' => null,
+                    'image' => null,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                $this->categoryMap[$slug] = $id;
+                $this->line("  ✅ Created category: {$name}");
             } else {
-                $this->importPost($item, $name, $slug, $description, $thumbnailId, $attachments, $namespaces);
-                $postCount++;
+                $this->categoryMap[$slug] = $existing->id;
+                $this->line("  ⏭️  Skipped (exists): {$name}");
             }
         }
 
-        $this->info("Successfully imported {$productCount} products and {$postCount} posts!");
+        // Step 3: Import products
+        $this->newLine();
+        $this->info('🛍️  Importing products...');
+        $bar = $this->output->createProgressBar(count($products));
+        $bar->start();
+
+        $importedCount = 0;
+        $skippedCount = 0;
+
+        foreach ($products as $item) {
+            $wp = $item->children($wpNs);
+            $content = $item->children($contentNs);
+            $excerpt = $item->children($excerptNs);
+            $meta = $this->extractMeta($item, $wpNs);
+
+            $title = (string) $item->title;
+            $slug = (string) $wp->post_name;
+            $status = (string) $wp->status;
+
+            // Skip if already exists
+            if (DB::table('products')->where('slug', $slug)->exists()) {
+                $skippedCount++;
+                $bar->advance();
+                continue;
+            }
+
+            // Get description - use content:encoded, fallback to excerpt
+            $description = trim((string) $content->encoded);
+            if (empty($description)) {
+                $description = trim((string) $excerpt->encoded);
+            }
+            // Strip WordPress HTML cruft
+            $description = strip_tags($description, '<p><br><strong><em><ul><ol><li><h2><h3><h4><blockquote>');
+            if (empty($description)) {
+                $description = $title; // Fallback
+            }
+
+            // Get category
+            $categoryId = null;
+            foreach ($item->category as $cat) {
+                $domain = (string) $cat['domain'];
+                if ($domain === 'product_cat') {
+                    $catSlug = (string) $cat['nicename'];
+                    if (isset($this->categoryMap[$catSlug])) {
+                        $categoryId = $this->categoryMap[$catSlug];
+                        break; // Use the first matching category
+                    }
+                }
+            }
+
+            if (!$categoryId) {
+                // Assign to "Lainnya" (Others) if no category found
+                if (!isset($this->categoryMap['lainnya'])) {
+                    $id = DB::table('categories')->insertGetId([
+                        'name' => 'Lainnya',
+                        'slug' => 'lainnya',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                    $this->categoryMap['lainnya'] = $id;
+                }
+                $categoryId = $this->categoryMap['lainnya'];
+            }
+
+            // Get price
+            $price = (float) ($meta['_regular_price'] ?? $meta['_price'] ?? 0);
+
+            // Get stock
+            $stock = (int) ($meta['_stock'] ?? 0);
+
+            // Get views
+            $viewsCount = (int) ($meta['ekit_post_views_count'] ?? 0);
+
+            // Handle images — thumbnail + gallery
+            $imageIds = [];
+            if (!$this->option('skip-images')) {
+                // Thumbnail
+                $thumbnailWpId = (int) ($meta['_thumbnail_id'] ?? 0);
+                if ($thumbnailWpId && isset($this->wpAttachments[$thumbnailWpId])) {
+                    $curatorId = $this->downloadAndCreateMedia($this->wpAttachments[$thumbnailWpId], $title);
+                    if ($curatorId) {
+                        $imageIds[] = $curatorId;
+                    }
+                }
+
+                // Gallery images
+                $galleryIds = $meta['_product_image_gallery'] ?? '';
+                if (!empty($galleryIds)) {
+                    foreach (explode(',', $galleryIds) as $galleryWpId) {
+                        $galleryWpId = (int) trim($galleryWpId);
+                        // Skip if same as thumbnail
+                        if ($galleryWpId === $thumbnailWpId) continue;
+                        if (isset($this->wpAttachments[$galleryWpId])) {
+                            $curatorId = $this->downloadAndCreateMedia($this->wpAttachments[$galleryWpId], $title);
+                            if ($curatorId) {
+                                $imageIds[] = $curatorId;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Insert product
+            DB::table('products')->insert([
+                'category_id' => $categoryId,
+                'name' => $title,
+                'slug' => $slug,
+                'description' => $description,
+                'price' => $price,
+                'stock' => $stock,
+                'images' => !empty($imageIds) ? json_encode($imageIds) : null,
+                'is_featured' => false,
+                'status' => $status === 'publish' ? 'published' : 'draft',
+                'views_count' => $viewsCount,
+                'created_at' => (string) $wp->post_date ?: now(),
+                'updated_at' => (string) $wp->post_modified ?: now(),
+            ]);
+
+            $importedCount++;
+            $bar->advance();
+        }
+
+        $bar->finish();
+        $this->newLine(2);
+
+        $this->info("✅ Import selesai!");
+        $this->table(
+            ['Metric', 'Count'],
+            [
+                ['Categories', count($this->categoryMap)],
+                ['Products imported', $importedCount],
+                ['Products skipped', $skippedCount],
+                ['Media created', DB::table('curator')->count()],
+            ]
+        );
+
         return 0;
     }
 
-    private function importProduct($item, $name, $slug, $description, $price, $stock, $thumbnailId, $galleryIds, $attachments, $namespaces)
+    /**
+     * Extract all wp:postmeta key-value pairs from an item.
+     */
+    private function extractMeta(\SimpleXMLElement $item, string $wpNs): array
     {
-        $categoryName = 'Lainnya';
-        foreach ($item->category as $cat) {
-            if ((string)$cat['domain'] === 'product_cat') {
-                $categoryName = (string)$cat;
-                break;
-            }
+        $meta = [];
+        $wp = $item->children($wpNs);
+
+        foreach ($wp->postmeta as $postmeta) {
+            $key = (string) $postmeta->children($wpNs)->meta_key;
+            $value = (string) $postmeta->children($wpNs)->meta_value;
+            $meta[$key] = $value;
         }
 
-        $category = Category::firstOrCreate(
-            ['slug' => Str::slug($categoryName)],
-            ['name' => $categoryName]
-        );
-
-        $imageUrls = [];
-        if ($thumbnailId && isset($attachments[$thumbnailId])) $imageUrls[] = $attachments[$thumbnailId];
-        foreach ($galleryIds as $id) if (isset($attachments[$id])) $imageUrls[] = $attachments[$id];
-
-        $localImages = $this->downloadImages($imageUrls, 'products', $name);
-
-        Product::updateOrCreate(
-            ['slug' => $slug],
-            [
-                'category_id' => $category->id,
-                'name' => $name,
-                'description' => $description,
-                'price' => $price,
-                'stock' => $stock ?: rand(5, 20),
-                'images' => $localImages,
-                'status' => 'published',
-                'is_featured' => false,
-            ]
-        );
+        return $meta;
     }
 
-    private function importPost($item, $name, $slug, $content, $thumbnailId, $attachments, $namespaces)
+    /**
+     * Download image from WordPress URL and create a Curator media record.
+     */
+    private function downloadAndCreateMedia(array $attachment, string $productName): ?int
     {
-        $categoryIds = [];
-        foreach ($item->category as $cat) {
-            if ((string)$cat['domain'] === 'category' && (string)$cat !== 'Uncategorized') {
-                $catName = (string)$cat;
-                $catSlug = (string)$cat['nicename'] ?: Str::slug($catName);
-                
-                $dbCat = PostCategory::updateOrCreate(
-                    ['slug' => $catSlug],
-                    ['name' => $catName]
-                );
-                $categoryIds[] = $dbCat->id;
-            }
+        $url = $attachment['url'];
+        $originalFile = $attachment['file']; // e.g. "2025/01/IMG_0255-1.webp"
+
+        // Determine filename
+        $filename = basename($url);
+        $ext = pathinfo($filename, PATHINFO_EXTENSION) ?: 'webp';
+        $nameWithoutExt = pathinfo($filename, PATHINFO_FILENAME);
+
+        // Check if already downloaded (by path)
+        $storagePath = "products/{$filename}";
+        $existing = DB::table('curator')->where('path', $storagePath)->first();
+        if ($existing) {
+            return $existing->id;
         }
 
-        $imagePath = null;
-        if ($thumbnailId && isset($attachments[$thumbnailId])) {
-            $local = $this->downloadImages([$attachments[$thumbnailId]], 'posts', $name);
-            $imagePath = $local[0] ?? null;
-        }
-
-        $post = Post::updateOrCreate(
-            ['slug' => $slug],
-            [
-                'title' => $name,
-                'content' => $content,
-                'image' => $imagePath,
-                'status' => 'published',
-            ]
-        );
-
-        if (!empty($categoryIds)) {
-            $post->categories()->sync($categoryIds);
-        }
-    }
-
-    private function downloadImages(array $urls, string $folder, string $itemName): array
-    {
-        $localPaths = [];
-        foreach ($urls as $url) {
-            $fileName = $folder . '/' . basename($url);
-            if (Storage::disk('public')->exists($fileName)) {
-                $localPaths[] = $fileName;
-                continue;
-            }
-
+        // Check if file already exists in local storage
+        $disk = Storage::disk('public');
+        if (!$disk->exists($storagePath)) {
+            // Download the image
             try {
-                $this->info("Downloading image for {$itemName}: " . basename($url));
-                $response = Http::timeout(30)->get($url);
-                if ($response->successful()) {
-                    Storage::disk('public')->put($fileName, $response->body());
-                    $localPaths[] = $fileName;
+                $this->line("    ⬇️  Downloading: {$filename}");
+
+                $context = stream_context_create([
+                    'http' => [
+                        'timeout' => 30,
+                        'user_agent' => 'Mozilla/5.0 (compatible; LaravelImporter/1.0)',
+                    ],
+                    'ssl' => [
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                    ],
+                ]);
+
+                $imageData = @file_get_contents($url, false, $context);
+
+                if ($imageData === false) {
+                    // Try with https
+                    $httpsUrl = str_replace('http://', 'https://', $url);
+                    $imageData = @file_get_contents($httpsUrl, false, $context);
                 }
+
+                if ($imageData === false) {
+                    $this->warn("    ⚠️  Failed to download: {$url}");
+                    return null;
+                }
+
+                $disk->put($storagePath, $imageData);
             } catch (\Exception $e) {
-                $this->warn("Failed to download image: {$url}");
+                $this->warn("    ⚠️  Error downloading {$filename}: " . $e->getMessage());
+                return null;
             }
         }
-        return $localPaths;
+
+        // Get image dimensions
+        $fullPath = $disk->path($storagePath);
+        $imageInfo = @getimagesize($fullPath);
+        $width = $imageInfo[0] ?? null;
+        $height = $imageInfo[1] ?? null;
+        $mimeType = $imageInfo['mime'] ?? "image/{$ext}";
+        $size = $disk->size($storagePath);
+
+        // Create Curator media record
+        $id = DB::table('curator')->insertGetId([
+            'disk' => 'public',
+            'directory' => 'products',
+            'visibility' => 'public',
+            'name' => $nameWithoutExt,
+            'path' => $storagePath,
+            'width' => $width,
+            'height' => $height,
+            'size' => $size,
+            'type' => $mimeType,
+            'ext' => $ext,
+            'alt' => $productName,
+            'title' => $attachment['title'] ?: $nameWithoutExt,
+            'description' => null,
+            'caption' => null,
+            'exif' => null,
+            'curations' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return $id;
     }
 }
