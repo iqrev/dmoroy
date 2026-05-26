@@ -27,6 +27,7 @@ return [
         \Awcodes\Curator\Curations\ThumbnailPreset::class,
     ],
     'directory' => 'media',
+    'default_directory' => 'media',
     'disk' => env('FILAMENT_FILESYSTEM_DISK', 'public'),
     'glide' => [
         'server' => \Awcodes\Curator\Glide\DefaultServerFactory::class,
