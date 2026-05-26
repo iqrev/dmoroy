@@ -57,6 +57,7 @@ class CategoryResource extends Resource
                         \Awcodes\Curator\Components\Forms\CuratorPicker::make('image')
                             ->relationship('mediaImage', 'id')
                             ->label('Pilih atau Unggah Gambar Ikon')
+                            ->directory('categories')
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('description')
                             ->label('Deskripsi')

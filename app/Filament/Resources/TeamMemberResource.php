@@ -53,6 +53,7 @@ class TeamMemberResource extends Resource
                         \Awcodes\Curator\Components\Forms\CuratorPicker::make('photo')
                             ->relationship('mediaImage', 'id')
                             ->label('Pilih atau Unggah Foto Profil')
+                            ->directory('team-members')
                             ->required(),
                         Forms\Components\Textarea::make('bio')
                             ->label('Biografi Singkat')

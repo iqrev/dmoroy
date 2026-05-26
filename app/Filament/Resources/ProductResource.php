@@ -115,6 +115,7 @@ class ProductResource extends Resource
                             ->relationship('mediaImages', 'id')
                             ->orderColumn('order')
                             ->label('Galeri Foto Produk')
+                            ->directory('products')
                             ->multiple()
                             ->columnSpanFull(),
                         Forms\Components\Toggle::make('is_featured')

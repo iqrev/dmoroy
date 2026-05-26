@@ -77,6 +77,7 @@ class PostResource extends Resource
                         \Awcodes\Curator\Components\Forms\CuratorPicker::make('image')
                             ->relationship('mediaImage', 'id')
                             ->label('Pilih atau Unggah Gambar Utama')
+                            ->directory('posts')
                             ->columnSpanFull(),
                     ]),
 
