@@ -42,17 +42,6 @@ class ProductResource extends Resource
     {
         return $schema
             ->components([
-                Schemas\Section::make('Foto Produk')
-                    ->schema([
-                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('galleryImages')
-                            ->relationship('mediaImages', 'id')
-                            ->orderColumn('order')
-                            ->label('Pilih atau Unggah Foto Produk')
-                            ->directory('products')
-                            ->multiple()
-                            ->columnSpanFull(),
-                    ]),
-
                 Schemas\Section::make('Informasi Utama')
                     ->schema([
                         Forms\Components\TextInput::make('name')
@@ -122,6 +111,13 @@ class ProductResource extends Resource
                                     ->required()
                                     ->unique('tags', 'slug'),
                             ]),
+                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('galleryImages')
+                            ->relationship('mediaImages', 'id')
+                            ->orderColumn('order')
+                            ->label('Galeri Foto Produk')
+                            ->directory('products')
+                            ->multiple()
+                            ->columnSpanFull(),
                         Forms\Components\Toggle::make('is_featured')
                             ->label('Tandai sebagai Produk Unggulan')
                             ->required(),
