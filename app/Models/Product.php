@@ -24,7 +24,6 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'images' => 'array',
         'is_featured' => 'boolean',
         'price' => 'decimal:2',
     ];
@@ -39,23 +38,15 @@ class Product extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function mediaImages(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(\Awcodes\Curator\Models\Media::class, 'media_product', 'product_id', 'media_id')
+            ->withPivot('order')
+            ->orderBy('order');
+    }
+
     public function getMediaUrlsAttribute(): array
     {
-        if (!$this->images || !is_array($this->images)) return [];
-        
-        $urls = [];
-        $mediaRecords = \Awcodes\Curator\Models\Media::whereIn('id', $this->images)->get()->keyBy('id');
-        
-        // Preserve order
-        foreach ($this->images as $id) {
-            if (isset($mediaRecords[$id])) {
-                $urls[] = $mediaRecords[$id]->url;
-            } else if (is_string($id) && !is_numeric($id)) {
-                // Fallback if string path somehow remains
-                $urls[] = str_starts_with($id, 'images/') ? asset($id) : asset('storage/' . $id);
-            }
-        }
-        
-        return $urls;
+        return $this->mediaImages->pluck('url')->toArray();
     }
 }

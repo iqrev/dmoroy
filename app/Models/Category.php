@@ -17,13 +17,13 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function mediaImage(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(\Awcodes\Curator\Models\Media::class, 'image', 'id');
+    }
+
     public function getImageUrlAttribute(): ?string
     {
-        if (!$this->image) return null;
-        if (is_numeric($this->image)) {
-            $media = \Awcodes\Curator\Models\Media::find($this->image);
-            if ($media) return $media->url;
-        }
-        return asset('storage/' . $this->image);
+        return $this->mediaImage?->url;
     }
 }

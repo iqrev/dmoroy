@@ -54,10 +54,9 @@ class CategoryResource extends Resource
                             ->disabled()
                             ->dehydrated()
                             ->unique(ignoreRecord: true),
-                        Forms\Components\FileUpload::make('image')
-                            ->label('Gambar Ikon')
-                            ->image()
-                            ->directory('categories')
+                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('image')
+                            ->relationship('mediaImage', 'id')
+                            ->label('Pilih atau Unggah Gambar Ikon')
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('description')
                             ->label('Deskripsi')
@@ -74,7 +73,7 @@ class CategoryResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image')
+                \Awcodes\Curator\Components\Tables\CuratorColumn::make('image')
                     ->size(40),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

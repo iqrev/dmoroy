@@ -111,17 +111,11 @@ class ProductResource extends Resource
                                     ->required()
                                     ->unique('tags', 'slug'),
                             ]),
-                        Forms\Components\FileUpload::make('images')
+                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('mediaImages')
+                            ->relationship('mediaImages', 'id')
+                            ->orderColumn('order')
                             ->label('Galeri Foto Produk')
-                            ->image()
-                            ->imageEditor()
                             ->multiple()
-                            ->reorderable()
-                            ->appendFiles()
-                            ->imageResizeMode('cover')
-                            ->imageResizeTargetWidth('1280')
-                            ->imageResizeTargetHeight('1280')
-                            ->directory('products')
                             ->columnSpanFull(),
                         Forms\Components\Toggle::make('is_featured')
                             ->label('Tandai sebagai Produk Unggulan')
@@ -134,7 +128,7 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                \Awcodes\Curator\Components\Tables\CuratorColumn::make('images')
+                \Awcodes\Curator\Components\Tables\CuratorColumn::make('mediaImages')
                     ->label('Foto')
                     ->limit(1)
                     ->size(40)

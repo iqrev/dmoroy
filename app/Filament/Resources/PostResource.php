@@ -74,14 +74,9 @@ class PostResource extends Resource
 
                 Schemas\Section::make('Gambar Utama')
                     ->schema([
-                        Forms\Components\FileUpload::make('image')
-                            ->label('Unggah Gambar Utama')
-                            ->image()
-                            ->imageEditor()
-                            ->imageResizeMode('cover')
-                            ->imageResizeTargetWidth('1280')
-                            ->imageResizeTargetHeight('1280')
-                            ->directory('posts')
+                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('image')
+                            ->relationship('mediaImage', 'id')
+                            ->label('Pilih atau Unggah Gambar Utama')
                             ->columnSpanFull(),
                     ]),
 
@@ -96,10 +91,7 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                \Awcodes\Curator\Components\Tables\CuratorColumn::make('image')
-                    ->size(40)
-                    ->label('Foto')
-                    ->circular(),
+
                 Tables\Columns\TextColumn::make('title')
                     ->label('Judul Artikel')
                     ->searchable()
@@ -108,6 +100,9 @@ class PostResource extends Resource
                     ->label('Kategori')
                     ->badge()
                     ->color('gray'),
+                \Awcodes\Curator\Components\Tables\CuratorColumn::make('image')
+                    ->label('Gambar')
+                    ->size(40),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()

@@ -11,13 +11,13 @@ class TeamMember extends Model
 
     protected $fillable = ['name', 'position', 'photo', 'bio'];
 
+    public function mediaImage(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(\Awcodes\Curator\Models\Media::class, 'photo', 'id');
+    }
+
     public function getPhotoUrlAttribute(): ?string
     {
-        if (!$this->photo) return null;
-        if (is_numeric($this->photo)) {
-            $media = \Awcodes\Curator\Models\Media::find($this->photo);
-            if ($media) return $media->url;
-        }
-        return asset('storage/' . $this->photo);
+        return $this->mediaImage?->url;
     }
 }
