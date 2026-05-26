@@ -68,15 +68,7 @@
     <!-- Toolbar -->
     <div class="curator-panel-toolbar px-4 py-2 flex items-center justify-between bg-gray-200/70 dark:bg-black/20 dark:text-white border-b border-gray-300 dark:border-gray-800">
         <div class="flex items-center gap-2">
-            @if($currentPage < $lastPage)
-            <x-filament::button
-                size="xs"
-                color="gray"
-                wire:click="loadMoreFiles()"
-            >
-                {{ trans('curator::views.panel.load_more') }}
-            </x-filament::button>
-            @endif
+            <h3 class="font-bold text-lg hidden md:block">Media Library</h3>
         </div>
         <div class="flex items-center gap-4">
             <label class="shrink-0 border border-gray-300 dark:border-gray-700 rounded-md relative flex items-center">
@@ -283,6 +275,27 @@
                     @endempty
                 @endforelse
             </ul>
+
+            @if($currentPage < $lastPage)
+            <div class="flex justify-center py-8 mt-6 border-t border-gray-200 dark:border-gray-800" aria-live="polite">
+                <x-filament::button
+                    color="gray"
+                    wire:click="loadMoreFiles()"
+                    wire:loading.attr="disabled"
+                    wire:target="loadMoreFiles"
+                    aria-label="{{ trans('curator::views.panel.load_more') }}"
+                    class="w-full sm:w-auto min-w-[200px]"
+                >
+                    <span wire:loading.remove wire:target="loadMoreFiles" class="font-semibold text-sm">
+                        {{ trans('curator::views.panel.load_more') }}
+                    </span>
+                    <span wire:loading wire:target="loadMoreFiles" class="font-semibold text-sm flex items-center gap-2">
+                        <x-filament::loading-indicator class="w-4 h-4" />
+                        Memuat data...
+                    </span>
+                </x-filament::button>
+            </div>
+            @endif
         </div>
         <!-- End Gallery -->
         <x-filament-actions::modals />
