@@ -1,0 +1,11 @@
+<?php
+require __DIR__.'/vendor/autoload.php';
+$app = require_once __DIR__.'/bootstrap/app.php';
+$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+$kernel->bootstrap();
+
+$picker = \Awcodes\Curator\Components\Forms\CuratorPicker::make('mediaImages')->multiple();
+$container = \Filament\Forms\ComponentContainer::make(new class extends \Livewire\Component {});
+$picker->container($container);
+
+echo $picker->toHtml();

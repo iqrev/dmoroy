@@ -99,7 +99,7 @@ class ProductResource extends Resource
                         Forms\Components\Select::make('tags')
                             ->label('Tag Produk')
                             ->relationship('tags', 'name')
-                            ->multiple()
+                            //->multiple()
                             ->searchable()
                             ->preload()
                             ->createOptionForm([
@@ -111,7 +111,7 @@ class ProductResource extends Resource
                                     ->required()
                                     ->unique('tags', 'slug'),
                             ]),
-                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('mediaImages')
+                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('galleryImages')
                             ->relationship('mediaImages', 'id')
                             ->orderColumn('order')
                             ->label('Galeri Foto Produk')
