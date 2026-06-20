@@ -27,10 +27,10 @@ class DatabaseSeeder extends Seeder
         // 1. Admin User
         // ============================================
         User::updateOrCreate(
-            ['email' => 'admin@websitejambi.com'],
+            ['email' => 'admin@umkm.local'],
             [
-                'name' => 'Admin Website Jambi',
-                'password' => Hash::make('AmdinPutin123'),
+                'name' => 'Admin UMKM',
+                'password' => Hash::make('password'),
                 'email_verified_at' => now(),
             ]
         );
@@ -39,18 +39,18 @@ class DatabaseSeeder extends Seeder
         // 2. Settings (Global Site Info)
         // ============================================
         $settings = [
-            ['key' => 'site_name', 'value' => 'Batik Jambi Berkah Group'],
-            ['key' => 'tagline', 'value' => 'Pusat Batik Jambi Autentik & Berkualitas'],
-            ['key' => 'whatsapp', 'value' => '6281234567890'],
-            ['key' => 'email', 'value' => 'info@batikjambiberkah.com'],
-            ['key' => 'address', 'value' => "Jl. Kolonel Abunjani No. 88\nSipin, Kota Jambi 36122\nIndonesia"],
-            ['key' => 'office_hours', 'value' => 'Senin - Sabtu, 08:00 - 17:00'],
-            ['key' => 'instagram', 'value' => 'https://instagram.com/batikjambiberkah'],
-            ['key' => 'facebook', 'value' => 'https://facebook.com/batikjambiberkah'],
-            ['key' => 'tiktok', 'value' => 'https://tiktok.com/@batikjambiberkah'],
-            ['key' => 'hero_video_id', 'value' => 'pIq4P9rJM0o'], // Batik process video
-            ['key' => 'hero_title', 'value' => 'Warisan Luhur Batik Jambi'],
-            ['key' => 'hero_subtitle', 'value' => 'Menghadirkan keindahan motif tradisional Jambi yang sarat akan makna dan sejarah ke dalam setiap helai kain.'],
+            ['key' => 'site_name', 'value' => "D'Moroy"],
+            ['key' => 'tagline', 'value' => 'Mahakarya Anyaman Serat Alam'],
+            ['key' => 'whatsapp', 'value' => '6280000000000'],
+            ['key' => 'email', 'value' => 'info@umkm.local'],
+            ['key' => 'address', 'value' => "Jl. Contoh Alamat No. 1\nKota, Provinsi 12345\nIndonesia"],
+            ['key' => 'office_hours', 'value' => 'Senin - Jumat, 08:00 - 17:00'],
+            ['key' => 'instagram', 'value' => 'https://instagram.com/umkm'],
+            ['key' => 'facebook', 'value' => 'https://facebook.com/umkm'],
+            ['key' => 'tiktok', 'value' => 'https://tiktok.com/@umkm'],
+            ['key' => 'hero_video_id', 'value' => ''], // YouTube Video ID
+            ['key' => 'hero_title', 'value' => 'Koleksi Tas Anyaman Premium'],
+            ['key' => 'hero_subtitle', 'value' => 'Sentuhan etnik berkelas dari serat pandan alami dan kulit pilihan.'],
             ['key' => 'hero_cta_text', 'value' => 'Lihat Katalog'],
             ['key' => 'hero_cta_link', 'value' => '/products'],
         ];
@@ -65,25 +65,18 @@ class DatabaseSeeder extends Seeder
         Slider::truncate();
         $sliderData = [
             [
-                'title' => 'Keindahan Warisan Batik Jambi',
-                'description' => 'Temukan koleksi eksklusif batik tulis dan cetak dengan motif tradisional yang kaya akan makna.',
+                'title' => 'Promo Spesial Produk A',
+                'description' => 'Dapatkan penawaran menarik untuk produk unggulan kami.',
                 'image' => null, // View will use fallback
                 'link' => '/products',
                 'order' => 1,
             ],
             [
-                'title' => 'Koleksi Eksklusif Ramadhan',
-                'description' => 'Sambut hari raya dengan keanggunan busana batik Jambi modern yang nyaman dan berkelas.',
+                'title' => 'Koleksi Terbaru',
+                'description' => 'Temukan inovasi terbaru dari produk-produk kami yang siap memenuhi kebutuhan Anda.',
                 'image' => null,
                 'link' => '/products',
                 'order' => 2,
-            ],
-            [
-                'title' => 'Workshop Membatik Jambi',
-                'description' => 'Ikuti kelas workshop kami dan rasakan pengalaman membuat motif batik Jambi Anda sendiri.',
-                'image' => null,
-                'link' => '/about',
-                'order' => 3,
             ],
         ];
 
@@ -96,10 +89,8 @@ class DatabaseSeeder extends Seeder
         // ============================================
         Category::truncate();
         $categoryData = [
-            ['name' => 'Kain Batik', 'description' => 'Koleksi kain batik tulis dan cap premium dengan berbagai motif asli Jambi.'],
-            ['name' => 'Busana Pria', 'description' => 'Kemeja, kemeja lengan panjang, dan busana pria bergaya formal & kasual.'],
-            ['name' => 'Busana Wanita', 'description' => 'Dress, tunik, kebaya, dan bawahan wanita dengan motif batik Jambi yang anggun.'],
-            ['name' => 'Aksesoris', 'description' => 'Tas, dompet, syal, dan aksesoris batik lainnya sebagai pelengkap busana.'],
+            ['name' => 'Tas Anyaman', 'description' => 'Koleksi tas eksklusif yang dianyam dari serat pandan alami dengan sentuhan kulit.'],
+            ['name' => 'Aksesoris Anyaman', 'description' => 'Berbagai aksesoris pendukung bergaya etnik artisan.'],
         ];
 
         $categories = [];
@@ -117,54 +108,70 @@ class DatabaseSeeder extends Seeder
         Product::truncate();
         $products = [
             [
-                'category' => 'Kain Batik',
-                'name' => 'Batik Tulis Biji Timun Premium',
-                'description' => '<p>Motif <strong>Biji Timun</strong> melambangkan kemakmuran dan kesuburan. Dikerjakan manual dengan tangan.</p><ul><li>Bahan: Sutra ATBM</li><li>Ukuran: 230 x 110 cm</li></ul>',
-                'price' => 1250000,
+                'category' => 'Tas Anyaman',
+                'name' => 'Seri Biaso Bae (Sedang)',
+                'description' => '<p>Tote bag anyaman elegan dengan pola kotak-kotak natural. Dilengkapi tali bahu kulit premium yang kokoh untuk menemani aktivitas harian Anda.</p>',
+                'price' => 250000,
                 'is_featured' => true,
+                'image_path' => 'bag_biaso_bae.png',
             ],
             [
-                'category' => 'Kain Batik',
-                'name' => 'Batik Tulis Durian Pecah',
-                'description' => '<p>Motif <strong>Durian Pecah</strong> melambangkan kejujuran dan keterbukaan hati masyarakat Jambi.</p>',
-                'price' => 950000,
-                'is_featured' => true,
-            ],
-            [
-                'category' => 'Busana Pria',
-                'name' => 'Kemeja Slimfit Motif Kuaub Berhias',
-                'description' => '<p>Kemeja batik pria dengan potongan slimfit modern dan motif Kuaub Berhias yang elegan.</p>',
-                'price' => 385000,
-                'is_featured' => true,
-            ],
-            [
-                'category' => 'Busana Wanita',
-                'name' => 'Tunik Batik Modern Motif Angso Duo',
-                'description' => '<p>Tunik wanita dengan desain kontemporer yang memadukan keindahan motif Angso Duo Jambi.</p>',
-                'price' => 320000,
+                'category' => 'Tas Anyaman',
+                'name' => 'Seri Biaso Bae Tali Panjang',
+                'description' => '<p>Varian dari Seri Biaso Bae yang dilengkapi tali strap selempang kulit asli yang dapat disesuaikan. Sangat cocok untuk gaya kasual modern.</p>',
+                'price' => 275000,
                 'is_featured' => false,
+                'image_path' => 'bag_biaso_bae.png',
             ],
             [
-                'category' => 'Aksesoris',
-                'name' => 'Tas Tote Batik Eksklusif',
-                'description' => '<p>Tas tote fungsional dengan lapisan kain batik tulis asli Jambi yang artistik.</p>',
+                'category' => 'Tas Anyaman',
+                'name' => 'Seri Biaso Bae (Mini)',
+                'description' => '<p>Versi mini dari tas best-seller kami. Ringkas, ringan, namun tetap memancarkan keanggunan kerajinan tangan lokal.</p>',
+                'price' => 195000,
+                'is_featured' => false,
+                'image_path' => 'bag_biaso_bae.png',
+            ],
+            [
+                'category' => 'Tas Anyaman',
+                'name' => 'Sangkek Gdeh Kecik',
+                'description' => '<p>Tas berbentuk kotak terstruktur (boxy) dengan ornamen anyaman sentral berbentuk kelopak bunga. Dikelilingi bingkai kulit halus yang memberikan kesan mewah.</p>',
+                'price' => 350000,
+                'is_featured' => true,
+                'image_path' => 'bag_sangkek.png',
+            ],
+            [
+                'category' => 'Tas Anyaman',
+                'name' => 'Seri Canteek Manis (Pom-Pom)',
+                'description' => '<p>Tas keranjang mini berstruktur kokoh dengan tekstur anyam diagonal. Memiliki aksen gantungan pom-pom berbulu lembut yang imut dan stylish.</p>',
+                'price' => 185000,
+                'is_featured' => true,
+                'image_path' => 'bag_canteek.png',
+            ],
+            [
+                'category' => 'Tas Anyaman',
+                'name' => 'Seri Canteek Manis (Dasi)',
+                'description' => '<p>Tas keranjang mini yang cantik, dihiasi dengan aksen kulit berbentuk dasi sebagai pemanis di bagian depan. Sempurna untuk acara santai.</p>',
                 'price' => 185000,
                 'is_featured' => false,
+                'image_path' => 'bag_canteek.png',
             ],
         ];
 
         foreach ($products as $prod) {
-            Product::create([
+            $productModel = Product::create([
                 'category_id' => $categories[$prod['category']]->id,
                 'name' => $prod['name'],
                 'slug' => Str::slug($prod['name']),
                 'description' => $prod['description'],
                 'price' => $prod['price'],
-                'stock' => rand(5, 50),
+                'stock' => 50,
                 'is_featured' => $prod['is_featured'],
                 'status' => 'published',
-                'images' => null,
+                'images' => null, // Default
             ]);
+            
+            // Try to assign image directly to model or let it be handled later.
+            // As curator uses complex JSON arrays, we will just rely on the fallback images mapped by name.
         }
 
         // ============================================
@@ -172,14 +179,8 @@ class DatabaseSeeder extends Seeder
         // ============================================
         PostCategory::truncate();
         
-        $pameran = PostCategory::create(['name' => 'Stand/Pameran', 'slug' => 'pameran']);
-        $pameranLN = PostCategory::create(['name' => 'Luar Negeri', 'slug' => 'pameran-luar-negeri', 'parent_id' => $pameran->id]);
-        $pameranDN = PostCategory::create(['name' => 'Dalam Negeri', 'slug' => 'pameran-dalam-negeri', 'parent_id' => $pameran->id]);
-
-        $fashion = PostCategory::create(['name' => 'Fashion Show', 'slug' => 'fashion-show']);
-        $fashionLN = PostCategory::create(['name' => 'Luar Negeri', 'slug' => 'fashion-show-luar-negeri', 'parent_id' => $fashion->id]);
-        
-        $edukasi = PostCategory::create(['name' => 'Edukasi Batik', 'slug' => 'edukasi-batik']);
+        $informasi = PostCategory::create(['name' => 'Informasi', 'slug' => 'informasi']);
+        $berita = PostCategory::create(['name' => 'Berita', 'slug' => 'berita', 'parent_id' => $informasi->id]);
 
         // ============================================
         // 7. Posts (Articles)
@@ -189,19 +190,9 @@ class DatabaseSeeder extends Seeder
 
         $posts = [
             [
-                'title' => 'Filosofi Motif Biji Timun Batik Jambi',
-                'content' => '<p>Motif Biji Timun melambangkan kemakmuran dan harapan akan masa depan. Digunakan sejak abad ke-17...</p>',
-                'cats' => [$edukasi->id]
-            ],
-            [
-                'title' => 'Pameran Batik Jambi di Paris Fashion Week',
-                'content' => '<p>Membawa warisan budaya Jambi ke panggung internasional. Sambutan hangat dari kolektor Eropa...</p>',
-                'cats' => [$pameranLN->id, $fashionLN->id]
-            ],
-            [
-                'title' => 'Cara Merawat Batik Tulis Agar Tetap Awet',
-                'content' => '<p>Batik tulis adalah karya seni. Gunakan sabun lerak atau shampo bayi untuk mencuci...</p>',
-                'cats' => [$edukasi->id]
+                'title' => 'Artikel Pertama UMKM',
+                'content' => '<p>Ini adalah artikel pertama yang membahas tentang perkembangan atau update terbaru dari UMKM ini.</p>',
+                'cats' => [$berita->id]
             ],
         ];
 
@@ -221,9 +212,7 @@ class DatabaseSeeder extends Seeder
         // ============================================
         TeamMember::truncate();
         $team = [
-            ['name' => 'Hj. Siti Aisyah', 'position' => 'Pendiri & Pengrajin Utama', 'bio' => 'Telah berkarya selama 30 tahun dalam melestarikan motif asli batik Jambi.'],
-            ['name' => 'Ahmad Fauzi', 'position' => 'Direktur Pemasaran', 'bio' => 'Membawa Batik Jambi Berkah ke kancah nasional dan internasional.'],
-            ['name' => 'Rini Marlina', 'position' => 'Kepala Pengrajin', 'bio' => 'Mengawasi kualitas produksi setiap helai kain batik yang kami hasilkan.'],
+            ['name' => 'Nama Anggota Tim', 'position' => 'Posisi / Jabatan', 'bio' => 'Deskripsi singkat mengenai anggota tim ini.'],
         ];
 
         foreach ($team as $m) {
@@ -232,6 +221,7 @@ class DatabaseSeeder extends Seeder
 
         \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
-        $this->command->info('✅ Database Batik Jambi Berkah seeded with dummy data successfully!');
+        $this->command->info('✅ Database UMKM Blueprint seeded with dummy data successfully!');
     }
 }
+

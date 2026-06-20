@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Situs Sedang Diperbarui - Batik Jambi Berkah</title>
+    <title>Situs Sedang Diperbarui - D'Moroy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -20,11 +20,11 @@
     <!-- Efek Latar Belakang -->
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 opacity-5 pointer-events-none">
         <svg viewBox="0 0 100 100" class="w-full h-full object-cover">
-            <pattern id="batik-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+            <pattern id="Dmoroy-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
                 <circle cx="10" cy="10" r="2" fill="#8b0000" />
                 <path d="M0,10 Q5,5 10,10 T20,10" fill="none" stroke="#8b0000" stroke-width="0.5"/>
             </pattern>
-            <rect x="0" y="0" width="100%" height="100%" fill="url(#batik-pattern)"/>
+            <rect x="0" y="0" width="100%" height="100%" fill="url(#Dmoroy-pattern)"/>
         </svg>
     </div>
 
@@ -38,7 +38,7 @@
         
         <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Segera Kembali</h1>
         <p class="text-lg text-gray-600 mb-8 leading-relaxed">
-            Website <strong>Batik Jambi Berkah</strong> saat ini sedang dalam proses pemeliharaan dan peningkatan sistem untuk melayani Anda lebih baik.<br>Silakan kembali dalam beberapa saat lagi.
+            Website <strong>D'Moroy</strong> saat ini sedang dalam proses pemeliharaan dan peningkatan sistem untuk melayani Anda lebih baik.<br>Silakan kembali dalam beberapa saat lagi.
         </p>
         
         <div class="inline-flex items-center justify-center space-x-3 text-sm text-gray-600 bg-gray-50 px-6 py-3 rounded-full border border-gray-100">

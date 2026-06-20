@@ -68,5 +68,5 @@ return [
     'table' => [
         'layout' => 'grid',
     ],
-    'glide_token' => env('CURATOR_GLIDE_TOKEN', 'batik-jambi-berkah-secret-token'),
+    'glide_token' => env('CURATOR_GLIDE_TOKEN', 'UMKM-jambi-berkah-secret-token'),
 ];

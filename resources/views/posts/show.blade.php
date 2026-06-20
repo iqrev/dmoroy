@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $post->title . ' - ' . \App\Models\Setting::get('site_name', 'Batik Jambi Berkah Group'))
+@section('title', $post->title . ' - ' . \App\Models\Setting::get('site_name', "D'Moroy"))
 @section('meta_description', Str::limit(strip_tags($post->content), 160))
 
 @section('og_title', $post->title)
@@ -20,12 +20,12 @@
         {{-- Header --}}
         <header class="mb-10">
             <div class="flex flex-wrap items-center gap-3 mb-4">
-                <span class="text-brand-red font-bold text-sm uppercase tracking-widest">
+                <span class="text-brand-brown font-bold text-sm uppercase tracking-widest">
                     {{ $post->created_at->translatedFormat('d F Y') }}
                 </span>
                 @foreach($post->categories as $cat)
                     <a href="{{ route('posts.index', ['category' => $cat->slug]) }}" 
-                       class="bg-gray-100 text-gray-600 hover:bg-brand-red hover:!text-white transition-colors text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full">
+                       class="bg-gray-100 text-gray-600 hover:bg-brand-brown hover:!text-white transition-colors text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full">
                         {{ $cat->name }}
                     </a>
                 @endforeach
@@ -43,7 +43,7 @@
         {{-- Content --}}
         <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed
                     prose-headings:font-serif prose-headings:text-gray-900
-                    prose-a:text-brand-red prose-a:no-underline hover:prose-a:underline
+                    prose-a:text-brand-brown prose-a:no-underline hover:prose-a:underline
                     prose-img:rounded-2xl prose-img:shadow-md
                     prose-strong:text-gray-900">
             {!! $post->content !!}
@@ -71,7 +71,7 @@
                     </a>
                 </div>
             </div>
-            <a href="/posts" class="inline-flex items-center gap-2 text-brand-red font-medium hover:gap-3 transition-all">
+            <a href="/posts" class="inline-flex items-center gap-2 text-brand-brown font-medium hover:gap-3 transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                 Kembali ke Artikel
             </a>
@@ -81,18 +81,18 @@
 
 {{-- Related Posts --}}
 @if($relatedPosts->count() > 0)
-<section class="py-16 px-4 bg-batik-subtle">
+<section class="py-16 px-4 bg-brand-ivory">
     <div class="max-w-7xl mx-auto">
         <h2 class="text-2xl font-serif mb-8">Artikel Terkait</h2>
         <div class="grid md:grid-cols-3 gap-8">
             @foreach($relatedPosts as $related)
             <a href="{{ route('posts.show', $related->slug) }}" class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                 <div class="aspect-video overflow-hidden">
-                    <img src="{{ $related->image_url ?: 'https://placehold.co/600x400/FDFCFB/C02424?text=' . urlencode($related->title) }}"
+                    <img src="{{ $related->image_url ?: asset('images/dmoroy/texture.png') }}"
                          alt="{{ $related->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                 </div>
                 <div class="p-6">
-                    <h3 class="font-bold text-lg mb-2 line-clamp-2 group-hover:text-brand-red transition-colors">{{ $related->title }}</h3>
+                    <h3 class="font-bold text-lg mb-2 line-clamp-2 group-hover:text-brand-brown transition-colors">{{ $related->title }}</h3>
                     <p class="text-gray-500 text-sm line-clamp-2">{{ strip_tags($related->content) }}</p>
                 </div>
             </a>

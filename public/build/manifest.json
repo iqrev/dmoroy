@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-CCBB78vH.css",
+    "file": "assets/app-BhxI7tTv.css",
     "name": "app",
     "names": [
       "app.css"
@@ -9,7 +9,7 @@
     "isEntry": true
   },
   "resources/css/curator.css": {
-    "file": "assets/curator-D4-naP2B.css",
+    "file": "assets/curator-DbcuIS2R.css",
     "name": "curator",
     "names": [
       "curator.css"
@@ -18,7 +18,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-DU0szZG0.js",
+    "file": "assets/app-sno4D13L.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true

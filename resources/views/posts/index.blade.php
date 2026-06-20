@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Artikel & Wawasan - ' . \App\Models\Setting::get('site_name', 'Batik Jambi Berkah Group'))
-@section('meta_description', 'Temukan berbagai artikel menarik seputar filosofi, motif, dan sejarah Batik Jambi. Konten edukatif dari ' . \App\Models\Setting::get('site_name', 'Batik Jambi Berkah Group') . '.')
+@section('title', 'Artikel & Wawasan - ' . \App\Models\Setting::get('site_name', "D'Moroy"))
+@section('meta_description', 'Temukan berbagai artikel menarik seputar filosofi, motif, dan sejarah Rajut D\'Moroy. Konten edukatif dari ' . \App\Models\Setting::get('site_name', "D'Moroy") . '.')
 
 @section('content')
 {{-- Hero --}}
-<section class="relative py-24 px-4 bg-batik-subtle overflow-hidden">
+<section class="relative py-24 px-4 bg-brand-ivory overflow-hidden">
     <div class="max-w-4xl mx-auto text-center">
-        <p class="text-brand-red font-medium uppercase tracking-widest text-sm mb-4">Artikel & Wawasan</p>
-        <h1 class="text-5xl md:text-6xl font-serif mb-6 leading-tight">Mengenal <span class="text-brand-red italic">Batik Jambi</span></h1>
+        <p class="text-brand-brown font-medium uppercase tracking-widest text-sm mb-4">Artikel & Wawasan</p>
+        <h1 class="text-5xl md:text-6xl font-serif mb-6 leading-tight">Mengenal <span class="text-brand-brown italic">Rajut D'Moroy</span></h1>
         <p class="text-gray-500 text-xl max-w-xl mx-auto leading-relaxed">
-            Temukan kisah di balik setiap motif, filosofi mendalam, dan cara merawat batik Anda agar tetap indah.
+            Temukan kisah di balik setiap motif, filosofi mendalam, dan cara merawat Rajutan Anda agar tetap indah.
         </p>
     </div>
 </section>
@@ -19,65 +19,32 @@
 <section class="py-16 px-4">
     <div class="max-w-7xl mx-auto">
         @if($posts->count() > 0)
-            {{-- Featured Post --}}
-            @php $featured = $posts->first(); @endphp
-            <div class="mb-16">
-                <div class="grid md:grid-cols-2 gap-0 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 bg-white">
-                    <div class="aspect-video md:aspect-auto min-h-64 overflow-hidden">
-                        <a href="{{ route('posts.show', $featured->slug) }}" class="block w-full h-full">
-                            <img src="{{ $featured->image_url ?: 'https://placehold.co/800x500/FDFCFB/C02424?text=Batik+Jambi' }}"
-                                 alt="{{ $featured->title }}"
-                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
-                        </a>
-                    </div>
-                    <div class="p-10 flex flex-col justify-center">
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="inline-block bg-brand-red/10 text-brand-red text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full w-fit">Artikel Pilihan</span>
-                            @foreach($featured->categories as $cat)
-                                <a href="{{ route('posts.index', ['category' => $cat->slug]) }}" 
-                                   class="inline-block bg-gray-100 text-gray-600 hover:bg-brand-red hover:!text-white transition-colors text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full w-fit">
-                                    {{ $cat->name }}
-                                </a>
-                            @endforeach
-                        </div>
-                        <a href="{{ route('posts.show', $featured->slug) }}" class="group">
-                            <h2 class="text-3xl font-serif mb-4 leading-tight group-hover:text-brand-red transition-colors">{{ $featured->title }}</h2>
-                        </a>
-                        <p class="text-gray-500 leading-relaxed mb-6 line-clamp-3">{{ strip_tags($featured->content) }}</p>
-                        <a href="{{ route('posts.show', $featured->slug) }}" class="flex items-center gap-2 text-brand-red font-medium text-sm hover:gap-3 transition-all">
-                            <span>Baca Selengkapnya</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Other Posts --}}
+            {{-- All Posts --}}
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($posts->skip(1) as $post)
+                @foreach($posts as $post)
                     <div class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all">
                         <a href="{{ route('posts.show', $post->slug) }}" class="aspect-video overflow-hidden block">
-                            <img src="{{ $post->image_url ?: 'https://placehold.co/600x400/FDFCFB/C02424?text=' . urlencode($post->title) }}"
+                            <img src="{{ $post->image_url ?: asset('images/dmoroy/cardigan.png') }}"
                                  alt="{{ $post->title }}"
                                  class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
                         </a>
                         <div class="p-6">
                             <div class="flex flex-wrap gap-2 mb-3">
-                                <span class="text-brand-red text-xs font-bold uppercase tracking-widest">
+                                <span class="text-brand-brown text-xs font-bold uppercase tracking-widest">
                                     {{ $post->created_at->format('d M Y') }}
                                 </span>
                                 @foreach($post->categories as $cat)
                                     <a href="{{ route('posts.index', ['category' => $cat->slug]) }}" 
-                                       class="text-gray-400 text-xs font-bold uppercase tracking-widest hover:text-brand-red transition-colors">
+                                       class="text-gray-400 text-xs font-bold uppercase tracking-widest hover:text-brand-brown transition-colors">
                                         • {{ $cat->name }}
                                     </a>
                                 @endforeach
                             </div>
                             <a href="{{ route('posts.show', $post->slug) }}" class="block group/title">
-                                <h3 class="font-bold text-xl mb-3 leading-tight group-hover/title:text-brand-red transition-colors line-clamp-2">{{ $post->title }}</h3>
+                                <h3 class="font-bold text-xl mb-3 leading-tight group-hover/title:text-brand-brown transition-colors line-clamp-2">{{ $post->title }}</h3>
                             </a>
                             <p class="text-gray-500 text-sm line-clamp-3 leading-relaxed">{{ strip_tags($post->content) }}</p>
-                            <a href="{{ route('posts.show', $post->slug) }}" class="mt-4 flex items-center gap-1 text-brand-red text-sm font-medium hover:gap-2 transition-all">
+                            <a href="{{ route('posts.show', $post->slug) }}" class="mt-4 flex items-center gap-1 text-brand-brown text-sm font-medium hover:gap-2 transition-all">
                                 <span>Baca</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                             </a>

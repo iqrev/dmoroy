@@ -1,157 +1,201 @@
 @extends('layouts.app')
 
-@section('title', 'Hubungi Kami - Batik Jambi Berkah Group')
-@section('meta_description', 'Pesan batik Jambi autentik atau ajukan pertanyaan via WhatsApp, email, atau kunjungi langsung workshop kami di Jambi, Indonesia.')
+@section('title', 'Hubungi Kami - d\'moroy')
+@section('meta_description', 'Kunjungi bengkel kerja d\'moroy atau hubungi kami untuk menjalin kerja sama dan pemesanan rajutan serat alam.')
 
 @section('content')
-{{-- Hero Contact --}}
-<section class="relative py-24 px-4 overflow-hidden">
-    <div class="absolute inset-0 bg-batik-subtle opacity-50"></div>
-    <div class="max-w-4xl mx-auto text-center relative z-10">
-        <p class="text-brand-red font-medium uppercase tracking-widest text-sm mb-4">Kami Siap Membantu</p>
-        <h1 class="text-5xl md:text-6xl font-serif mb-6 leading-tight">Hubungi <span class="text-brand-red italic">Kami</span></h1>
-        <p class="text-gray-500 text-xl max-w-2xl mx-auto leading-relaxed">
-            Ada pertanyaan tentang produk, ingin memesan dalam jumlah besar, atau sekadar ingin tahu lebih banyak? Tim kami siap membantu Anda.
+<!-- Hero Contact (Editorial) -->
+<section aria-labelledby="contact-heading" class="relative pt-32 pb-24 px-6 bg-brand-brown overflow-hidden">
+    <div class="absolute inset-0 bg-brand-ivory/5 mix-blend-overlay" style="background-image: url('{{ asset('images/dmoroy/texture.png') }}'); background-size: cover; opacity: 0.1;" aria-hidden="true"></div>
+    <div class="max-w-7xl mx-auto text-center relative z-10">
+        <span class="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-6 block" aria-hidden="true">@lang('pages.contact_info')</span>
+        <h1 id="contact-heading" class="text-5xl md:text-7xl font-serif text-brand-ivory mb-6 leading-tight">@lang('pages.contact_us')</h1>
+        <p class="text-brand-ivory/70 text-lg max-w-2xl mx-auto font-serif">
+            @lang('pages.contact_desc')
         </p>
     </div>
 </section>
 
-{{-- Contact Methods --}}
-<section class="py-16 px-4">
-    <div class="max-w-7xl mx-auto">
-        <div class="grid lg:grid-cols-2 gap-16 mb-20 items-start">
-            {{-- Contact Form --}}
-            <div class="bg-white rounded-3xl p-10 shadow-xl shadow-brand-red/5 border border-gray-100 order-2 lg:order-1">
-                <h2 class="text-3xl font-serif mb-8 leading-tight">Kirim Pesan <span class="text-brand-red italic">Langsung</span></h2>
+<!-- Contact Info & Form (Asymmetrical Layout) -->
+<section aria-label="Informasi Kontak dan Formulir" class="py-24 px-6 bg-brand-ivory relative">
+    <!-- Floating background accent -->
+    <div class="absolute top-0 right-0 w-1/3 h-full bg-white hidden lg:block" aria-hidden="true"></div>
+    
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-16 relative z-10">
+        
+        <!-- Left: Contact Details -->
+        <div class="lg:col-span-5 flex flex-col justify-center">
+            <h2 class="text-4xl font-serif text-brand-brown mb-12">Saluran Resmi <br><span class="italic font-light">D'Moroy</span></h2>
+            
+            <address class="space-y-10 not-italic">
+                <!-- Alamat -->
+                <div class="flex items-start gap-6 group">
+                    <div class="w-14 h-14 rounded-full bg-brand-brown/5 flex items-center justify-center shrink-0 border border-brand-brown/10 group-hover:bg-brand-gold group-hover:text-white transition-colors" aria-hidden="true">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-brand-brown mb-1">@lang('pages.visit_studio')</h3>
+                        <p class="text-brand-brown/70 leading-relaxed font-serif">
+                            @lang('pages.address')
+                        </p>
+                    </div>
+                </div>
+
+                <!-- WhatsApp -->
+                <div class="flex items-start gap-6 group">
+                    <div class="w-14 h-14 rounded-full bg-brand-brown/5 flex items-center justify-center shrink-0 border border-brand-brown/10 group-hover:bg-[#25D366] group-hover:text-white transition-colors" aria-hidden="true">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-brand-brown mb-1">WhatsApp / Telepon</h3>
+                        <p class="text-brand-brown/70 leading-relaxed font-serif">
+                            <a href="https://wa.me/6282187051969" target="_blank" class="hover:text-brand-gold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold rounded">
+                                0821-8705-1969
+                            </a>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="flex items-start gap-6 group">
+                    <div class="w-14 h-14 rounded-full bg-brand-brown/5 flex items-center justify-center shrink-0 border border-brand-brown/10 group-hover:bg-brand-brown group-hover:text-white transition-colors" aria-hidden="true">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-brand-brown mb-1">Email Resmi</h3>
+                        <p class="text-brand-brown/70 leading-relaxed font-serif">
+                            <a href="mailto:dmoroykreasialamnusantara@gmail.com" class="hover:text-brand-gold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold rounded">
+                                dmoroykreasialamnusantara@gmail.com
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </address>
+            
+            <hr class="my-10 border-brand-brown/10">
+            
+            <div>
+                <p class="font-bold text-brand-brown mb-4">Peta Lokasi Kami:</p>
+                <div class="rounded-2xl overflow-hidden shadow-sm border border-brand-brown/10 w-full h-64 md:h-80">
+                    <iframe 
+                        src="https://www.google.com/maps?q=-1.6255872,103.6270735&z=17&output=embed" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+
+            <hr class="my-10 border-brand-brown/10">
+            
+            <div>
+                <p class="font-bold text-brand-brown mb-4">Ikuti Katalog Digital Kami:</p>
+                <div class="flex gap-4">
+                    <a href="{{ \App\Models\Setting::get('instagram', 'https://instagram.com/dmoroy') }}" target="_blank" aria-label="Kunjungi Instagram D'Moroy" class="w-12 h-12 rounded-full border border-brand-brown/20 flex items-center justify-center text-brand-brown hover:bg-brand-brown hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Glassmorphism Form -->
+        <div class="lg:col-span-7">
+            <div class="bg-white/80 backdrop-blur-xl p-10 md:p-14 rounded-[40px] shadow-2xl border border-white">
+                <h3 class="text-3xl font-serif text-brand-brown mb-8">@lang('pages.send_message')</h3>
+                
+                @if(session('success'))
+                    <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-2xl flex items-center gap-3" role="status" aria-live="polite">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        <p>@lang('pages.success_msg')</p>
+                    </div>
+                @endif
+
                 <form action="{{ route('contact.store') }}" method="POST" class="space-y-6">
                     @csrf
                     <div class="grid md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label for="name" class="text-sm font-bold text-gray-700 uppercase tracking-wider">Nama Lengkap</label>
-                            <input type="text" name="name" id="name" required placeholder="Contoh: Budi Santoso"
-                                   class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:border-brand-red focus:ring-4 focus:ring-brand-red/5 transition-all outline-none">
+                        <div>
+                            <label for="name" class="text-xs font-bold text-brand-brown/70 uppercase tracking-widest mb-2 block">@lang('pages.name') <span class="text-red-500" aria-hidden="true">*</span></label>
+                            <input type="text" name="name" id="name" required
+                                   aria-required="true"
+                                   @error('name') aria-invalid="true" aria-describedby="name-error" @enderror
+                                   class="w-full px-0 py-3 bg-transparent border-0 border-b-2 border-brand-brown/20 focus:border-brand-gold focus:ring-0 transition-colors outline-none font-serif text-brand-brown placeholder-brand-brown/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold rounded" placeholder="Tulis nama Anda" value="{{ old('name') }}">
+                            @error('name')
+                                <p id="name-error" class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <div class="space-y-2">
-                            <label for="email" class="text-sm font-bold text-gray-700 uppercase tracking-wider">Alamat Email</label>
-                            <input type="email" name="email" id="email" required placeholder="Contoh: budi@email.com"
-                                   class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:border-brand-red focus:ring-4 focus:ring-brand-red/5 transition-all outline-none">
+                        <div>
+                            <label for="email" class="text-xs font-bold text-brand-brown/70 uppercase tracking-widest mb-2 block">@lang('pages.email') <span class="text-red-500" aria-hidden="true">*</span></label>
+                            <input type="email" name="email" id="email" required
+                                   aria-required="true"
+                                   @error('email') aria-invalid="true" aria-describedby="email-error" @enderror
+                                   class="w-full px-0 py-3 bg-transparent border-0 border-b-2 border-brand-brown/20 focus:border-brand-gold focus:ring-0 transition-colors outline-none font-serif text-brand-brown placeholder-brand-brown/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold rounded" placeholder="nama@email.com" value="{{ old('email') }}">
+                            @error('email')
+                                <p id="email-error" class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
-                    <div class="space-y-2">
-                        <label for="subject" class="text-sm font-bold text-gray-700 uppercase tracking-wider">Subjek Pesan</label>
-                        <input type="text" name="subject" id="subject" required placeholder="Contoh: Tanya Harga Batik Tulis"
-                               class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:border-brand-red focus:ring-4 focus:ring-brand-red/5 transition-all outline-none">
+                    <div>
+                        <label for="subject" class="text-xs font-bold text-brand-brown/70 uppercase tracking-widest mb-2 block">@lang('pages.subject') <span class="text-red-500" aria-hidden="true">*</span></label>
+                        <input type="text" name="subject" id="subject" required
+                               aria-required="true"
+                               @error('subject') aria-invalid="true" aria-describedby="subject-error" @enderror
+                               class="w-full px-0 py-3 bg-transparent border-0 border-b-2 border-brand-brown/20 focus:border-brand-gold focus:ring-0 transition-colors outline-none font-serif text-brand-brown placeholder-brand-brown/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold rounded" placeholder="Tentang apa pesan ini?" value="{{ old('subject') }}">
+                        @error('subject')
+                            <p id="subject-error" class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
-                    <div class="space-y-2">
-                        <label for="message" class="text-sm font-bold text-gray-700 uppercase tracking-wider">Pesan Anda</label>
-                        <textarea name="message" id="message" rows="5" required placeholder="Tuliskan pesan atau pertanyaan Anda di sini..."
-                                  class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:border-brand-red focus:ring-4 focus:ring-brand-red/5 transition-all outline-none resize-none"></textarea>
+                    <div>
+                        <label for="message" class="text-xs font-bold text-brand-brown/70 uppercase tracking-widest mb-2 block">@lang('pages.message') <span class="text-red-500" aria-hidden="true">*</span></label>
+                        <textarea name="message" id="message" rows="4" required
+                                  aria-required="true"
+                                  @error('message') aria-invalid="true" aria-describedby="message-error" @enderror
+                                  class="w-full px-0 py-3 bg-transparent border-0 border-b-2 border-brand-brown/20 focus:border-brand-gold focus:ring-0 transition-colors outline-none font-serif text-brand-brown placeholder-brand-brown/30 resize-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold rounded" placeholder="Tulis pesan Anda di sini...">{{ old('message') }}</textarea>
+                        @error('message')
+                            <p id="message-error" class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
-                    <button type="submit" class="btn-primary w-full py-5 text-lg font-bold shadow-lg shadow-brand-red/20 transform hover:-translate-y-1 transition-all">
-                        Kirim Pesan Sekarang
-                    </button>
+                    <div class="pt-4">
+                        <button type="submit" class="w-full py-5 bg-brand-brown text-brand-ivory font-bold uppercase tracking-widest text-sm rounded-2xl hover:bg-brand-gold hover:text-white transition-all shadow-xl shadow-brand-brown/20 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold focus-visible:ring-offset-2">
+                            @lang('pages.send_btn')
+                        </button>
+                    </div>
                 </form>
             </div>
-
-            {{-- Contact Cards --}}
-            <div class="space-y-8 order-1 lg:order-2">
-                <div>
-                    <h2 class="text-3xl font-serif mb-4 leading-tight">Metode Lainnya</h2>
-                    <p class="text-gray-500 mb-8">Pilih cara yang paling nyaman bagi Anda untuk menghubungi kami.</p>
-                </div>
-                
-                <div class="grid gap-6">
-                    {{-- WhatsApp --}}
-                    <a href="https://wa.me/{{ \App\Models\Setting::get('whatsapp', '6281234567890') }}" target="_blank" 
-                       class="group bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-[#25D366]/30 hover:shadow-lg transition-all flex items-center gap-6">
-                        <div class="w-16 h-16 rounded-full bg-[#25D366]/10 flex items-center justify-center shrink-0 group-hover:bg-[#25D366]/20 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#25D366">
-                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg group-hover:text-brand-red transition-colors">WhatsApp</h3>
-                            <p class="text-gray-500 text-sm mb-1">Respons paling cepat</p>
-                            <p class="text-[#25D366] font-bold">+{{ \App\Models\Setting::get('whatsapp', '62 812-3456-7890') }}</p>
-                        </div>
-                    </a>
-
-                    {{-- Email --}}
-                    <a href="mailto:{{ \App\Models\Setting::get('email', 'info@batikjambiberkah.com') }}" 
-                       class="group bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-brand-red/30 hover:shadow-lg transition-all flex items-center gap-6">
-                        <div class="w-16 h-16 rounded-full bg-brand-red/10 flex items-center justify-center shrink-0 group-hover:bg-brand-red/20 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C02424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect width="20" height="16" x="2" y="4" rx="2"/>
-                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg group-hover:text-brand-red transition-colors">Alamat Email</h3>
-                            <p class="text-gray-500 text-sm mb-1">Untuk penawaran detail</p>
-                            <p class="text-brand-red font-bold">{{ \App\Models\Setting::get('email', 'info@batikjambiberkah.com') }}</p>
-                        </div>
-                    </a>
-
-                    {{-- Workshop --}}
-                    <div class="bg-brand-cream rounded-2xl p-6 border border-brand-gold/10 flex items-center gap-6">
-                        <div class="w-16 h-16 rounded-full bg-brand-gold/10 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#DAA520" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                                <circle cx="12" cy="10" r="3"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg">Workshop Kami</h3>
-                            <p class="text-gray-500 text-xs mb-1">Buka Senin - Sabtu</p>
-                            <p class="text-gray-700 text-sm leading-snug">{!! nl2br(e(\App\Models\Setting::get('address', 'Jambi, Indonesia'))) !!}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
-
-        {{-- WhatsApp CTA Big --}}
-        <div class="bg-brand-red rounded-3xl p-12 text-center text-white overflow-hidden relative">
-            <div class="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-x-12 -translate-y-12"></div>
-            <div class="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full translate-x-12 translate-y-12"></div>
-            <div class="relative z-10">
-                <p class="text-brand-gold font-medium uppercase tracking-widest text-sm mb-4">Cara Tercepat</p>
-                <h2 class="text-3xl md:text-4xl font-serif mb-6">Pesan Langsung via WhatsApp</h2>
-                <p class="text-white/80 max-w-xl mx-auto mb-8 text-lg">
-                    Ceritakan kebutuhan Anda — batik tulis, batik cap, atau custom motif. Tim kami siap memberikan penawaran terbaik.
-                </p>
-                <a href="https://wa.me/{{ \App\Models\Setting::get('whatsapp', '6281234567890') }}?text={{ urlencode('Halo ' . \App\Models\Setting::get('site_name', 'Batik Jambi Berkah') . '! Saya ingin tahu lebih lanjut tentang produk batik Anda.') }}" 
-                   target="_blank"
-                   class="inline-flex items-center gap-3 bg-[#25D366] text-white px-10 py-5 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                    </svg>
-                    Chat WhatsApp Sekarang
-                </a>
-            </div>
-        </div>
+        
     </div>
 </section>
 
-{{-- Social Media --}}
-<section class="py-16 px-4 bg-batik-subtle">
-    <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-3xl font-serif mb-4">Ikuti Kami</h2>
-        <p class="text-gray-500 mb-10">Dapatkan inspirasi batik terbaru dan update koleksi kami di media sosial.</p>
-        <div class="flex justify-center gap-6">
-            @foreach([
-                ['Instagram', \App\Models\Setting::get('instagram', 'https://instagram.com/batikjambiberkah'), '#E1306C', 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z'],
-                ['Facebook', \App\Models\Setting::get('facebook', 'https://facebook.com/batikjambiberkah'), '#1877F2', 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z'],
-                ['TikTok', \App\Models\Setting::get('tiktok', 'https://tiktok.com/@batikjambiberkah'), '#000000', 'M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z'],
-            ] as $social)
-            <a href="{{ $social[1] }}" target="_blank"
-               class="w-14 h-14 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-md"
-               style="background-color: {{ $social[2] }}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
-                    <path d="{{ $social[3] }}"/>
-                </svg>
-            </a>
+<!-- FAQ Section -->
+<section aria-labelledby="faq-heading" class="py-24 px-6 bg-white border-t border-brand-brown/10">
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-16 fade-up" x-intersect="$el.classList.add('in-view')">
+            <span class="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-3 block">Bantuan</span>
+            <h2 id="faq-heading" class="text-4xl font-serif text-brand-brown">Pertanyaan Umum</h2>
+        </div>
+
+        <div class="space-y-4" x-data="{ activeAccordion: null }">
+            @php
+                $faqs = [
+                    ['q' => 'Bagaimana cara memesan produk custom?', 'a' => 'Untuk pesanan custom (desain, ukuran, atau warna khusus), Anda bisa langsung menghubungi kami via WhatsApp. Tim pengrajin kami akan membantu mewujudkan keinginan Anda.'],
+                    ['q' => 'Apakah melayani pengiriman ke luar negeri?', 'a' => 'Ya, kami melayani pengiriman internasional ke beberapa negara. Biaya kirim akan disesuaikan dengan negara tujuan dan berat dimensi paket.'],
+                    ['q' => 'Berapa lama proses pembuatan produk pre-order?', 'a' => 'Waktu pengerjaan bervariasi tergantung kerumitan desain, biasanya memakan waktu antara 7 hingga 14 hari kerja.'],
+                    ['q' => 'Bagaimana cara merawat tas anyaman agar awet?', 'a' => 'Simpan di tempat kering dan tidak lembab. Bersihkan dengan sikat halus atau lap kering jika terkena debu. Hindari paparan sinar matahari langsung terlalu lama untuk menjaga warna serat.'],
+                ];
+            @endphp
+            @foreach($faqs as $index => $faq)
+            <div class="border border-brand-brown/10 rounded-2xl overflow-hidden bg-brand-ivory/30 fade-up" x-intersect="$el.classList.add('in-view')" style="transition-delay: {{ $index * 100 }}ms">
+                <button type="button" class="w-full px-6 py-5 flex items-center justify-between text-left focus-visible:outline-none focus-visible:bg-brand-ivory transition-colors" @click="activeAccordion === {{ $index }} ? activeAccordion = null : activeAccordion = {{ $index }}">
+                    <span class="font-bold text-brand-brown text-lg pr-4">{{ $faq['q'] }}</span>
+                    <svg class="w-5 h-5 text-brand-brown transform transition-transform duration-300" :class="{ 'rotate-180': activeAccordion === {{ $index }} }" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                <div class="px-6 overflow-hidden transition-all duration-300 max-h-0" :style="activeAccordion === {{ $index }} ? 'max-height: 500px;' : ''">
+                    <p class="pb-6 text-brand-brown/70 leading-relaxed font-serif">{{ $faq['a'] }}</p>
+                </div>
+            </div>
             @endforeach
         </div>
     </div>

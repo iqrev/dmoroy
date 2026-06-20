@@ -101,8 +101,8 @@ class ImportWordPress extends Command
                     $slug = (string) $cat['nicename'];
                     $name = (string) $cat;
 
-                    // Skip sub-types like batik-cap, batik-tulis (these are tags)
-                    if (in_array($slug, ['batik-cap', 'batik-tulis', 'simple', 'variable', 'ready-to-wear'])) {
+                    // Skip sub-types like UMKM-cap, UMKM-tulis (these are tags)
+                    if (in_array($slug, ['UMKM-cap', 'UMKM-tulis', 'simple', 'variable', 'ready-to-wear'])) {
                         continue;
                     }
 

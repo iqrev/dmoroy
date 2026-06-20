@@ -1,16 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Prata&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap');
 @import "tailwindcss";
 
 /* =============================================
    Theme Configuration (Tailwind v4 style)
    ============================================= */
 @theme {
-    --font-serif: 'Prata', serif;
-    --font-sans: 'Inter', sans-serif;
+    --font-serif: 'Fraunces', serif;
+    --font-sans: 'DM Sans', sans-serif;
 
-    --color-brand-red: #C02424;
-    --color-brand-gold: #DAA520;
-    --color-brand-cream: #FDFCFB;
+    --color-brand-brown: #996515;
+    --color-brand-brown-hover: #7A5111;
+    --color-brand-gold: #C5A880;
+    --color-brand-ivory: #FAF7F2;
 }
 
 /* =============================================
@@ -19,10 +20,10 @@
 @layer base {
     body {
         font-family: var(--font-sans);
-        background-color: var(--color-brand-cream);
-        color: theme(colors.gray.900);
-        /* Subtle Batik Diamond Pattern */
-        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C02424' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        background-color: var(--color-brand-ivory);
+        color: #3e2723;
+        /* Subtle natural texture hint */
+        background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23C5A880' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
     }
 
     h1, h2, h3, h4, h5, h6 {
@@ -35,11 +36,11 @@
    ============================================= */
 @layer components {
     .btn-primary {
-        @apply bg-[#C02424] text-white px-6 py-3 rounded-full font-medium transition-all active:scale-95 hover:bg-[#a01d1d] inline-block;
+        @apply bg-[#996515] text-white px-8 py-3.5 rounded font-medium tracking-wide transition-all duration-300 active:scale-95 hover:bg-[#7A5111] shadow-sm hover:shadow-md inline-block;
     }
 
-    .card-batik {
-        @apply bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden;
+    .card-UMKM {
+        @apply bg-white rounded shadow-sm border border-[#FAF7F2] overflow-hidden transition-all duration-500 hover:shadow-lg hover:-translate-y-1;
     }
 
     /* Dropdown Styles */
@@ -53,7 +54,7 @@
         @apply opacity-100 visible translate-y-0;
     }
     .dropdown-item {
-        @apply block px-5 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-brand-red transition-colors whitespace-nowrap;
+        @apply block px-5 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-brand-brown transition-colors whitespace-nowrap;
     }
     .dropdown-submenu {
         @apply relative;
@@ -70,22 +71,25 @@
    Utility Classes
    ============================================= */
 
-/* Batik Background Utility */
-.bg-batik-subtle {
-    background-color: #FAF8F5;
-    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1h98v98H1z' fill='none' stroke='%23C02424' stroke-opacity='0.08' stroke-width='0.5'/%3E%3Ccircle cx='50' cy='50' r='4' fill='%23C02424' fill-opacity='0.04'/%3E%3Ccircle cx='1' cy='1' r='2' fill='%23C02424' fill-opacity='0.06'/%3E%3Ccircle cx='99' cy='1' r='2' fill='%23C02424' fill-opacity='0.06'/%3E%3Ccircle cx='1' cy='99' r='2' fill='%23C02424' fill-opacity='0.06'/%3E%3Ccircle cx='99' cy='99' r='2' fill='%23C02424' fill-opacity='0.06'/%3E%3C/svg%3E");
+/* UMKM Background Utility */
+.bg-UMKM-subtle {
+    background-color: #FAF7F2;
 }
 
 /* Brand color utilities */
-.text-brand-red { color: #C02424; }
-.text-brand-gold { color: #DAA520; }
-.text-brand-cream { color: #FDFCFB; }
-.bg-brand-red { background-color: #C02424; }
-.bg-brand-gold { background-color: #DAA520; }
-.bg-brand-cream { background-color: #FDFCFB; }
-.border-brand-red { border-color: #C02424; }
-.border-brand-gold { border-color: #DAA520; }
-.border-brand-cream { border-color: #FDFCFB; }
+.text-brand-brown { color: #996515; }
+.text-brand-brown-hover { color: #7A5111; }
+.text-brand-gold { color: #C5A880; }
+.text-brand-ivory { color: #FAF7F2; }
+
+.bg-brand-brown { background-color: #996515; }
+.bg-brand-brown-hover { background-color: #7A5111; }
+.bg-brand-gold { background-color: #C5A880; }
+.bg-brand-ivory { background-color: #FAF7F2; }
+
+.border-brand-brown { border-color: #996515; }
+.border-brand-gold { border-color: #C5A880; }
+.border-brand-ivory { border-color: #FAF7F2; }
 
 /* Prose / Article Content Styles */
 .prose {
@@ -132,7 +136,7 @@
     font-style: italic;
 }
 .prose a {
-    color: #C02424;
+    color: #996515;
     text-decoration: underline;
 }
 .prose img {
@@ -193,3 +197,38 @@
 .delay-400 { animation-delay: 0.4s; }
 .delay-500 { animation-delay: 0.5s; }
 
+/* =============================================
+   Alpine & Interactive States
+   ============================================= */
+[x-cloak] { display: none !important; }
+
+/* Intersect Animations */
+.fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.fade-up.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+.zoom-in {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.zoom-in.in-view {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Hide number input spin buttons */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}

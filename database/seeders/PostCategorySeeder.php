@@ -53,7 +53,7 @@ class PostCategorySeeder extends Seeder
             Post::create([
                 'title' => 'Kegiatan ' . $cat->name . ' di ' . $cat->parent->name,
                 'slug' => Str::slug('Kegiatan ' . $cat->name . ' di ' . $cat->parent->name . '-' . rand(100, 999)),
-                'content' => 'Ini adalah konten contoh untuk artikel di kategori ' . $cat->name . ' yang berada di bawah induk ' . $cat->parent->name . '. Batik Jambi terus mendunia melalui berbagai ajang internasional maupun nasional.',
+                'content' => 'Ini adalah konten contoh untuk artikel di kategori ' . $cat->name . ' yang berada di bawah induk ' . $cat->parent->name . '. UMKM Jambi terus mendunia melalui berbagai ajang internasional maupun nasional.',
                 'image' => null,
                 'status' => 'published',
                 'category_id' => $cat->id,

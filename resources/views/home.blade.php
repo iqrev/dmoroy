@@ -1,192 +1,282 @@
 @extends('layouts.app')
 
-@section('title', \App\Models\Setting::get('site_name', 'Batik Jambi Berkah') . ' - Pusat Batik Jambi Autentik')
-@section('meta_description', \App\Models\Setting::get('tagline', 'Melestarikan warisan budaya melalui karya seni batik Jambi yang berkualitas dan bermakna.'))
+@section('title', \App\Models\Setting::get('site_name', "D'Moroy") . ' - Artisan Handmade')
+@section('meta_description', \App\Models\Setting::get('tagline', 'Menganyam Alam, Melestarikan Budaya Jambi.'))
 
 @section('content')
-@php
-    $heroVideoValue = \App\Models\Setting::get('hero_video_id', '6yK_qYnpxXk');
-    
-    // Extract YouTube ID if a full URL is provided
-    if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i', $heroVideoValue, $match)) {
-        $heroVideoId = $match[1];
-    } else {
-        $heroVideoId = $heroVideoValue;
-    }
-
-    $heroTitle = \App\Models\Setting::get('hero_title', 'Warisan Luhur Batik Jambi');
-    $heroSubtitle = \App\Models\Setting::get('hero_subtitle', 'Melestarikan keindahan motif tradisional Jambi yang sarat akan makna dan sejarah.');
-    $heroCtaText = \App\Models\Setting::get('hero_cta_text', 'Lihat Katalog');
-    $heroCtaLink = \App\Models\Setting::get('hero_cta_link', '/products');
-@endphp
-
-<!-- Hero Section -->
-<section class="relative w-full py-40 overflow-hidden bg-black flex items-center justify-center text-center px-4">
-    <!-- YouTube Background -->
-    <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
-        <iframe 
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-            style="width: 177.77vh; min-width: 100%; height: 56.25vw; min-height: 100%;"
-            src="https://www.youtube.com/embed/{{ $heroVideoId }}?autoplay=1&mute=1&controls=0&loop=1&playlist={{ $heroVideoId }}&rel=0&showinfo=0&iv_load_policy=3&modestbranding=1&enablejsapi=1" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-        </iframe>
-    </div>
-    
-    <!-- Dark Overlay -->
-    <div class="absolute inset-0 bg-black/80"></div>
-
-    <!-- Centered Content -->
-    <div class="relative z-10 max-w-5xl mx-auto">
-        <h1 class="text-4xl md:text-7xl text-white font-serif mb-8 leading-tight animate-fade-in-up">
-            {!! $heroTitle !!}
+<!-- Hero Section (Editorial Artisan Full-Bleed Split) -->
+<section aria-labelledby="hero-heading" class="relative w-full min-h-[90vh] bg-brand-ivory flex flex-col lg:flex-row overflow-hidden border-b border-brand-brown/10">
+    <!-- Left: Content -->
+    <div class="w-full lg:w-1/2 flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 z-10">
+        <div class="mb-8 flex items-center gap-4 animate-fade-in-up" aria-hidden="true">
+            <span class="w-12 h-px bg-brand-gold"></span>
+            <span class="text-brand-gold font-bold tracking-[0.25em] uppercase text-[10px]">@lang('home.premium_collection')</span>
+        </div>
+        <h1 id="hero-heading" class="text-5xl lg:text-7xl xl:text-[5rem] text-brand-brown font-serif mb-8 leading-[1.05] tracking-tight animate-fade-in-up delay-100">
+            @if(app()->getLocale() == 'en')
+                Premium Woven Bag Collection
+            @else
+                {!! \App\Models\Setting::get('hero_title', 'Menganyam Alam,<br><span class="italic text-brand-gold font-light">Melestarikan Budaya</span> Jambi.') !!}
+            @endif
         </h1>
-        <p class="text-white/80 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-100">
-            {{ $heroSubtitle }}
+        <p class="text-brand-brown/70 text-lg lg:text-xl mb-12 max-w-lg leading-relaxed animate-fade-in-up delay-200 font-serif">
+            @if(app()->getLocale() == 'en')
+                A classy ethnic touch made from natural pandan fibers and selected leather.
+            @else
+                {{ \App\Models\Setting::get('hero_subtitle', "D'Moroy menghadirkan kerajinan anyaman serat alam premium. Mengangkat warisan budaya lokal dengan desain proporsional dan ramah lingkungan.") }}
+            @endif
         </p>
-        <div class="flex flex-wrap justify-center gap-4 animate-fade-in-up delay-200">
-            <a href="{{ $heroCtaLink }}" class="btn-primary px-10 py-4 text-lg shadow-xl shadow-brand-red/20 transform hover:-translate-y-1 transition-all">
-                {{ $heroCtaText }}
+        <div class="flex flex-col sm:flex-row gap-5 animate-fade-in-up delay-300">
+            <a href="{{ \App\Models\Setting::get('hero_cta_link', '/products') }}" class="inline-flex justify-center items-center px-10 py-4 bg-brand-brown text-brand-ivory font-bold uppercase tracking-widest text-xs hover:bg-brand-gold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold focus-visible:ring-offset-2 shadow-xl shadow-brand-brown/10">
+                @lang('home.explore_collection')
             </a>
-            <a href="/about" class="px-10 py-4 rounded-full font-medium text-white border border-white/30 backdrop-blur-md hover:bg-white/10 transition-all transform hover:-translate-y-1">
-                Tentang Kami
+            <a href="/about" class="inline-flex justify-center items-center px-10 py-4 border border-brand-brown/20 text-brand-brown font-bold uppercase tracking-widest text-xs hover:border-brand-brown hover:bg-brand-brown/5 transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold focus-visible:ring-offset-2">
+                @lang('home.our_story')
             </a>
         </div>
     </div>
-</section>
-
-<!-- Categories Section -->
-<section class="py-16 px-4 bg-batik-subtle">
-    <div class="max-w-7xl mx-auto">
-        <div class="flex justify-between items-end mb-8">
+    
+    <!-- Right: Image -->
+    <div class="w-full lg:w-1/2 h-[60vh] lg:h-auto relative animate-fade-in-up delay-400">
+        <div class="absolute inset-0 bg-brand-brown/5 mix-blend-overlay z-10" aria-hidden="true"></div>
+        <img src="{{ asset('images/dmoroy/home_hero.jpg') }}" alt="Produk rajut eksklusif D'Moroy dengan serat alami" class="w-full h-full object-cover">
+        
+        <!-- Elegant Minimalist Badge -->
+        <div class="absolute bottom-0 left-0 bg-brand-ivory p-6 md:p-8 flex items-center gap-6 z-20 border-r border-t border-brand-brown/10" aria-hidden="true">
+            <div class="w-14 h-14 rounded-full border border-brand-brown/20 flex items-center justify-center text-brand-brown">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
             <div>
-                <h2 class="text-3xl mb-2 font-serif">Kategori Produk</h2>
-                <div class="w-16 h-1 bg-brand-red rounded-full"></div>
+                <p class="text-brand-brown font-serif italic text-xl leading-none mb-1">100%</p>
+                <p class="text-[10px] font-bold text-brand-brown/50 uppercase tracking-[0.2em]">@lang('home.natural_fiber')</p>
             </div>
-            <a href="/products" class="text-brand-red font-medium text-sm flex items-center gap-1">Lihat Semua <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            @forelse($categories as $category)
-                <a href="/products?category={{ $category->slug }}" class="card-batik relative group aspect-square">
-                    <img src="{{ $category->image_url ?: 'https://placehold.co/400x400/FDFCFB/C02424?text=' . $category->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-black/40 flex flex-col justify-end p-4">
-                        <h3 class="text-white font-bold">{{ $category->name }}</h3>
-                        <p class="text-white/70 text-xs">{{ $category->products_count }} Produk</p>
-                    </div>
-                </a>
-            @empty
-                <!-- Demo Categories if empty -->
-                @foreach(['Kain Batik', 'Busana', 'Aksesoris', 'Cinderamata'] as $demoCat)
-                <div class="card-batik relative group aspect-square">
-                    <div class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 font-serif italic text-2xl">{{ substr($demoCat, 0, 1) }}</div>
-                    <div class="absolute inset-0 bg-black/20 flex flex-col justify-end p-4">
-                        <h3 class="text-white font-bold">{{ $demoCat }}</h3>
-                    </div>
-                </div>
-                @endforeach
-            @endforelse
         </div>
     </div>
 </section>
 
-<!-- Featured Products (Mobile-First Simple Grid) -->
-<section class="py-16 px-4">
+<!-- Keunggulan Produk (Why Choose Us) -->
+<section aria-labelledby="features-heading" class="py-24 px-6 bg-white relative overflow-hidden">
     <div class="max-w-7xl mx-auto">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl mb-2 font-serif italic">Koleksi Terlaris</h2>
-            <p class="text-gray-500 max-w-md mx-auto">Pilih dari koleksi motif paling populer yang menjadi favorit para kolektor.</p>
+        <div class="text-center mb-16">
+            <span class="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-3 block" aria-hidden="true">@lang('home.our_values')</span>
+            <h2 id="features-heading" class="text-4xl md:text-5xl font-serif text-brand-brown">@lang('home.masterpiece_heading')</h2>
         </div>
 
-        <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            @forelse($featuredProducts as $product)
-                <div class="group">
-                    <a href="/products/{{ $product->slug }}" class="block card-batik aspect-[3/4] mb-4 relative">
-                        @php $img = !empty($product->media_urls) ? $product->media_urls[0] : null; @endphp
-                        <img src="{{ $img ?: 'https://placehold.co/400x600/FDFCFB/C02424?text=' . $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        @if($product->is_featured)
-                            <span class="absolute top-4 right-4 bg-brand-gold text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-widest">Unggulan</span>
-                        @endif
-                    </a>
-                    <a href="/products/{{ $product->slug }}" class="block">
-                        <h3 class="font-bold text-lg mb-1 group-hover:text-brand-red transition-colors">{{ $product->name }}</h3>
-                        <p class="text-brand-red font-medium">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
-                    </a>
+        <div class="grid md:grid-cols-3 gap-8 lg:gap-12">
+            <!-- Feature 1 -->
+            <article class="group p-8 rounded-3xl bg-brand-ivory/50 hover:bg-brand-ivory transition-colors border border-brand-brown/5">
+                <div class="w-14 h-14 rounded-full bg-brand-brown/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform" aria-hidden="true">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-brand-brown"><path d="M12 2L2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
                 </div>
-            @empty
-                <!-- Demo Products -->
-                @foreach(range(1, 4) as $i)
-                <div class="opacity-50">
-                    <div class="card-batik aspect-[3/4] mb-4 bg-gray-50 flex items-center justify-center text-gray-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-                    </div>
-                    <div class="h-4 w-3/4 bg-gray-100 rounded mb-2"></div>
-                    <div class="h-4 w-1/2 bg-gray-50 rounded"></div>
-                </div>
-                @endforeach
-            @endforelse
-        </div>
+                <h3 class="text-2xl font-serif text-brand-brown mb-4">@lang('home.feature1_title')</h3>
+                <p class="text-brand-brown/70 leading-relaxed">@lang('home.feature1_desc')</p>
+            </article>
 
-        <div class="text-center mt-12">
-            <a href="/products" class="inline-flex items-center gap-2 font-bold px-8 py-4 border-2 border-brand-red text-brand-red rounded-full hover:bg-brand-red hover:!text-white transition-all">
-                Jelajahi Semua Produk
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
+            <!-- Feature 2 -->
+            <article class="group p-8 rounded-3xl bg-brand-ivory/50 hover:bg-brand-ivory transition-colors border border-brand-brown/5">
+                <div class="w-14 h-14 rounded-full bg-brand-brown/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform" aria-hidden="true">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-brand-brown"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </div>
+                <h3 class="text-2xl font-serif text-brand-brown mb-4">@lang('home.feature2_title')</h3>
+                <p class="text-brand-brown/70 leading-relaxed">@lang('home.feature2_desc')</p>
+            </article>
+
+            <!-- Feature 3 -->
+            <article class="group p-8 rounded-3xl bg-brand-ivory/50 hover:bg-brand-ivory transition-colors border border-brand-brown/5">
+                <div class="w-14 h-14 rounded-full bg-brand-brown/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform" aria-hidden="true">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-brand-brown"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"/></svg>
+                </div>
+                <h3 class="text-2xl font-serif text-brand-brown mb-4">@lang('home.feature3_title')</h3>
+                <p class="text-brand-brown/70 leading-relaxed">@lang('home.feature3_desc')</p>
+            </article>
         </div>
     </div>
 </section>
 
-<!-- History Snippet -->
-<section class="py-20 bg-brand-red text-white overflow-hidden relative">
-    <!-- Decorative Batik Motif in Background -->
-    <div class="absolute top-0 right-0 w-64 h-64 text-white/5 -rotate-12 translate-x-32 -translate-y-32">
-        <svg viewBox="0 0 100 100" class="w-full h-full fill-current">
-            <path d="M50 0 L100 50 L50 100 L0 50 Z" />
-        </svg>
-    </div>
+<!-- Produk & Layanan (Our Products) - Masonry Editorial -->
+<section aria-labelledby="products-heading" class="py-24 px-4 bg-brand-ivory">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div class="max-w-2xl">
+                <span class="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-3 block" aria-hidden="true">@lang('home.our_collection')</span>
+                <h2 id="products-heading" class="text-4xl md:text-5xl font-serif text-brand-brown mb-4">@lang('home.collection_heading')</h2>
+                <p class="text-brand-brown/70 text-lg">@lang('home.collection_desc')</p>
+            </div>
+            <a href="/products" class="shrink-0 text-brand-brown font-bold border-b-2 border-brand-gold hover:text-brand-gold transition-colors pb-1 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold rounded">@lang('home.view_all')</a>
+        </div>
 
-    <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+        <!-- Clean 3-Column Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8" role="list">
+            @php 
+                $demoProducts = ['Tas Anyaman Elegan', 'Clutch Etnik Modern', 'Tote Bag Serat Alam'];
+            @endphp
+            @forelse($featuredProducts->take(3) as $product)
+                @php 
+                    // Map product name to specific image for dummy data
+                    $fallbackImg = asset('images/dmoroy/fiber_texture.png');
+                    $nameLower = strtolower($product->name);
+                    if (str_contains($nameLower, 'biaso bae')) {
+                        $fallbackImg = asset('images/dmoroy/bag_biaso_bae.png');
+                    } elseif (str_contains($nameLower, 'sangkek')) {
+                        $fallbackImg = asset('images/dmoroy/bag_sangkek.png');
+                    } elseif (str_contains($nameLower, 'canteek')) {
+                        $fallbackImg = asset('images/dmoroy/bag_canteek.png');
+                    }
+                    
+                    $img = !empty($product->media_urls) ? $product->media_urls[0] : $fallbackImg;
+                @endphp
+                
+                <article role="listitem">
+                    <a href="/products/{{ $product->slug }}" class="group block focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold rounded-2xl h-full flex flex-col">
+                        <div class="relative overflow-hidden rounded-2xl mb-5 aspect-[4/5] bg-brand-ivory/50 shadow-sm border border-brand-brown/5">
+                            <img src="{{ $img }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
+                            <div class="absolute inset-0 bg-brand-brown/0 group-hover:bg-brand-brown/10 transition-colors duration-500" aria-hidden="true"></div>
+                            @if($product->is_featured)
+                                <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-brand-brown text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-widest shadow-sm">@lang('home.featured')</span>
+                            @endif
+                        </div>
+                        <div class="px-2 flex-grow flex flex-col">
+                            <h3 class="font-serif text-2xl mb-2 group-hover:text-brand-gold transition-colors text-brand-brown leading-tight">{{ $product->name }}</h3>
+                            <p class="text-brand-brown font-medium opacity-80 mt-auto">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                        </div>
+                    </a>
+                </article>
+            @empty
+                <!-- Demo Grid -->
+                @foreach(range(1, 3) as $i)
+                    <article class="group block opacity-70" role="listitem">
+                        <div class="relative overflow-hidden rounded-2xl mb-5 aspect-[4/5] bg-brand-brown/5 flex items-center justify-center border border-brand-brown/10" aria-hidden="true">
+                            <span class="font-serif italic text-brand-brown/20 text-4xl">{{ $i }}</span>
+                        </div>
+                        <div class="px-2">
+                            <h3 class="font-serif text-2xl mb-2 text-brand-brown">{{ $demoProducts[$i-1] }}</h3>
+                        </div>
+                    </article>
+                @endforeach
+            @endforelse
+        </div>
+    </div>
+</section>
+
+<!-- Pemberdayaan Sosial (Full-width Parallax) -->
+<section aria-labelledby="social-heading" class="relative py-32 bg-brand-brown text-brand-ivory overflow-hidden">
+    <div class="absolute inset-0 z-0 opacity-20 bg-cover bg-center bg-fixed mix-blend-overlay" style="background-image: url('{{ asset('images/dmoroy/studio.png') }}');" aria-hidden="true"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-brand-brown via-brand-brown/95 to-brand-brown/60 z-10" aria-hidden="true"></div>
+    
+    <div class="relative z-20 max-w-7xl mx-auto px-6 grid md:grid-cols-2 items-center gap-16">
         <div>
-            <h2 class="text-4xl font-serif mb-6 leading-tight">Warisan Budaya <br>Dibalik Sehelai Kain</h2>
-            <p class="text-white/80 text-lg mb-8">Batik Jambi bukan sekadar kain, ia adalah rekaman sejarah dan kearifan lokal yang telah diwariskan turun-temurun. Setiap tarikan canting dan tetesan malam menceritakan filosofi hidup masyarakat Jambi.</p>
-            <a href="/about" class="inline-block px-8 py-4 bg-white text-brand-red rounded-full font-bold hover:bg-opacity-90 transition-all">Pelajari Sejarah Kami</a>
+            <span class="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-4 block" aria-hidden="true">@lang('home.social_empowerment')</span>
+            <h2 id="social-heading" class="text-4xl md:text-6xl font-serif mb-8 leading-tight">@lang('home.grow_together')</h2>
+            <div class="w-20 h-1 bg-brand-gold mb-8" aria-hidden="true"></div>
+            <p class="text-brand-ivory/80 text-lg leading-relaxed mb-6">
+                @lang('home.social_desc1')
+            </p>
+            <p class="text-brand-ivory/80 text-lg leading-relaxed">
+                @lang('home.social_desc2')
+            </p>
         </div>
-        <div class="relative">
-            <div class="aspect-video rounded-2xl overflow-hidden shadow-2xl skew-y-3">
-                <img src="{{ asset('images/hero.png') }}" class="w-full h-full object-cover">
-            </div>
-            <div class="absolute -bottom-6 -left-6 bg-brand-gold p-6 rounded-2xl shadow-xl -rotate-3 text-white">
-                <p class="text-3xl font-serif">25+</p>
-                <p class="text-sm font-medium uppercase tracking-wider">Tahun Berkarya</p>
+        <div class="hidden md:block" aria-hidden="true">
+            <!-- Dekoratif -->
+            <div class="relative w-full aspect-square border border-brand-gold/30 rounded-full flex items-center justify-center p-8">
+                <div class="w-full h-full border border-brand-ivory/20 rounded-full flex items-center justify-center animate-[spin_60s_linear_infinite]">
+                    <svg viewBox="0 0 100 100" class="w-3/4 h-3/4 text-brand-ivory/10"><path fill="currentColor" d="M50 0 C77.6 0 100 22.4 100 50 C100 77.6 77.6 100 50 100 C22.4 100 0 77.6 0 50 C0 22.4 22.4 0 50 0 Z M50 10 C27.9 10 10 27.9 10 50 C10 72.1 27.9 90 50 90 C72.1 90 90 72.1 90 50 C90 27.9 72.1 10 50 10 Z"/></svg>
+                </div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- Testimonial Section -->
+<section aria-labelledby="testimonial-heading" class="py-24 px-6 bg-brand-brown text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-5 bg-cover bg-center mix-blend-overlay" style="background-image: url('{{ asset('images/dmoroy/fiber_texture.png') }}');"></div>
+    <div class="max-w-7xl mx-auto relative z-10">
+        <div class="text-center mb-16 fade-up" x-intersect="$el.classList.add('in-view')">
+            <span class="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-3 block">@lang('home.testimonials')</span>
+            <h2 id="testimonial-heading" class="text-4xl md:text-5xl font-serif text-brand-ivory">@lang('home.what_they_say')</h2>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8" role="list">
+            @php
+                $testimonials = [
+                    ['name' => 'Siti Aminah', 'role' => 'Kolektor Tas Etnik', 'text' => 'Anyaman D\'Moroy sangat halus dan rapi. Desainnya modern namun tetap mempertahankan nilai tradisional Jambi. Sangat direkomendasikan!'],
+                    ['name' => 'Budi Santoso', 'role' => 'Pengusaha', 'text' => 'Saya membeli tas rajut untuk hadiah istri, dia sangat menyukainya. Kualitas material alamnya terasa mewah dan awet digunakan sehari-hari.'],
+                    ['name' => 'Rina Wijaya', 'role' => 'Pecinta Fashion', 'text' => 'Bangga bisa memakai produk lokal dengan kualitas ekspor. Setiap detail anyamannya menceritakan kisah pengrajin yang luar biasa.'],
+                ];
+            @endphp
+            @foreach($testimonials as $testi)
+            <div class="bg-white/10 backdrop-blur-sm p-8 rounded-3xl border border-white/10 fade-up" x-intersect="$el.classList.add('in-view')" style="transition-delay: {{ $loop->index * 150 }}ms">
+                <div class="text-brand-gold mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                </div>
+                <p class="text-white/90 leading-relaxed mb-6 font-serif italic text-lg">"{{ $testi['text'] }}"</p>
+                <div>
+                    <h4 class="font-bold text-brand-ivory">{{ $testi['name'] }}</h4>
+                    <p class="text-sm text-brand-gold">{{ $testi['role'] }}</p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+<!-- Instagram Gallery -->
+<section aria-labelledby="gallery-heading" class="py-24 bg-brand-ivory overflow-hidden border-b border-brand-brown/10">
+    <div class="max-w-7xl mx-auto px-6 text-center mb-16 fade-up" x-intersect="$el.classList.add('in-view')">
+        <span class="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-3 block">@lang('home.customer_gallery')</span>
+        <h2 id="gallery-heading" class="text-4xl md:text-5xl font-serif text-brand-brown mb-4">@lang('home.gallery_heading')</h2>
+        <p class="text-brand-brown/60">@lang('home.gallery_desc') <a href="#" class="text-brand-gold hover:underline">@dmoroy.id</a></p>
+    </div>
+    
+    <div class="flex overflow-x-auto pb-8 snap-x snap-mandatory gap-4 px-6 md:px-12 lg:justify-center" style="scrollbar-width: none;">
+        @php
+            $igImages = [
+                asset('images/dmoroy/bag_biaso_bae.png'),
+                asset('images/dmoroy/hero_knit.png'),
+                asset('images/dmoroy/bag_sangkek.png'),
+                asset('images/dmoroy/bag_canteek.png'),
+                asset('images/dmoroy/hero_woven.png'),
+            ];
+        @endphp
+        @foreach($igImages as $img)
+        <div class="flex-none w-64 h-64 md:w-72 md:h-72 rounded-2xl overflow-hidden relative group snap-center fade-up" x-intersect="$el.classList.add('in-view')" style="transition-delay: {{ $loop->index * 100 }}ms">
+            <img src="{{ $img }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Instagram Post {{ $loop->iteration }}">
+            <div class="absolute inset-0 bg-brand-brown/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </div>
+        </div>
+        @endforeach
     </div>
 </section>
 
 <!-- Blog Section -->
-<section class="py-16 px-4">
-    <div class="max-w-7xl mx-auto text-center mb-12">
-        <h2 class="text-3xl font-serif">Edukasi & Wawasan Batik</h2>
-        <div class="w-16 h-1 bg-brand-gold mx-auto mt-4 rounded-full"></div>
+<section aria-labelledby="blog-heading" class="py-24 px-6 bg-white">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+        <div>
+            <span class="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-3 block" aria-hidden="true">@lang('home.journal_insights')</span>
+            <h2 id="blog-heading" class="text-4xl font-serif text-brand-brown">@lang('home.culture_inspiration')</h2>
+        </div>
+        <a href="/posts" class="text-brand-brown font-bold border-b-2 border-brand-gold hover:text-brand-gold transition-colors pb-1 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold rounded">@lang('home.read_more')</a>
     </div>
 
-    <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8 text-left">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8" role="list">
         @forelse($latestPosts as $post)
-            <a href="/posts/{{ $post->slug }}" class="group">
-                <div class="aspect-video rounded-xl overflow-hidden mb-4">
-                    <img src="{{ $post->image_url ?: 'https://placehold.co/600x400' }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                </div>
-                <h3 class="font-bold text-xl mb-2">{{ $post->title }}</h3>
-                <p class="text-gray-500 text-sm line-clamp-2">{{ strip_tags($post->content) }}</p>
-            </a>
+            <article role="listitem" class="border-t border-brand-brown/10 pt-6">
+                <a href="/posts/{{ $post->slug }}" class="group block focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold rounded p-2 -m-2">
+                    <span class="text-brand-gold font-bold text-[10px] tracking-widest uppercase mb-3 block" aria-hidden="true">{{ $post->created_at->format('M d, Y') }}</span>
+                    <h3 class="font-serif text-2xl mb-4 text-brand-brown group-hover:text-brand-gold transition-colors leading-snug line-clamp-2">{{ $post->title }}</h3>
+                    <div class="aspect-video rounded-xl overflow-hidden mb-5">
+                        <img src="{{ $post->image_url ?: asset('images/dmoroy/yarn.png') }}" alt="" role="presentation" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <p class="text-brand-brown/70 text-sm line-clamp-3 leading-relaxed">{{ strip_tags($post->content) }}</p>
+                </a>
+            </article>
         @empty
-            @foreach(['Filosofi Motif Biji Timun', 'Cara Merawat Batik Tulis', 'Sejarah Batik Jambi'] as $demoPost)
-            <div class="group opacity-70">
-                <div class="aspect-video rounded-xl bg-gray-100 mb-4"></div>
-                <h3 class="font-bold text-xl mb-2">{{ $demoPost }}</h3>
-                <p class="text-gray-400 text-sm">Pelajari lebih dalam tentang warisan budaya...</p>
-            </div>
+            @foreach(['Melestarikan Budaya Lokal Melalui Karya', 'Proses Dibalik Pembuatan Kerajinan', 'Tips Merawat Anyaman Serat Alam'] as $demoPost)
+            <article role="listitem" class="group border-t border-brand-brown/10 pt-6 opacity-70">
+                <span class="text-brand-gold font-bold text-[10px] tracking-widest uppercase mb-3 block" aria-hidden="true">@lang('home.today')</span>
+                <h3 class="font-serif text-2xl mb-4 text-brand-brown">{{ $demoPost }}</h3>
+                <div class="aspect-video rounded-xl bg-brand-ivory mb-5" aria-hidden="true"></div>
+            </article>
             @endforeach
         @endforelse
     </div>

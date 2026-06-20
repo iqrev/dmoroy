@@ -17,8 +17,8 @@
 
     @if(session('error'))
     <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
-         class="pointer-events-auto bg-white border-l-4 border-brand-red rounded-xl shadow-2xl p-4 flex items-center gap-4 min-w-[320px] animate-fade-in-up">
-        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-brand-red shrink-0">
+         class="pointer-events-auto bg-white border-l-4 border-brand-brown rounded-xl shadow-2xl p-4 flex items-center gap-4 min-w-[320px] animate-fade-in-up">
+        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-brand-brown shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         </div>
         <div class="flex-1">

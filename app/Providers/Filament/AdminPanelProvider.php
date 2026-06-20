@@ -27,11 +27,11 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName('Batik Jambi Berkah')
+            ->brandName('UMKM Blueprint')
             ->font('Plus Jakarta Sans')
             ->sidebarCollapsibleOnDesktop()
             ->colors([
-                'primary' => \Filament\Support\Colors\Color::hex('#8b0000'),
+                'primary' => \Filament\Support\Colors\Color::hex('#4B5563'),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

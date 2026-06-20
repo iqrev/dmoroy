@@ -33,7 +33,7 @@ class User extends Authenticatable implements FilamentUser
     {
         // Allow all verified users or specific emails to access the panel
         return str_ends_with($this->email, '@websitejambi.com') || 
-               str_ends_with($this->email, '@batikjambiberkah.com');
+               str_ends_with($this->email, '@UMKMjambiberkah.com');
     }
 
     /**

@@ -18,6 +18,9 @@ class MainController extends Controller
         $categories = Category::withCount('products')->get()
             ->sortBy(fn ($category) => strtolower($category->name) === 'lainnya');
         $featuredProducts = Product::where('is_featured', true)->where('status', 'published')->latest()->take(6)->get();
+        if ($featuredProducts->isEmpty()) {
+            $featuredProducts = Product::where('status', 'published')->latest()->take(6)->get();
+        }
         $latestPosts = Post::where('status', 'published')->latest()->take(3)->get();
 
         return view('home', compact('sliders', 'categories', 'featuredProducts', 'latestPosts'));
