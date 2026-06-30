@@ -9,7 +9,7 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'slug', 'content', 'image', 'status'];
+    protected $fillable = ['title', 'slug', 'content', 'image', 'status', 'created_at'];
 
     public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {

@@ -5,41 +5,42 @@
 
 @section('content')
 <!-- Hero Section (Editorial Artisan Full-Bleed Split) -->
-<section aria-labelledby="hero-heading" class="relative w-full min-h-[90vh] bg-brand-ivory flex flex-col lg:flex-row overflow-hidden border-b border-brand-brown/10">
+<section aria-labelledby="hero-heading" class="relative w-full h-[85vh] lg:h-screen bg-brand-ivory flex flex-col lg:flex-row border-b border-brand-brown/10 overflow-hidden">
     <!-- Left: Content -->
-    <div class="w-full lg:w-1/2 flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 z-10">
-        <div class="mb-8 flex items-center gap-4 animate-fade-in-up" aria-hidden="true">
-            <span class="w-12 h-px bg-brand-gold"></span>
-            <span class="text-brand-gold font-bold tracking-[0.25em] uppercase text-[10px]">@lang('home.premium_collection')</span>
-        </div>
-        <h1 id="hero-heading" class="text-5xl lg:text-7xl xl:text-[5rem] text-brand-brown font-serif mb-8 leading-[1.05] tracking-tight animate-fade-in-up delay-100">
-            @if(app()->getLocale() == 'en')
-                Premium Woven Bag Collection
-            @else
-                {!! \App\Models\Setting::get('hero_title', 'Menganyam Alam,<br><span class="italic text-brand-gold font-light">Melestarikan Budaya</span> Jambi.') !!}
-            @endif
-        </h1>
-        <p class="text-brand-brown/70 text-lg lg:text-xl mb-12 max-w-lg leading-relaxed animate-fade-in-up delay-200 font-serif">
-            @if(app()->getLocale() == 'en')
-                A classy ethnic touch made from natural pandan fibers and selected leather.
-            @else
-                {{ \App\Models\Setting::get('hero_subtitle', "D'Moroy menghadirkan kerajinan anyaman serat alam premium. Mengangkat warisan budaya lokal dengan desain proporsional dan ramah lingkungan.") }}
-            @endif
-        </p>
-        <div class="flex flex-col sm:flex-row gap-5 animate-fade-in-up delay-300">
-            <a href="{{ \App\Models\Setting::get('hero_cta_link', '/products') }}" class="inline-flex justify-center items-center px-10 py-4 bg-brand-brown text-brand-ivory font-bold uppercase tracking-widest text-xs hover:bg-brand-gold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold focus-visible:ring-offset-2 shadow-xl shadow-brand-brown/10">
-                @lang('home.explore_collection')
-            </a>
-            <a href="/about" class="inline-flex justify-center items-center px-10 py-4 border border-brand-brown/20 text-brand-brown font-bold uppercase tracking-widest text-xs hover:border-brand-brown hover:bg-brand-brown/5 transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold focus-visible:ring-offset-2">
-                @lang('home.our_story')
-            </a>
+    <div class="w-full lg:w-1/2 flex px-6 md:px-16 lg:px-24 py-12 lg:py-0 z-10">
+        <div class="m-auto w-full max-w-xl flex flex-col justify-center">
+            <div class="mb-8 flex items-center gap-4 animate-fade-in-up" aria-hidden="true">
+                <span class="w-12 h-px bg-brand-gold"></span>
+                <span class="text-brand-gold font-bold tracking-[0.25em] uppercase text-[10px]">@lang('home.premium_collection')</span>
+            </div>
+            <h1 id="hero-heading" class="text-5xl lg:text-7xl xl:text-[5rem] text-brand-brown font-serif mb-8 leading-[1.05] tracking-tight animate-fade-in-up delay-100">
+                @if(app()->getLocale() == 'en')
+                    Premium Woven Bag Collection
+                @else
+                    {!! \App\Models\Setting::get('hero_title', 'Menganyam Alam,<br><span class="italic text-brand-gold font-light">Melestarikan Budaya</span> Jambi.') !!}
+                @endif
+            </h1>
+            <p class="text-brand-brown/70 text-lg lg:text-xl mb-12 max-w-lg leading-relaxed animate-fade-in-up delay-200 font-serif">
+                @if(app()->getLocale() == 'en')
+                    A classy ethnic touch made from natural pandan fibers and selected leather.
+                @else
+                    {{ \App\Models\Setting::get('hero_subtitle', "D'Moroy menghadirkan kerajinan anyaman serat alam premium. Mengangkat warisan budaya lokal dengan desain proporsional dan ramah lingkungan.") }}
+                @endif
+            </p>
+            <div class="flex flex-col sm:flex-row gap-5 animate-fade-in-up delay-300">
+                <a href="{{ \App\Models\Setting::get('hero_cta_link', '/products') }}" class="inline-flex justify-center items-center px-10 py-4 bg-brand-brown text-brand-ivory font-bold uppercase tracking-widest text-xs hover:bg-brand-gold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold focus-visible:ring-offset-2 shadow-xl shadow-brand-brown/10">
+                    @lang('home.explore_collection')
+                </a>
+                <a href="/about" class="inline-flex justify-center items-center px-10 py-4 border border-brand-brown/20 text-brand-brown font-bold uppercase tracking-widest text-xs hover:border-brand-brown hover:bg-brand-brown/5 transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold focus-visible:ring-offset-2">
+                    @lang('home.our_story')
+                </a>
+            </div>
         </div>
     </div>
     
-    <!-- Right: Image -->
-    <div class="w-full lg:w-1/2 h-[60vh] lg:h-auto relative animate-fade-in-up delay-400">
-        <div class="absolute inset-0 bg-brand-brown/5 mix-blend-overlay z-10" aria-hidden="true"></div>
-        <img src="{{ asset('images/dmoroy/home_hero.jpg') }}" alt="Produk rajut eksklusif D'Moroy dengan serat alami" class="w-full h-full object-cover">
+    <!-- Right: Image (menempel ke kanan, crop dari bawah) -->
+    <div class="w-full lg:w-1/2 relative animate-fade-in-up delay-400">
+        <img src="{{ asset('images/dmoroy/home_hero.jpg') }}" alt="Produk anyaman eksklusif D'Moroy dengan serat alami" class="absolute inset-0 w-full h-full object-cover object-top">
         
         <!-- Elegant Minimalist Badge -->
         <div class="absolute bottom-0 left-0 bg-brand-ivory p-6 md:p-8 flex items-center gap-6 z-20 border-r border-t border-brand-brown/10" aria-hidden="true">
@@ -105,12 +106,12 @@
             <a href="/products" class="shrink-0 text-brand-brown font-bold border-b-2 border-brand-gold hover:text-brand-gold transition-colors pb-1 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold rounded">@lang('home.view_all')</a>
         </div>
 
-        <!-- Clean 3-Column Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8" role="list">
+        <!-- Clean 4-Column Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" role="list">
             @php 
-                $demoProducts = ['Tas Anyaman Elegan', 'Clutch Etnik Modern', 'Tote Bag Serat Alam'];
+                $demoProducts = ['Tas Anyaman Elegan', 'Clutch Etnik Modern', 'Tote Bag Serat Alam', 'Dompet Serat Pandan'];
             @endphp
-            @forelse($featuredProducts->take(3) as $product)
+            @forelse($featuredProducts->take(4) as $product)
                 @php 
                     // Map product name to specific image for dummy data
                     $fallbackImg = asset('images/dmoroy/fiber_texture.png');
@@ -137,13 +138,17 @@
                         </div>
                         <div class="px-2 flex-grow flex flex-col">
                             <h3 class="font-serif text-2xl mb-2 group-hover:text-brand-gold transition-colors text-brand-brown leading-tight">{{ $product->name }}</h3>
-                            <p class="text-brand-brown font-medium opacity-80 mt-auto">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                            @if($product->price > 0)
+                                <p class="text-brand-brown font-medium opacity-80 mt-auto">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                            @else
+                                <p class="text-brand-brown font-medium opacity-80 mt-auto text-sm italic">Hubungi Admin untuk tanya harga</p>
+                            @endif
                         </div>
                     </a>
                 </article>
             @empty
                 <!-- Demo Grid -->
-                @foreach(range(1, 3) as $i)
+                @foreach(range(1, 4) as $i)
                     <article class="group block opacity-70" role="listitem">
                         <div class="relative overflow-hidden rounded-2xl mb-5 aspect-[4/5] bg-brand-brown/5 flex items-center justify-center border border-brand-brown/10" aria-hidden="true">
                             <span class="font-serif italic text-brand-brown/20 text-4xl">{{ $i }}</span>
@@ -199,7 +204,7 @@
             @php
                 $testimonials = [
                     ['name' => 'Siti Aminah', 'role' => 'Kolektor Tas Etnik', 'text' => 'Anyaman D\'Moroy sangat halus dan rapi. Desainnya modern namun tetap mempertahankan nilai tradisional Jambi. Sangat direkomendasikan!'],
-                    ['name' => 'Budi Santoso', 'role' => 'Pengusaha', 'text' => 'Saya membeli tas rajut untuk hadiah istri, dia sangat menyukainya. Kualitas material alamnya terasa mewah dan awet digunakan sehari-hari.'],
+                    ['name' => 'Budi Santoso', 'role' => 'Pengusaha', 'text' => 'Saya membeli tas anyaman untuk hadiah istri, dia sangat menyukainya. Kualitas material alamnya terasa mewah dan awet digunakan sehari-hari.'],
                     ['name' => 'Rina Wijaya', 'role' => 'Pecinta Fashion', 'text' => 'Bangga bisa memakai produk lokal dengan kualitas ekspor. Setiap detail anyamannya menceritakan kisah pengrajin yang luar biasa.'],
                 ];
             @endphp
@@ -229,13 +234,29 @@
     
     <div class="flex overflow-x-auto pb-8 snap-x snap-mandatory gap-4 px-6 md:px-12 lg:justify-center" style="scrollbar-width: none;">
         @php
-            $igImages = [
-                asset('images/dmoroy/bag_biaso_bae.png'),
-                asset('images/dmoroy/hero_knit.png'),
-                asset('images/dmoroy/bag_sangkek.png'),
-                asset('images/dmoroy/bag_canteek.png'),
-                asset('images/dmoroy/hero_woven.png'),
-            ];
+            $latestProducts = \App\Models\Product::with('mediaImages')->latest()->get();
+            $igImages = [];
+            foreach($latestProducts as $prod) {
+                if (!empty($prod->media_urls)) {
+                    foreach($prod->media_urls as $url) {
+                        if (!in_array($url, $igImages)) {
+                            $igImages[] = $url;
+                        }
+                        if(count($igImages) >= 8) break;
+                    }
+                }
+                if(count($igImages) >= 8) break;
+            }
+            
+            if (empty($igImages)) {
+                $igImages = [
+                    asset('images/dmoroy/bag_biaso_bae.png'),
+                    asset('images/dmoroy/hero_knit.png'),
+                    asset('images/dmoroy/bag_sangkek.png'),
+                    asset('images/dmoroy/bag_canteek.png'),
+                    asset('images/dmoroy/hero_woven.png'),
+                ];
+            }
         @endphp
         @foreach($igImages as $img)
         <div class="flex-none w-64 h-64 md:w-72 md:h-72 rounded-2xl overflow-hidden relative group snap-center fade-up" x-intersect="$el.classList.add('in-view')" style="transition-delay: {{ $loop->index * 100 }}ms">

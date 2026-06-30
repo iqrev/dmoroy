@@ -16,7 +16,8 @@
                     <div class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 flex items-start md:items-center gap-4 md:gap-6 group">
                         <!-- Image -->
                         <div class="w-24 h-24 md:w-32 md:h-32 rounded-xl overflow-hidden flex-shrink-0 bg-gray-50 border border-gray-100">
-                            <img src="{{ $item['image'] ? asset('storage/' . $item['image']) : asset('images/dmoroy/hero_knit.png') }}" 
+                            @php $productModel = \App\Models\Product::find($item['id']); $liveImg = !empty($productModel?->media_urls) ? $productModel->media_urls[0] : null; @endphp
+                            <img src="{{ $liveImg ?: (!empty($item['image']) ? $item['image'] : asset('images/dmoroy/hero_woven.png')) }}" 
                                  alt="{{ $item['name'] }}" 
                                  class="w-full h-full object-cover">
                         </div>

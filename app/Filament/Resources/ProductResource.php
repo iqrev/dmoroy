@@ -42,87 +42,99 @@ class ProductResource extends Resource
     {
         return $schema
             ->components([
-                Schemas\Section::make('Informasi Utama')
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->label('Nama Produk')
-                            ->required()
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(fn ($set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
-                        Forms\Components\TextInput::make('slug')
-                            ->label('Slug (URL)')
-                            ->required()
-                            ->disabled()
-                            ->dehydrated()
-                            ->unique(ignoreRecord: true),
-                        Forms\Components\Select::make('category_id')
-                            ->label('Kategori Produk')
-                            ->relationship('category', 'name')
-                            ->required()
-                            ->searchable()
-                            ->preload(),
-                        Forms\Components\Select::make('status')
-                            ->label('Status Publikasi')
-                            ->options([
-                                'published' => 'Tayang',
-                                'draft' => 'Draft',
-                            ])
-                            ->required()
-                            ->default('published'),
-                        Forms\Components\TextInput::make('workshop_location')
-                            ->label('Lokasi Workshop')
-                            ->placeholder('Contoh: Jambi, Indonesia')
-                            ->helperText('Kosongkan untuk menggunakan lokasi default (Jambi, Indonesia)'),
-                    ])->columns(2),
+                Schemas\Group::make()->schema([
+                    Schemas\Section::make('Informasi Utama')
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->label('Nama Produk')
+                                ->required()
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn ($set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                            Forms\Components\TextInput::make('slug')
+                                ->label('Slug (URL)')
+                                ->required()
+                                ->disabled()
+                                ->dehydrated()
+                                ->unique(ignoreRecord: true),
+                            Forms\Components\RichEditor::make('description')
+                                ->label('Deskripsi Lengkap')
+                                ->required()
+                                ->columnSpanFull(),
+                        ])->columns(2),
 
-                Schemas\Section::make('Harga & Stok')
-                    ->schema([
-                        Forms\Components\TextInput::make('price')
-                            ->label('Harga Satuan')
-                            ->required()
-                            ->numeric()
-                            ->default(0)
-                            ->prefix('Rp'),
-                        Forms\Components\TextInput::make('stock')
-                            ->label('Jumlah Stok')
-                            ->required()
-                            ->numeric()
-                            ->default(0),
-                    ])->columns(2),
+                    Schemas\Section::make('Media & Galeri')
+                        ->schema([
+                            \Awcodes\Curator\Components\Forms\CuratorPicker::make('galleryImages')
+                                ->relationship('mediaImages', 'id')
+                                ->orderColumn('order')
+                                ->label('Galeri Foto Produk')
+                                ->directory('products')
+                                ->multiple()
+                                ->columnSpanFull(),
+                        ]),
+                ])->columnSpan(['sm' => 2]),
 
-                Schemas\Section::make('Konten & Media')
-                    ->schema([
-                        Forms\Components\RichEditor::make('description')
-                            ->label('Deskripsi Lengkap')
-                            ->required()
-                            ->columnSpanFull(),
-                        Forms\Components\Select::make('tags')
-                            ->label('Tag Produk')
-                            ->relationship('tags', 'name')
-                            //->multiple()
-                            ->searchable()
-                            ->preload()
-                            ->createOptionForm([
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->live(onBlur: true)
-                                    ->afterStateUpdated(fn ($set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
-                                Forms\Components\TextInput::make('slug')
-                                    ->required()
-                                    ->unique('tags', 'slug'),
-                            ]),
-                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('galleryImages')
-                            ->relationship('mediaImages', 'id')
-                            ->orderColumn('order')
-                            ->label('Galeri Foto Produk')
-                            ->directory('products')
-                            ->multiple()
-                            ->columnSpanFull(),
-                        Forms\Components\Toggle::make('is_featured')
-                            ->label('Tandai sebagai Produk Unggulan')
-                            ->required(),
-                    ])
-            ]);
+                Schemas\Group::make()->schema([
+                    Schemas\Section::make('Kategori & Lokasi')
+                        ->schema([
+                            Forms\Components\Select::make('category_id')
+                                ->label('Kategori Produk')
+                                ->relationship('category', 'name')
+                                ->required()
+                                ->searchable()
+                                ->preload(),
+                            Forms\Components\Select::make('tags')
+                                ->label('Tag Produk')
+                                ->relationship('tags', 'name')
+                                //->multiple()
+                                ->searchable()
+                                ->preload()
+                                ->createOptionForm([
+                                    Forms\Components\TextInput::make('name')
+                                        ->required()
+                                        ->live(onBlur: true)
+                                        ->afterStateUpdated(fn ($set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                                    Forms\Components\TextInput::make('slug')
+                                        ->required()
+                                        ->unique('tags', 'slug'),
+                                ]),
+                            Forms\Components\TextInput::make('workshop_location')
+                                ->label('Lokasi Workshop')
+                                ->placeholder('Contoh: Jambi, Indonesia')
+                                ->helperText('Kosongkan untuk menggunakan lokasi default (Jambi, Indonesia)'),
+                        ]),
+
+                    Schemas\Section::make('Harga & Stok')
+                        ->schema([
+                            Forms\Components\TextInput::make('price')
+                                ->label('Harga Satuan')
+                                ->required()
+                                ->numeric()
+                                ->default(0)
+                                ->prefix('Rp'),
+                            Forms\Components\TextInput::make('stock')
+                                ->label('Jumlah Stok')
+                                ->required()
+                                ->numeric()
+                                ->default(0),
+                        ])->columns(2),
+
+                    Schemas\Section::make('Publikasi')
+                        ->schema([
+                            Forms\Components\Select::make('status')
+                                ->label('Status Publikasi')
+                                ->options([
+                                    'published' => 'Tayang',
+                                    'draft' => 'Draft',
+                                ])
+                                ->required()
+                                ->default('published'),
+                            Forms\Components\Toggle::make('is_featured')
+                                ->label('Tandai sebagai Produk Unggulan')
+                                ->required(),
+                        ]),
+                ])->columnSpan(['sm' => 1]),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table

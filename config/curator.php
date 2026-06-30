@@ -44,7 +44,7 @@ return [
     'max_size' => 5000,
     'model' => \Awcodes\Curator\Models\Media::class,
     'min_size' => 0,
-    'path_generator' => null,
+    'path_generator' => \Awcodes\Curator\PathGenerators\DefaultPathGenerator::class,
     'resources' => [
         'label' => 'Media',
         'plural_label' => 'Media',

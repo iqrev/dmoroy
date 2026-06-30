@@ -7,18 +7,23 @@
         "dev": "vite"
     },
     "devDependencies": {
-        "@rolldown/binding-darwin-arm64": "^1.1.2",
+        "@rolldown/binding-darwin-arm64": "1.0.3",
         "@tailwindcss/vite": "^4.0.0",
         "autoprefixer": "^10.4.27",
         "axios": ">=1.11.0 <=1.14.0",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^3.0.0",
         "postcss": "^8.5.9",
+        "rolldown": "1.0.3",
         "tailwindcss": "^4.2.2",
         "vite": "^8.0.0"
     },
     "dependencies": {
         "@alpinejs/intersect": "^3.15.12",
         "alpinejs": "^3.15.12"
+    },
+    "overrides": {
+        "rolldown": "1.0.3",
+        "@rolldown/binding-darwin-arm64": "1.0.3"
     }
 }

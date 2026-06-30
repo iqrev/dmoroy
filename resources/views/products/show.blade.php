@@ -114,9 +114,15 @@
                     <h1 class="text-4xl font-serif mt-2">{{ $product->name }}</h1>
                 </div>
 
-                <div class="text-3xl font-bold text-brand-brown mb-8" aria-label="Harga: Rp {{ number_format($product->price, 0, ',', '.') }}">
-                    Rp {{ number_format($product->price, 0, ',', '.') }}
-                </div>
+                @if($product->price > 0)
+                    <div class="text-3xl font-bold text-brand-brown mb-8" aria-label="Harga: Rp {{ number_format($product->price, 0, ',', '.') }}">
+                        Rp {{ number_format($product->price, 0, ',', '.') }}
+                    </div>
+                @else
+                    <div class="text-2xl font-bold text-brand-brown mb-8 italic" aria-label="Harga: Hubungi Admin untuk tanya harga">
+                        Hubungi Admin untuk tanya harga
+                    </div>
+                @endif
 
                 <div class="prose prose-sm max-w-none text-gray-600 mb-12">
                     {!! $product->description !!}
@@ -178,7 +184,11 @@
                     </a>
                     <a href="/products/{{ $related->slug }}" class="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold rounded">
                         <h3 class="font-bold text-sm mb-1 line-clamp-1 group-hover:text-brand-brown transition-colors">{{ $related->name }}</h3>
-                        <p class="text-brand-brown font-bold text-sm">Rp {{ number_format($related->price, 0, ',', '.') }}</p>
+                        @if($related->price > 0)
+                            <p class="text-brand-brown font-bold text-sm">Rp {{ number_format($related->price, 0, ',', '.') }}</p>
+                        @else
+                            <p class="text-brand-brown font-bold text-sm italic">Hubungi Admin untuk tanya harga</p>
+                        @endif
                     </a>
                 </article>
                 @endforeach
@@ -199,7 +209,11 @@
                     </a>
                     <a href="/products/{{ $other->slug }}" class="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold rounded">
                         <h3 class="font-bold text-sm mb-1 line-clamp-1 group-hover:text-brand-brown transition-colors">{{ $other->name }}</h3>
-                        <p class="text-brand-brown font-bold text-sm">Rp {{ number_format($other->price, 0, ',', '.') }}</p>
+                        @if($other->price > 0)
+                            <p class="text-brand-brown font-bold text-sm">Rp {{ number_format($other->price, 0, ',', '.') }}</p>
+                        @else
+                            <p class="text-brand-brown font-bold text-sm italic">Hubungi Admin untuk tanya harga</p>
+                        @endif
                     </a>
                 </article>
                 @endforeach
@@ -222,7 +236,11 @@
                 <img src="{{ $mainImg ?: asset('images/dmoroy/hero_woven.png') }}" class="w-12 h-12 object-cover rounded" alt="Thumbnail">
                 <div>
                     <h3 class="font-bold text-sm text-brand-brown">{{ $product->name }}</h3>
-                    <p class="text-brand-gold font-bold text-sm">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                    @if($product->price > 0)
+                        <p class="text-brand-gold font-bold text-sm">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                    @else
+                        <p class="text-brand-gold font-bold text-sm italic">Hubungi Admin untuk tanya harga</p>
+                    @endif
                 </div>
             </div>
             
@@ -230,7 +248,11 @@
                 @csrf
                 <input type="hidden" name="id" value="{{ $product->id }}">
                 <input type="hidden" name="quantity" :value="qty">
-                <div class="font-bold text-brand-brown whitespace-nowrap block md:hidden text-lg">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                @if($product->price > 0)
+                    <div class="font-bold text-brand-brown whitespace-nowrap block md:hidden text-lg">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                @else
+                    <div class="font-bold text-brand-brown whitespace-nowrap block md:hidden text-lg italic">Hubungi Admin untuk tanya harga</div>
+                @endif
                 <button type="submit" class="btn-primary w-full md:w-auto py-3 px-8 text-sm md:text-base whitespace-nowrap">@lang('pages.add_to_cart')</button>
             </form>
         </div>

@@ -36,7 +36,7 @@ class CartController extends Controller
                 "name" => $product->name,
                 "quantity" => $request->quantity,
                 "price" => $product->price,
-                "image" => $product->images[0] ?? null,
+                "image" => !empty($product->media_urls) ? $product->media_urls[0] : null,
                 "slug" => $product->slug,
             ];
         }

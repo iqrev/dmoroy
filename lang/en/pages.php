@@ -37,7 +37,7 @@ return [
     'contact_us' => 'Contact Us',
     'contact_desc' => 'Have a question about our products or interested in collaborating? Feel free to contact us through the form below or visit our gallery.',
     'visit_studio' => 'Visit Our Studio',
-    'address' => 'Jl. Lintas Timur Sumatera No. 123,<br>Jambi City, Jambi 36124',
+    'address' => 'Lorong beringin IV no 38 rt 14 kelurahan, The Hok,<br>Kec. Jambi Sel., Kota Jambi, Jambi 36138',
     'contact_info' => 'Contact Information',
     'send_message' => 'Send Message',
     'name' => 'Full Name',

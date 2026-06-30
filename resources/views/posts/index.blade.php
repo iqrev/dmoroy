@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
 @section('title', 'Artikel & Wawasan - ' . \App\Models\Setting::get('site_name', "D'Moroy"))
-@section('meta_description', 'Temukan berbagai artikel menarik seputar filosofi, motif, dan sejarah Rajut D\'Moroy. Konten edukatif dari ' . \App\Models\Setting::get('site_name', "D'Moroy") . '.')
+@section('meta_description', 'Temukan berbagai artikel menarik seputar filosofi, motif, dan sejarah Anyaman D\'Moroy. Konten edukatif dari ' . \App\Models\Setting::get('site_name', "D'Moroy") . '.')
 
 @section('content')
 {{-- Hero --}}
 <section class="relative py-24 px-4 bg-brand-ivory overflow-hidden">
     <div class="max-w-4xl mx-auto text-center">
         <p class="text-brand-brown font-medium uppercase tracking-widest text-sm mb-4">Artikel & Wawasan</p>
-        <h1 class="text-5xl md:text-6xl font-serif mb-6 leading-tight">Mengenal <span class="text-brand-brown italic">Rajut D'Moroy</span></h1>
+        <h1 class="text-5xl md:text-6xl font-serif mb-6 leading-tight">Mengenal <span class="text-brand-brown italic">Anyaman D'Moroy</span></h1>
         <p class="text-gray-500 text-xl max-w-xl mx-auto leading-relaxed">
-            Temukan kisah di balik setiap motif, filosofi mendalam, dan cara merawat Rajutan Anda agar tetap indah.
+            Temukan kisah di balik setiap motif, filosofi mendalam, dan cara merawat Anyaman Anda agar tetap indah.
         </p>
     </div>
 </section>

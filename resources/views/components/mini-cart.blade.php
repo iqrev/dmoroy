@@ -51,7 +51,8 @@
                                         @foreach($cart as $id => $item)
                                             <li class="flex py-6">
                                                 <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                    <img src="{{ $item['image'] ? asset('storage/' . $item['image']) : asset('images/dmoroy/hero_knit.png') }}" alt="{{ $item['name'] }}" class="h-full w-full object-cover object-center">
+                                                    @php $productModel = \App\Models\Product::find($item['id']); $liveImg = !empty($productModel?->media_urls) ? $productModel->media_urls[0] : null; @endphp
+                                                    <img src="{{ $liveImg ?: (!empty($item['image']) ? $item['image'] : asset('images/dmoroy/hero_woven.png')) }}" alt="{{ $item['name'] }}" class="h-full w-full object-cover object-center">
                                                 </div>
                                                 <div class="ml-4 flex flex-1 flex-col">
                                                     <div>

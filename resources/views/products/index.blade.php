@@ -8,7 +8,7 @@
     <div class="max-w-7xl mx-auto">
         <div class="mb-12">
             <h1 class="text-4xl font-serif mb-4 text-brand-brown">Katalog <span class="text-brand-gold italic font-light">Produk</span></h1>
-            <p class="text-brand-brown/70 text-sm font-serif">Jelajahi keindahan anyaman Jambi dalam berbagai bentuk karya rajut premium.</p>
+            <p class="text-brand-brown/70 text-sm font-serif">Jelajahi keindahan anyaman Jambi dalam berbagai bentuk karya premium.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
@@ -59,7 +59,7 @@
                                     $productJson = json_encode([
                                         'id' => $product->id,
                                         'name' => $product->name,
-                                        'price' => number_format($product->price, 0, ',', '.'),
+                                        'price' => $product->price > 0 ? 'Rp ' . number_format($product->price, 0, ',', '.') : 'Hubungi Admin untuk tanya harga',
                                         'image' => $img1,
                                         'slug' => $product->slug,
                                         'desc' => \Illuminate\Support\Str::limit(strip_tags($product->description), 120)
@@ -83,7 +83,11 @@
                             </a>
                             <a href="{{ route('products.show', $product->slug) }}" class="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold rounded">
                                 <h3 class="font-bold text-base mb-1 group-hover:text-brand-gold transition-colors text-brand-brown font-serif">{{ $product->name }}</h3>
-                                <p class="text-brand-brown font-semibold text-sm opacity-80 font-serif">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                                @if($product->price > 0)
+                                    <p class="text-brand-brown font-semibold text-sm opacity-80 font-serif">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                                @else
+                                    <p class="text-brand-brown font-semibold text-sm opacity-80 font-serif italic">Hubungi Admin untuk tanya harga</p>
+                                @endif
                             </a>
                         </article>
                     @empty
@@ -116,7 +120,7 @@
                                 <div class="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-start">
                                     <div class="mb-6">
                                         <h3 class="text-2xl font-serif text-brand-brown mb-1.5 leading-tight" id="modal-title" x-text="activeProduct?.name"></h3>
-                                        <p class="text-xl text-brand-gold font-bold mb-4 font-serif">Rp <span x-text="activeProduct?.price"></span></p>
+                                        <p class="text-xl text-brand-gold font-bold mb-4 font-serif" x-text="activeProduct?.price"></p>
                                         <p class="text-gray-500 leading-relaxed font-serif text-sm line-clamp-3" x-text="activeProduct?.desc"></p>
                                     </div>
                                     <form action="{{ route('cart.add') }}" method="POST" class="mb-6">

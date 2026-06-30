@@ -4,23 +4,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', \App\Models\Setting::get('site_name', "D'Moroy"))</title>
-    <meta name="description" content="@yield('meta_description', \App\Models\Setting::get('tagline', 'Koleksi rajut handmade premium dengan sentuhan hangat, autentik, dan elegan.'))">
+    <meta name="description" content="@yield('meta_description', \App\Models\Setting::get('tagline', 'Koleksi anyaman handmade premium dengan sentuhan hangat, autentik, dan elegan.'))">
     
     <!-- SEO & Social Media Meta Tags -->
     <link rel="canonical" href="{{ url()->current() }}">
     <meta property="og:site_name" content="{{ \App\Models\Setting::get('site_name', "D'Moroy") }}">
     <meta property="og:title" content="@yield('og_title', view()->yieldContent('title', \App\Models\Setting::get('site_name', "D'Moroy")))">
-    <meta property="og:description" content="@yield('og_description', view()->yieldContent('meta_description', \App\Models\Setting::get('tagline', 'Koleksi rajut handmade premium dengan sentuhan hangat, autentik, dan elegan.')))">
+    <meta property="og:description" content="@yield('og_description', view()->yieldContent('meta_description', \App\Models\Setting::get('tagline', 'Koleksi anyaman handmade premium dengan sentuhan hangat, autentik, dan elegan.')))">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="@yield('og_type', 'website')">
-    <meta property="og:image" content="@yield('og_image', asset('images/logo.png'))">
+    <meta property="og:image" content="@yield('og_image', asset('images/favicon.jpg'))">
     
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('og_title', view()->yieldContent('title', \App\Models\Setting::get('site_name', "D'Moroy")))">
-    <meta name="twitter:description" content="@yield('og_description', view()->yieldContent('meta_description', \App\Models\Setting::get('tagline', 'Koleksi rajut handmade premium dengan sentuhan hangat, autentik, dan elegan.')))">
-    <meta name="twitter:image" content="@yield('og_image', asset('images/logo.png'))">
+    <meta name="twitter:description" content="@yield('og_description', view()->yieldContent('meta_description', \App\Models\Setting::get('tagline', 'Koleksi anyaman handmade premium dengan sentuhan hangat, autentik, dan elegan.')))">
+    <meta name="twitter:image" content="@yield('og_image', asset('images/favicon.jpg'))">
 
-    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/jpeg" href="{{ asset('images/favicon.jpg') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased pb-20 md:pb-0 text-brand-brown" x-data="{ cartOpen: false, scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 300)">
@@ -44,11 +44,7 @@
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <nav aria-label="Main Navigation" class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
             <a href="/" aria-label="D'Moroy Homepage" class="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold rounded">
-                <span class="font-serif text-lg font-bold leading-tight hidden sm:block">
-                    @php $nameParts = explode(' ', \App\Models\Setting::get('site_name', "D'Moroy"), 3); @endphp
-                    {{ $nameParts[0] ?? '' }} {{ $nameParts[1] ?? '' }}<br>
-                    <span class="text-brand-brown">{{ $nameParts[2] ?? '' }}</span>
-                </span>
+                <img src="{{ asset('images/logo.png') }}" alt="{{ \App\Models\Setting::get('site_name', "D'Moroy") }} Logo" class="h-10 md:h-12 w-auto">
             </a>
 
             <!-- Desktop Menu -->
@@ -129,11 +125,9 @@
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
             <div class="col-span-1 md:col-span-2">
                 <a href="/" aria-label="D'Moroy Homepage" class="flex items-center gap-3 mb-4 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-gold rounded">
-                    <span class="font-serif text-lg font-bold leading-tight">
-                        {{ \App\Models\Setting::get('site_name', "D'Moroy") }}
-                    </span>
+                    <img src="{{ asset('images/logo.png') }}" alt="{{ \App\Models\Setting::get('site_name', "D'Moroy") }} Logo" class="h-12 md:h-16 w-auto">
                 </a>
-                <p class="text-gray-500 max-w-sm">{{ \App\Models\Setting::get('tagline', 'Koleksi rajut handmade premium dengan sentuhan hangat, autentik, dan elegan.') }}</p>
+                <p class="text-gray-500 max-w-sm">{{ \App\Models\Setting::get('tagline', 'Koleksi anyaman handmade premium dengan sentuhan hangat, autentik, dan elegan.') }}</p>
             </div>
             <div>
                 <h3 class="font-bold mb-4 text-brand-brown">Navigasi</h3>

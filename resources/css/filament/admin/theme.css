@@ -1,0 +1,187 @@
+/* ==============================================
+   FILAMENT ADMIN PANEL - D'Moroy Custom Theme
+   Login Page Styling (Light & Dark)
+   ============================================== */
+
+/* ========================
+   BRAND COLORS
+   ======================== */
+:root {
+    --dmoroy-brown: #996515;
+    --dmoroy-brown-dark: #7A5111;
+    --dmoroy-gold: #C5A880;
+    --dmoroy-ivory: #FAF7F2;
+}
+
+.dark {
+    --dmoroy-brown: #D4A04A;
+    --dmoroy-brown-dark: #B8882E;
+    --dmoroy-gold: #D4B896;
+    --dmoroy-ivory: #1a1714;
+}
+
+/* ========================================
+   LOGIN PAGE BACKGROUND
+   ======================================== */
+.fi-simple-layout {
+    background-color: var(--dmoroy-ivory) !important;
+    background-image: url('/images/dmoroy/fiber_texture.png');
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: soft-light;
+    position: relative;
+}
+
+.fi-simple-layout::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, 
+        rgba(250, 247, 242, 0.92) 0%, 
+        rgba(250, 247, 242, 0.85) 50%,
+        rgba(197, 168, 128, 0.15) 100%
+    );
+    z-index: 0;
+}
+
+.dark .fi-simple-layout {
+    background-color: #0f0d0a !important;
+    background-blend-mode: multiply;
+}
+
+.dark .fi-simple-layout::before {
+    background: linear-gradient(135deg, 
+        rgba(15, 13, 10, 0.95) 0%, 
+        rgba(26, 23, 20, 0.90) 50%,
+        rgba(197, 168, 128, 0.05) 100%
+    );
+}
+
+.fi-simple-layout > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ========================================
+   LOGIN CARD
+   ======================================== */
+.fi-simple-main {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(153, 101, 21, 0.1) !important;
+    border-radius: 1.5rem !important;
+    box-shadow: 
+        0 25px 50px -12px rgba(153, 101, 21, 0.08),
+        0 0 0 1px rgba(153, 101, 21, 0.03) !important;
+    padding: 2.5rem !important;
+    position: relative;
+}
+
+.dark .fi-simple-main {
+    background: rgba(30, 27, 22, 0.9) !important;
+    border: 1px solid rgba(212, 160, 74, 0.15) !important;
+    box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(212, 160, 74, 0.05),
+        inset 0 1px 0 rgba(212, 184, 150, 0.05) !important;
+}
+
+/* Gold accent line above login card */
+.fi-simple-main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--dmoroy-gold), transparent);
+    border-radius: 2px;
+}
+
+/* Subtle pattern overlay on the card */
+.fi-simple-main::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle at top right, rgba(197, 168, 128, 0.08) 0%, transparent 70%);
+    border-radius: 0 1.5rem 0 0;
+    pointer-events: none;
+}
+
+.dark .fi-simple-main::after {
+    background: radial-gradient(circle at top right, rgba(212, 160, 74, 0.06) 0%, transparent 70%);
+}
+
+/* ========================================
+   CUSTOM BUTTONS ON LOGIN
+   ======================================== */
+.fi-simple-page .fi-btn-primary {
+    background-color: var(--dmoroy-brown) !important;
+    border-radius: 0.75rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 0.75rem !important;
+    padding: 0.875rem 1.5rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(153, 101, 21, 0.2) !important;
+}
+
+.fi-simple-page .fi-btn-primary:hover {
+    background-color: var(--dmoroy-brown-dark) !important;
+    box-shadow: 0 8px 25px rgba(153, 101, 21, 0.3) !important;
+    transform: translateY(-1px);
+}
+
+.dark .fi-simple-page .fi-btn-primary {
+    background-color: var(--dmoroy-brown) !important;
+    color: #0f0d0a !important;
+    box-shadow: 0 4px 15px rgba(212, 160, 74, 0.15) !important;
+}
+
+.dark .fi-simple-page .fi-btn-primary:hover {
+    background-color: var(--dmoroy-gold) !important;
+    box-shadow: 0 8px 25px rgba(212, 160, 74, 0.25) !important;
+}
+
+/* ========================================
+   CUSTOM TEXTS ON LOGIN
+   ======================================== */
+.fi-simple-page .fi-header-heading,
+.fi-simple-page label {
+    color: var(--dmoroy-brown) !important;
+}
+
+.dark .fi-simple-page .fi-header-heading,
+.dark .fi-simple-page label {
+    color: var(--dmoroy-gold) !important;
+}
+
+.fi-simple-page .fi-header-heading {
+    font-family: 'Playfair Display', Georgia, serif !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
+}
+
+.fi-simple-page .fi-link {
+    color: var(--dmoroy-brown) !important;
+}
+
+.dark .fi-simple-page .fi-link {
+    color: var(--dmoroy-gold) !important;
+}
+
+.fi-simple-page .fi-link:hover {
+    color: var(--dmoroy-gold) !important;
+}
+
+.dark .fi-simple-page .fi-link:hover {
+    color: var(--dmoroy-brown) !important;
+}
+
+/* Remove all other overrides that might break Filament's internal Tailwind classes in the dashboard */

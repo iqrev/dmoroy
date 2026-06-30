@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Hubungi Kami - d\'moroy')
-@section('meta_description', 'Kunjungi bengkel kerja d\'moroy atau hubungi kami untuk menjalin kerja sama dan pemesanan rajutan serat alam.')
+@section('meta_description', 'Kunjungi bengkel kerja d\'moroy atau hubungi kami untuk menjalin kerja sama dan pemesanan anyaman serat alam.')
 
 @section('content')
 <!-- Hero Contact (Editorial) -->

@@ -221,7 +221,7 @@ class DatabaseSeeder extends Seeder
 
         \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
-        $this->command->info('✅ Database UMKM Blueprint seeded with dummy data successfully!');
+        $this->command->info("✅ Database D'Moroy seeded with dummy data successfully!");
     }
 }
 

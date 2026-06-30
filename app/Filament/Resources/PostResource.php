@@ -42,50 +42,60 @@ class PostResource extends Resource
     {
         return $schema
             ->components([
-                Schemas\Section::make('Informasi Utama')
-                    ->schema([
-                        Forms\Components\TextInput::make('title')
-                            ->label('Judul Artikel')
-                            ->required()
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(fn ($set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
-                        Forms\Components\TextInput::make('slug')
-                            ->label('Slug (URL)')
-                            ->required()
-                            ->readOnly()
-                            ->dehydrated()
-                            ->unique(ignoreRecord: true),
-                        Forms\Components\Select::make('categories')
-                            ->label('Kategori Artikel')
-                            ->relationship('categories', 'name')
-                            ->multiple()
-                            ->searchable()
-                            ->preload()
-                            ->required(),
-                        Forms\Components\Select::make('status')
-                            ->label('Status Publikasi')
-                            ->options([
-                                'published' => 'Tayang',
-                                'draft' => 'Draft',
-                            ])
-                            ->required()
-                            ->default('published'),
-                    ])->columns(2),
+                Schemas\Group::make()->schema([
+                    Schemas\Section::make('Konten Artikel')
+                        ->schema([
+                            Forms\Components\TextInput::make('title')
+                                ->label('Judul Artikel')
+                                ->required()
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn ($set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                            Forms\Components\TextInput::make('slug')
+                                ->label('Slug (URL)')
+                                ->required()
+                                ->readOnly()
+                                ->dehydrated()
+                                ->unique(ignoreRecord: true),
+                            Forms\Components\RichEditor::make('content')
+                                ->label(fn () => new \Illuminate\Support\HtmlString('Isi Artikel (Tulis konten di bawah ini) <style>.fi-fo-rich-editor .tiptap, .fi-fo-rich-editor .ProseMirror { min-height: 30rem !important; }</style>'))
+                                ->required()
+                                ->columnSpanFull(),
+                        ])->columns(2),
+                ])->columnSpan(['sm' => 2]),
 
-                Schemas\Section::make('Gambar Utama')
-                    ->schema([
-                        \Awcodes\Curator\Components\Forms\CuratorPicker::make('image')
-                            ->relationship('mediaImage', 'id')
-                            ->label('Pilih atau Unggah Gambar Utama')
-                            ->directory('posts')
-                            ->columnSpanFull(),
-                    ]),
-
-                Forms\Components\RichEditor::make('content')
-                    ->label(fn () => new \Illuminate\Support\HtmlString('Isi Artikel (Tulis konten di bawah ini) <style>.fi-fo-rich-editor .tiptap, .fi-fo-rich-editor .ProseMirror { min-height: 30rem !important; }</style>'))
-                    ->required()
-                    ->columnSpanFull(),
-            ])->columns(1);
+                Schemas\Group::make()->schema([
+                    Schemas\Section::make('Publikasi & Kategori')
+                        ->schema([
+                            Forms\Components\Select::make('status')
+                                ->label('Status Publikasi')
+                                ->options([
+                                    'published' => 'Tayang',
+                                    'draft' => 'Draft',
+                                ])
+                                ->required()
+                                ->default('published'),
+                            Forms\Components\DatePicker::make('created_at')
+                                ->label('Tanggal Artikel')
+                                ->default(now())
+                                ->required(),
+                            Forms\Components\Select::make('categories')
+                                ->label('Kategori Artikel')
+                                ->relationship('categories', 'name')
+                                ->multiple()
+                                ->searchable()
+                                ->preload()
+                                ->required(),
+                        ]),
+                    Schemas\Section::make('Gambar Utama')
+                        ->schema([
+                            \Awcodes\Curator\Components\Forms\CuratorPicker::make('image')
+                                ->relationship('mediaImage', 'id')
+                                ->label('Pilih atau Unggah Gambar Utama')
+                                ->directory('posts')
+                                ->columnSpanFull(),
+                        ]),
+                ])->columnSpan(['sm' => 1]),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -124,6 +134,12 @@ class PostResource extends Resource
                 //
             ])
             ->actions([
+                Actions\Action::make('view')
+                    ->label('Lihat')
+                    ->icon('heroicon-o-eye')
+                    ->url(fn (Post $record): string => route('posts.show', $record->slug))
+                    ->openUrlInNewTab()
+                    ->visible(fn (Post $record): bool => $record->status === 'published'),
                 Actions\EditAction::make(),
             ])
             ->bulkActions([
