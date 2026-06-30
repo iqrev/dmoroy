@@ -20,7 +20,7 @@ class CustomerGalleryResource extends Resource
 
     protected static ?string $modelLabel = 'Galeri Pelanggan';
     protected static ?string $pluralModelLabel = 'Galeri Pelanggan';
-    protected static string|BackedEnum|null $navigationGroup = 'Tampilan Depan';
+    protected static string|\UnitEnum|null $navigationGroup = 'Tampilan Depan';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

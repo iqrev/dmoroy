@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('customer_galleries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('media_id')->constrained('media')->cascadeOnDelete();
+            $table->unsignedBigInteger('media_id')->nullable();
             $table->string('title')->nullable();
             $table->string('instagram_url')->nullable();
             $table->integer('sort_order')->default(0);

@@ -11,7 +11,7 @@ class CustomerGalleryForm
     {
         return $schema
             ->components([
-                Forms\Components\Section::make()
+                \Filament\Schemas\Components\Section::make()
                     ->schema([
                         \Awcodes\Curator\Components\Forms\CuratorPicker::make('media_id')
                             ->label('Gambar / Foto Pelanggan')
