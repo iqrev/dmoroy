@@ -5,9 +5,9 @@
 
 @section('content')
 <!-- Hero Section (Editorial Artisan Full-Bleed Split) -->
-<section aria-labelledby="hero-heading" class="relative w-full h-[85vh] lg:h-screen bg-brand-ivory flex flex-col lg:flex-row border-b border-brand-brown/10 overflow-hidden">
+<section aria-labelledby="hero-heading" class="relative w-full min-h-[90vh] lg:h-[calc(100vh-64px)] bg-brand-ivory flex flex-col lg:flex-row border-b border-brand-brown/10 overflow-hidden">
     <!-- Left: Content -->
-    <div class="w-full lg:w-1/2 flex px-6 md:px-16 lg:px-24 py-12 lg:py-0 z-10">
+    <div class="w-full lg:w-1/2 flex px-6 md:px-16 lg:px-24 py-12 lg:py-0 z-10 lg:items-center">
         <div class="m-auto w-full max-w-xl flex flex-col justify-center">
             <div class="mb-8 flex items-center gap-4 animate-fade-in-up" aria-hidden="true">
                 <span class="w-12 h-px bg-brand-gold"></span>
@@ -39,17 +39,17 @@
     </div>
     
     <!-- Right: Image (menempel ke kanan, crop dari bawah) -->
-    <div class="w-full lg:w-1/2 relative animate-fade-in-up delay-400">
-        <img src="{{ asset('images/dmoroy/home_hero.jpg') }}" alt="Produk anyaman eksklusif D'Moroy dengan serat alami" class="absolute inset-0 w-full h-full object-cover object-top">
+    <div class="w-full lg:w-1/2 relative flex-1 min-h-[45vh] lg:min-h-0 animate-fade-in-up delay-400">
+        <img src="{{ asset('images/dmoroy/home_hero.jpg') }}" alt="Produk anyaman eksklusif D'Moroy dengan serat alami" class="absolute inset-0 w-full h-full object-cover object-center lg:object-top">
         
         <!-- Elegant Minimalist Badge -->
-        <div class="absolute bottom-0 left-0 bg-brand-ivory p-6 md:p-8 flex items-center gap-6 z-20 border-r border-t border-brand-brown/10" aria-hidden="true">
-            <div class="w-14 h-14 rounded-full border border-brand-brown/20 flex items-center justify-center text-brand-brown">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <div class="absolute bottom-0 left-0 bg-brand-ivory p-4 md:p-8 flex items-center gap-4 md:gap-6 z-20 border-r border-t border-brand-brown/10" aria-hidden="true">
+            <div class="w-10 h-10 md:w-14 md:h-14 rounded-full border border-brand-brown/20 flex items-center justify-center text-brand-brown">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-auto md:h-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
             <div>
-                <p class="text-brand-brown font-serif italic text-xl leading-none mb-1">100%</p>
-                <p class="text-[10px] font-bold text-brand-brown/50 uppercase tracking-[0.2em]">@lang('home.natural_fiber')</p>
+                <p class="text-brand-brown font-serif italic text-lg md:text-xl leading-none mb-1">100%</p>
+                <p class="text-[8px] md:text-[10px] font-bold text-brand-brown/50 uppercase tracking-[0.2em]">@lang('home.natural_fiber')</p>
             </div>
         </div>
     </div>
