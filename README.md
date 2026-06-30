@@ -67,4 +67,45 @@ Admin panel dapat diakses melalui `/admin` dengan kredensial default dari seeder
 ## 📄 Lisensi
 
 Proyek Blueprint. Bebas disesuaikan untuk kebutuhan klien UMKM.
-# dmoroy
+
+## ☁️ Panduan Deploy ke Hostinger (Shared Hosting)
+
+Karena Hostinger (terutama paket Shared Hosting) memiliki aturan yang ketat, harap ikuti panduan berikut langkah demi langkah agar website D'Moroy dapat berjalan dengan sempurna.
+
+### 1. Persiapan File
+1. Jalankan `npm run build` di komputer lokal Anda untuk mem-*build* aset frontend.
+2. Upload seluruh file proyek ke folder instalasi di Hostinger (biasanya di dalam `/domains/domainanda.com/public_html` atau *subfolder*). 
+3. Konfigurasikan file `.env`, sesuaikan kredensial Database dan pastikan `APP_ENV=production` serta `APP_DEBUG=false`.
+
+### 2. Gunakan PHP 8.4 di Terminal SSH
+Secara *default*, terminal SSH Hostinger menggunakan PHP 8.2 yang **tidak kompatibel** dengan framework terbaru yang digunakan. 
+Setiap kali Anda ingin menjalankan perintah Artisan atau Composer, Anda **wajib** memanggil versi PHP yang benar.
+
+Contoh yang **BENAR**:
+```bash
+php8.4 artisan optimize:clear
+```
+*(Atau gunakan path absolut `/usr/bin/php8.4` jika alias tidak berfungsi).*
+
+### 3. Eksekusi Database Migration
+Karena database di production biasanya sudah berisi data (katalog produk, artikel, dll), **JANGAN PERNAH** menggunakan `migrate:fresh` karena akan menghapus semua data!
+
+Jalankan:
+```bash
+php8.4 artisan migrate --force
+```
+
+### 4. Perbaikan Storage Link (Symlink)
+Fungsi PHP `symlink()` **di-disable** oleh Hostinger demi alasan keamanan. Akibatnya, perintah `php8.4 artisan storage:link` akan **gagal / Error 500**.
+
+**Solusinya:** Gunakan *command* symlink native milik Linux. Buka terminal SSH, pastikan Anda berada di direktori aplikasi Laravel Anda, lalu jalankan:
+```bash
+ln -s "$PWD/storage/app/public" "$PWD/public/storage"
+```
+
+### 5. Konfigurasi Domain (Document Root)
+Pastikan konfigurasi domain Anda di hPanel mengarah langsung ke folder `public/` (bukan folder *root* proyek).
+
+### 6. Keamanan & Maintenance Mode
+- **Keamanan:** Login admin dilengkapi dengan proteksi *Rate Limiting* (maksimal 5 kali percobaan gagal per menit) dan *Honeypot*.
+- **Maintenance:** Jika *Maintenance Mode* diaktifkan lewat Widget Dashboard Admin, situs web publik akan menampilkan halaman *Error 503* kustom. Namun, Admin tetap dapat mengakses halaman `/admin` tanpa terkunci untuk mematikan kembali mode *maintenance*.
