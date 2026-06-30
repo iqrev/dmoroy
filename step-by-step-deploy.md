@@ -13,7 +13,7 @@ Berikut adalah urutan *deploy* langkah-demi-langkah yang benar melalui terminal 
 ## 1. Install Dependensi (Jika folder `vendor` belum ada)
 Karena Composer bawaan Hostinger menggunakan PHP 8.2, kita harus memanggil Composer dengan PHP 8.4 secara eksplisit:
 ```bash
-/opt/alt/php84/usr/bin/php /opt/cpanel/composer/bin/composer install --optimize-autoloader --no-dev
+/opt/alt/php84/usr/bin/php $(which composer) install --optimize-autoloader --no-dev
 ```
 *(Catatan: Anda juga bisa men-zip folder `vendor` dari komputer lokal dan langsung mengunggahnya agar lebih praktis).*
 
