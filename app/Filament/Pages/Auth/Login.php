@@ -3,10 +3,9 @@
 namespace App\Filament\Pages\Auth;
 
 use App\Models\LoginAttempt;
-use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use Filament\Auth\Pages\Login as BaseLogin;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Checkbox;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Log;
@@ -20,6 +19,26 @@ class Login extends BaseLogin
     public function authenticate(): ?LoginResponse
     {
         $data = $this->form->getState();
+        
+        // Improved Honeypot Check: Menggunakan Checkbox agar tidak di-autofill oleh Password Manager
+        // Bot biasanya akan mencentang semua checkbox (seperti 'I agree to terms' atau 'Subscribe')
+        $honeypot = $data['terms_and_conditions_99'] ?? false;
+
+        if ($honeypot === true) {
+            Log::warning('Login honeypot (checkbox) triggered', [
+                'ip' => request()->ip(),
+                'user_agent' => request()->userAgent(),
+            ]);
+
+            LoginAttempt::logAttempt(
+                email: $data['email'] ?? 'bot-detected',
+                status: 'failed',
+            );
+
+            throw ValidationException::withMessages([
+                'data.email' => __('filament-panels::auth/pages/login.messages.failed'),
+            ]);
+        }
 
         try {
             $response = parent::authenticate();
@@ -73,6 +92,22 @@ class Login extends BaseLogin
                 $this->getEmailFormComponent(),
                 $this->getPasswordFormComponent(),
                 $this->getRememberFormComponent(),
+                $this->getHoneypotFormComponent(),
+            ]);
+    }
+
+    /**
+     * Honeypot field (Checkbox)
+     * Bot spammer cenderung mencentang semua checkbox. 
+     * Password manager/Browser autofill TIDAK akan mencentangnya.
+     */
+    protected function getHoneypotFormComponent(): Component
+    {
+        return Checkbox::make('terms_and_conditions_99')
+            ->label('I agree to the terms and conditions')
+            ->extraAttributes([
+                'tabindex' => '-1',
+                'style' => 'opacity: 0; position: absolute; top: -9999px; left: -9999px; z-index: -1;',
             ]);
     }
 }
