@@ -55,9 +55,8 @@ Menu ini digunakan untuk publikasi artikel, tips, berita kegiatan, atau edukasi 
 
 ---
 
-## 4. Mengelola Tim & Kotak Masuk Pesan
+## 4. Mengelola Tim
 
-### A. Menambah Anggota Tim (Team Members)
 Digunakan untuk menampilkan foto pengrajin atau tim inti Anda di halaman "Tentang Kami".
 1. Klik menu **Team Members** di grup Profil Toko.
 2. Klik **New Team Member**.
@@ -65,11 +64,6 @@ Digunakan untuk menampilkan foto pengrajin atau tim inti Anda di halaman "Tentan
 4. Unggah foto di kolom Photo.
 5. (Opsional) Isi tautan profil media sosial (Instagram, Facebook) jika ada.
 6. Klik **Create**.
-
-### B. Membaca Pesan Pengunjung (Messages)
-Setiap pesan yang dikirim oleh pengunjung melalui formulir "Hubungi Kami" di website, akan terkumpul di menu **Messages**.
-- Buka menu tersebut untuk melihat daftar pesan masuk.
-- Klik ikon mata (View) pada baris pesan untuk membaca detail dan informasi kontak pengirim, lalu Anda bisa menghubunginya secara mandiri via Email / WhatsApp.
 
 ---
 

@@ -79,11 +79,10 @@
         <!-- Profil Toko -->
         <x-filament::section icon="heroicon-o-user-group">
             <x-slot name="heading">
-                3. Mengelola Tim & Kotak Masuk Pesan
+                3. Mengelola Tim
             </x-slot>
             <div class="prose dark:prose-invert max-w-none text-sm text-gray-700 dark:text-gray-300 space-y-4">
                 
-                <h4>A. Menambah Anggota Tim (Team Members)</h4>
                 <p>Digunakan untuk menampilkan foto pengrajin atau tim inti Anda di halaman "Tentang Kami".</p>
                 <ol class="list-decimal pl-5 space-y-1">
                     <li>Klik menu <strong>Team Members</strong> di grup Profil Toko.</li>
@@ -93,13 +92,6 @@
                     <li>(Opsional) Isi tautan / link profil media sosial (Instagram, Facebook) jika ada.</li>
                     <li>Klik <strong>Create</strong>.</li>
                 </ol>
-
-                <h4>B. Membaca Pesan Pengunjung (Messages)</h4>
-                <p>Setiap pesan yang dikirim oleh pengunjung melalui formulir "Hubungi Kami" di website, akan terkumpul di menu <strong>Messages</strong>.</p>
-                <ul class="list-disc pl-5 space-y-1">
-                    <li>Buka menu tersebut untuk melihat daftar pesan masuk.</li>
-                    <li>Klik ikon mata (View) pada baris pesan untuk membaca detail dan informasi kontak pengirim, lalu Anda bisa menghubunginya secara mandiri via Email / WhatsApp.</li>
-                </ul>
             </div>
         </x-filament::section>
 
