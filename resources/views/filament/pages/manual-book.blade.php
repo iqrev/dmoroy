@@ -65,10 +65,14 @@
                 <ol class="list-decimal pl-5 space-y-1">
                     <li>Buka menu <strong>Posts</strong> lalu klik <strong>New Post</strong>.</li>
                     <li>Isi <strong>Title</strong> (Judul Artikel).</li>
+                    <li>Isi <strong>Tanggal Dibuat (Created at)</strong> jika Anda ingin mengatur tanggal rilis artikel (opsional, jika dikosongkan akan otomatis menggunakan tanggal dan jam saat ini).</li>
                     <li>Di kotak teks <strong>Content</strong>, ketik isi tulisan Anda. Anda bisa mempertebal teks, membuat *list*, atau menyisipkan *link* menggunakan *toolbar* yang tersedia (seperti menggunakan Microsoft Word).</li>
                     <li>Pilih gambar kover artikel (<em>Featured Image</em>) di kolom bagian kanan, lalu pilih kategori artikelnya.</li>
                     <li>Klik <strong>Create</strong> untuk mempublikasikan.</li>
                 </ol>
+                <div class="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg mt-2">
+                    <strong>💡 Tips:</strong> Untuk melihat tampilan asli artikel yang sudah tayang di website, Anda bisa kembali ke halaman daftar <strong>Posts</strong>, lalu klik tulisan <strong>Lihat</strong> pada baris artikel tersebut.
+                </div>
             </div>
         </x-filament::section>
 
@@ -127,6 +131,9 @@
                     <li>Klik tombol untuk menyalakannya.</li>
                     <li>Saat aktif, Anda (Admin) tetap bisa mengakses dan melihat website seperti biasa, namun pengunjung umum akan mendapati halaman beranda menampilkan status "Situs Sedang Diperbaiki".</li>
                 </ol>
+
+                <h4>D. Pemantauan Aktivitas Keamanan</h4>
+                <p>Website Anda telah dilengkapi perlindungan sistem dari upaya pembobolan <em>(Brute Force & Honeypot)</em>. Anda dapat memantau riwayat siapa saja yang mencoba <em>login</em> ke panel admin (baik yang sukses maupun gagal) secara langsung melalui widget <strong>Login Attempts</strong> yang ada di halaman paling depan Dashboard.</p>
             </div>
         </x-filament::section>
 
