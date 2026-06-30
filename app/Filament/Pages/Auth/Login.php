@@ -21,7 +21,7 @@ class Login extends BaseLogin
     {
         // Honeypot check — jika field tersembunyi terisi, itu bot
         $data = $this->form->getState();
-        $honeypot = $data['website'] ?? null;
+        $honeypot = $data['_honey_trap_99'] ?? null;
 
         if (!empty($honeypot)) {
             Log::warning('Login honeypot triggered', [
@@ -100,7 +100,7 @@ class Login extends BaseLogin
      */
     protected function getHoneypotFormComponent(): Component
     {
-        return TextInput::make('website')
+        return TextInput::make('_honey_trap_99')
             ->label('Website')
             ->extraAttributes([
                 'tabindex' => '-1',
