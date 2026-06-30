@@ -19,25 +19,7 @@ class Login extends BaseLogin
      */
     public function authenticate(): ?LoginResponse
     {
-        // Honeypot check — jika field tersembunyi terisi, itu bot
         $data = $this->form->getState();
-        $honeypot = $data['_honey_trap_99'] ?? null;
-
-        if (!empty($honeypot)) {
-            Log::warning('Login honeypot triggered', [
-                'ip' => request()->ip(),
-                'user_agent' => request()->userAgent(),
-            ]);
-
-            LoginAttempt::logAttempt(
-                email: $data['email'] ?? 'bot-detected',
-                status: 'failed',
-            );
-
-            throw ValidationException::withMessages([
-                'data.email' => __('filament-panels::auth/pages/login.messages.failed'),
-            ]);
-        }
 
         try {
             $response = parent::authenticate();
@@ -82,7 +64,7 @@ class Login extends BaseLogin
     }
 
     /**
-     * Override form untuk menambahkan honeypot field.
+     * Override form
      */
     public function form(Schema $schema): Schema
     {
@@ -90,22 +72,7 @@ class Login extends BaseLogin
             ->components([
                 $this->getEmailFormComponent(),
                 $this->getPasswordFormComponent(),
-                $this->getHoneypotFormComponent(),
                 $this->getRememberFormComponent(),
-            ]);
-    }
-
-    /**
-     * Honeypot field — tersembunyi dari user, hanya bot yang mengisinya.
-     */
-    protected function getHoneypotFormComponent(): Component
-    {
-        return TextInput::make('_honey_trap_99')
-            ->label('Website')
-            ->extraAttributes([
-                'tabindex' => '-1',
-                'autocomplete' => 'off',
-                'style' => 'position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden;opacity:0;',
             ]);
     }
 }
