@@ -41,11 +41,11 @@ class UserResource extends Resource
                 \Filament\Forms\Components\Select::make('role')
                     ->label('Pangkat / Hak Akses')
                     ->options([
-                        'super_admin' => 'Super Admin (Akses Penuh)',
-                        'admin' => 'Admin (Pengelola Konten)',
+                        'admin' => 'Admin (Akses Penuh)',
+                        'operator' => 'Operator (Pengelola Konten)',
                     ])
                     ->required()
-                    ->default('admin'),
+                    ->default('operator'),
                 TextInput::make('password')
                     ->label('Kata Sandi')
                     ->password()
@@ -68,8 +68,8 @@ class UserResource extends Resource
                     ->label('Pangkat')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'super_admin' => 'danger',
-                        'admin' => 'success',
+                        'admin' => 'danger',
+                        'operator' => 'success',
                         default => 'gray',
                     }),
                 TextColumn::make('created_at')

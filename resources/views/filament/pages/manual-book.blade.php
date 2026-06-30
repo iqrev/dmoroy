@@ -137,10 +137,28 @@
             </div>
         </x-filament::section>
 
+        <!-- Galeri Pelanggan -->
+        <x-filament::section icon="heroicon-o-camera">
+            <x-slot name="heading">
+                5. Mengelola Galeri Pelanggan (Instagram)
+            </x-slot>
+            <div class="prose dark:prose-invert max-w-none text-sm text-gray-700 dark:text-gray-300 space-y-4">
+                <p>Bagian ini mengatur foto-foto pelanggan yang muncul di halaman utama website pada bagian <strong>#KisahDMoroy</strong>.</p>
+                <ol class="list-decimal pl-5 space-y-1">
+                    <li>Buka menu <strong>Galeri Pelanggan</strong> di grup Tampilan Depan.</li>
+                    <li>Klik <strong>New Galeri Pelanggan</strong>.</li>
+                    <li>Pilih foto dari <em>Media Manager</em>.</li>
+                    <li>(Opsional) Masukkan <strong>Link Instagram</strong> pelanggan jika Anda ingin pengunjung diarahkan ke profil tersebut saat foto diklik.</li>
+                    <li>Atur <strong>Urutan</strong> (semakin kecil angka, semakin awal muncul) dan pastikan tombol <strong>Aktif</strong> menyala.</li>
+                    <li>Klik <strong>Create</strong>.</li>
+                </ol>
+            </div>
+        </x-filament::section>
+
         <!-- Media Manager -->
         <x-filament::section icon="heroicon-o-photo">
             <x-slot name="heading">
-                5. Panduan Penggunaan Media (Gambar)
+                6. Panduan Penggunaan Media (Gambar)
             </x-slot>
             <div class="prose dark:prose-invert max-w-none text-sm text-gray-700 dark:text-gray-300 space-y-4">
                 <p>Panel Admin ini dilengkapi dengan <strong>Media Manager (Curator)</strong>. Fitur ini layaknya "Galeri HP", di mana semua foto yang pernah Anda unggah (upload) akan tersimpan dan dapat digunakan kembali berulang kali tanpa harus mengunggah ulang.</p>
