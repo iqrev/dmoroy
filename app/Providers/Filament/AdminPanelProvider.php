@@ -34,6 +34,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login(Login::class)
             ->brandName("D'Moroy")
+            ->favicon(asset('favicon.ico'))
             ->font('Plus Jakarta Sans')
             ->sidebarCollapsibleOnDesktop()
             ->colors([
