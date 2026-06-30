@@ -20,9 +20,16 @@ class CustomerGalleryResource extends Resource
 
     protected static ?string $modelLabel = 'Galeri Pelanggan';
     protected static ?string $pluralModelLabel = 'Galeri Pelanggan';
-    protected static string|\UnitEnum|null $navigationGroup = 'Tampilan Depan';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Tampilan Depan';
+    }
+
+    public static function getNavigationIcon(): string
+    {
+        return 'heroicon-o-rectangle-stack';
+    }
 
     public static function form(Schema $schema): Schema
     {
