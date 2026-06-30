@@ -234,37 +234,35 @@
     
     <div class="flex overflow-x-auto pb-8 snap-x snap-mandatory gap-4 px-6 md:px-12 lg:justify-center" style="scrollbar-width: none;">
         @php
-            $latestProducts = \App\Models\Product::with('mediaImages')->latest()->get();
+            $galleries = \App\Models\CustomerGallery::with('media')->where('is_active', true)->orderBy('sort_order')->get();
             $igImages = [];
-            foreach($latestProducts as $prod) {
-                if (!empty($prod->media_urls)) {
-                    foreach($prod->media_urls as $url) {
-                        if (!in_array($url, $igImages)) {
-                            $igImages[] = $url;
-                        }
-                        if(count($igImages) >= 8) break;
-                    }
+            foreach($galleries as $gallery) {
+                if ($gallery->media) {
+                    $igImages[] = [
+                        'url' => $gallery->media->url,
+                        'link' => $gallery->instagram_url ?? '#',
+                        'alt' => $gallery->title ?? 'Galeri Pelanggan D\'Moroy'
+                    ];
                 }
-                if(count($igImages) >= 8) break;
             }
             
             if (empty($igImages)) {
                 $igImages = [
-                    asset('images/dmoroy/bag_biaso_bae.png'),
-                    asset('images/dmoroy/hero_knit.png'),
-                    asset('images/dmoroy/bag_sangkek.png'),
-                    asset('images/dmoroy/bag_canteek.png'),
-                    asset('images/dmoroy/hero_woven.png'),
+                    ['url' => asset('images/dmoroy/bag_biaso_bae.png'), 'link' => '#', 'alt' => 'Demo'],
+                    ['url' => asset('images/dmoroy/hero_knit.png'), 'link' => '#', 'alt' => 'Demo'],
+                    ['url' => asset('images/dmoroy/bag_sangkek.png'), 'link' => '#', 'alt' => 'Demo'],
+                    ['url' => asset('images/dmoroy/bag_canteek.png'), 'link' => '#', 'alt' => 'Demo'],
+                    ['url' => asset('images/dmoroy/hero_woven.png'), 'link' => '#', 'alt' => 'Demo'],
                 ];
             }
         @endphp
         @foreach($igImages as $img)
-        <div class="flex-none w-64 h-64 md:w-72 md:h-72 rounded-2xl overflow-hidden relative group snap-center fade-up" x-intersect="$el.classList.add('in-view')" style="transition-delay: {{ $loop->index * 100 }}ms">
-            <img src="{{ $img }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Instagram Post {{ $loop->iteration }}">
+        <a href="{{ $img['link'] }}" {{ $img['link'] !== '#' ? 'target="_blank"' : '' }} class="flex-none w-64 h-64 md:w-72 md:h-72 rounded-2xl overflow-hidden relative group snap-center fade-up block" x-intersect="$el.classList.add('in-view')" style="transition-delay: {{ $loop->index * 100 }}ms">
+            <img src="{{ $img['url'] }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="{{ $img['alt'] }}">
             <div class="absolute inset-0 bg-brand-brown/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             </div>
-        </div>
+        </a>
         @endforeach
     </div>
 </section>
